@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sttd;
 
 /**
- *
- * @author LuisJuan
+ * Star Wars Tower Defense
+021 * Developed by Mad Devs
+ * "Stay on the rigth side, the Made side"
+ * Version: Alpha       Date: 4/07/2014
  */
 public class STTD {
 
