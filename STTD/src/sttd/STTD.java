@@ -8,7 +8,10 @@ package sttd;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+<<<<<<< HEAD
 import javax.swing.JButton;
+=======
+>>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Font;
@@ -29,6 +32,7 @@ import java.io.IOException;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
 
+<<<<<<< HEAD
     private Graphics dbg; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
@@ -64,6 +68,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void actualiza() {
         
+=======
+    public STTD(){
+        
+    }
+    
+    public void run() {
+
+>>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
     }
 
     public void keyTyped(KeyEvent e) {
@@ -97,6 +109,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
     }
+<<<<<<< HEAD
     
      /**
      * Metodo que actuliza las animaciones
@@ -128,6 +141,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void paint1(Graphics g){
         
     }
+=======
+>>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 
     /**
      * @param args the command line arguments
@@ -136,4 +151,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         STTD defense = new STTD();
         defense.setVisible(true);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 }
