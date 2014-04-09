@@ -1,15 +1,14 @@
-
-package sttd;
-
 /**
  * Star Wars Tower Defense
  * Developed by Mad Devs
  * "Stay on the rigth side, the Made side"
  * Version: Alpha       Date: 4/07/2014
  */
+package sttd;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JButton;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Font;
@@ -30,12 +29,41 @@ import java.io.IOException;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
 
+    private Graphics dbg; // Graphic Object
+    private Image dbImage; // Image
+    private Image background; // Background Image
+    private JButton bt_solo, bt_2p, bt_inst; // Main menu buttons
+    
     public STTD(){
-        
+        // Setup
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1368,768);
+        setTitle("Star Wars: Tower Defense");
+        Thread th = new Thread(this);
+        th.start();
     }
     
+    /**
+     * Se ejectua el Thread
+     */
     public void run() {
-
+        while(true) {
+            //checaColision();tr
+            actualiza();
+            repaint();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                System.out.println("Error en " + ex.toString());
+            }
+            
+        }
+    }
+    /**
+     * This method updates..
+     */
+    public void actualiza() {
+        
     }
 
     public void keyTyped(KeyEvent e) {
@@ -69,11 +97,43 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
     }
+    
+     /**
+     * Metodo que actuliza las animaciones
+     *
+     * @param g es la <code>imagen</code> del objeto.
+     */
+    public void paint(Graphics g) {
+        // Inicializa el DoubleBuffer
+        if (dbImage == null) {
+            dbImage = createImage(this.getSize().width, this.getSize().height);
+            dbg = dbImage.getGraphics();
+        }
+
+        // Actualiza la imagen de fondo.
+        dbg.setColor(getBackground());
+        dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
+
+        // Actualiza el Foreground.
+        dbg.setColor(getForeground());
+        paint1(dbg);
+
+        // Dibuja la imagen actualizada
+        g.drawImage(dbImage, 0, 0, this);
+    }
+    /**
+     * Method used to paint images in the game
+     * @param g 
+     */
+    public void paint1(Graphics g){
+        
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        STTD defense = new STTD();
+        defense.setVisible(true);
     }
 }
