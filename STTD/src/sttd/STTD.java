@@ -1,17 +1,12 @@
 /**
- * Star Wars Tower Defense
- * Developed by Mad Devs
- * "Stay on the rigth side, the Made side"
- * Version: Alpha       Date: 4/07/2014
+ * Star Wars Tower Defense Developed by Mad Devs "Stay on the rigth side, the
+ * Made side" Version: Alpha Date: 4/07/2014
  */
 package sttd;
 
 import java.awt.Color;
 import javax.swing.JFrame;
-<<<<<<< HEAD
 import javax.swing.JButton;
-=======
->>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Font;
@@ -32,26 +27,25 @@ import java.io.IOException;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
 
-<<<<<<< HEAD
     private Graphics dbg; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
     private JButton bt_solo, bt_2p, bt_inst; // Main menu buttons
-    
-    public STTD(){
+
+    public STTD() {
         // Setup
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1368,768);
+        setSize(1368, 768);
         setTitle("Star Wars: Tower Defense");
         Thread th = new Thread(this);
         th.start();
     }
-    
+
     /**
      * Se ejectua el Thread
      */
     public void run() {
-        while(true) {
+        while (true) {
             //checaColision();tr
             actualiza();
             repaint();
@@ -60,22 +54,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
-            
+
         }
     }
+
     /**
      * This method updates..
      */
     public void actualiza() {
-        
-=======
-    public STTD(){
-        
-    }
-    
-    public void run() {
 
->>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
     }
 
     public void keyTyped(KeyEvent e) {
@@ -109,9 +96,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
     }
-<<<<<<< HEAD
-    
-     /**
+
+    /**
      * Metodo que actuliza las animaciones
      *
      * @param g es la <code>imagen</code> del objeto.
@@ -134,15 +120,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
     }
+
     /**
      * Method used to paint images in the game
-     * @param g 
+     *
+     * @param g
      */
-    public void paint1(Graphics g){
-        
+    public void paint1(Graphics g) {
+
     }
-=======
->>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 
     /**
      * @param args the command line arguments
@@ -151,8 +137,5 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         STTD defense = new STTD();
         defense.setVisible(true);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 4dc2c10e8ad3840a7cb5afbb2911d75dc4e9ef31
 }
