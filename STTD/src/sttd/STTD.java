@@ -38,7 +38,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         
         // Images
         //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Map1.png"));
+        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
         
         Thread th = new Thread(this);
         th.start();
