@@ -32,6 +32,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Graphics dbg; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
+    private Image imgmenu; // Menu Image
+    private Image t; // Torreta Image
     private Animacion animTorre; // Animacion de la torre
     private LinkedList tower; // Lista de las Torres
     private double rotacion; // Rotacion que se le dara a las torres
@@ -50,7 +52,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        Image t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual60.png"));
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual60.png"));
         animTorre = new Animacion();
         animTorre.sumaCuadro(t, 100);
 
@@ -119,14 +121,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Rectangle rect = new Rectangle(476, 430, 421, 44);
             // si se da click en el boton de SOLO
             if (rect.contains(e.getPoint())) {
-                main = false;
-                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                //main = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
             // si se da click en el boton de CO-OP
             rect.setLocation(476, 488);
             if (rect.contains(e.getPoint())) {
-                main = false;
-                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                //main = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
             // si se da click en el boton de INSTRUCTIONS
             rect.setLocation(476, 535);
