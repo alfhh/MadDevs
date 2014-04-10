@@ -39,7 +39,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private double rotacion; // Rotacion que se le dara a las torres
     private AffineTransform identidad; // Variable tipo AffineTransform
     private boolean main; // booleano que muestra la pantalla principal
+    private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
+    private boolean game; // booleano que deja que el juego corra
 
     public STTD() {
         // Setup
@@ -49,6 +51,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         rotacion = Math.PI / 60;
         main = true;
         instr = false;
+        menu = false;
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
@@ -114,29 +117,62 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
-        if (instr) {
-            instr = false;
+        if (instr) {// si se esta en las instrucciones
+            Rectangle rect = new Rectangle(45, 55, 94, 84);
+            if (rect.contains(e.getPoint())) {
+                instr = false;
+                main = true;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+            }
         }
         if (main) { // si se esta en la pantalla de inicio
             Rectangle rect = new Rectangle(476, 430, 421, 44);
             // si se da click en el boton de SOLO
             if (rect.contains(e.getPoint())) {
-                //main = false;
+                menu = true;
+                main = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
             // si se da click en el boton de CO-OP
             rect.setLocation(476, 488);
             if (rect.contains(e.getPoint())) {
-                //main = false;
+                menu = true;
+                main = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
             // si se da click en el boton de INSTRUCTIONS
             rect.setLocation(476, 535);
             if (rect.contains(e.getPoint())) {
                 instr = true;
+                main = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Instrucciones.png"));
             }
-            //rect.setRect(rotacion, rotacion, rotacion, rotacion);
+        }
+        if (menu) {// si se esta en la pantalla de menu
+            Rectangle rect = new Rectangle(139, 232, 352, 164);
+            if (rect.contains(e.getPoint())) {
+                game = true;
+                menu = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+            }
+            rect.setLocation(879, 232);
+            if (rect.contains(e.getPoint())) {
+                game = true;
+                menu = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2.png"));
+            }
+            rect.setLocation(139, 496);
+            if (rect.contains(e.getPoint())) {
+                game = true;
+                menu = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3.png"));
+            }
+            rect.setLocation(879, 496);
+            if (rect.contains(e.getPoint())) {
+                game = true;
+                menu = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4.png"));
+            }
         }
     }
 
@@ -187,7 +223,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void paint1(Graphics g) {
         g.drawImage(background, 8, 31, this);
-        if (!main) {
+        if (game) {
             for (int i = 0; i < tower.size(); i++) {
                 Tower temp = (Tower) tower.get(i);
                 g.drawImage(temp.getAnimacion().getImagen(), temp.getPosX(), temp.getPosY(), this);
