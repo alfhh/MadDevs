@@ -135,7 +135,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // ALF PON LAS INSTRUCCIONES AQUI PLIS
                 //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
             }
-
+            //rect.setRect(rotacion, rotacion, rotacion, rotacion);
         }
     }
 
