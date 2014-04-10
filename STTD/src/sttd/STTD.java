@@ -6,7 +6,6 @@ package sttd;
 
 import java.awt.Color;
 import javax.swing.JFrame;
-import javax.swing.JButton;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Font;
@@ -30,13 +29,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Graphics dbg; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
-    private JButton bt_solo, bt_2p, bt_inst; // Main menu buttons
 
     public STTD() {
         // Setup
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1368, 768);
+        setSize(1368, 730);
         setTitle("Star Wars: Tower Defense");
+        
+        // Images
+        //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Map1.png"));
+        
         Thread th = new Thread(this);
         th.start();
     }
@@ -127,7 +130,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param g
      */
     public void paint1(Graphics g) {
-
+        g.drawImage(background, 8, 31, this);
     }
 
     /**
