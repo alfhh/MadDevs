@@ -134,8 +134,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             rect.setLocation(476, 535);
             if (rect.contains(e.getPoint())) {
                 instr = true;
-                // ALF PON LAS INSTRUCCIONES AQUI PLIS
-                //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Instrucciones.png"));
             }
             //rect.setRect(rotacion, rotacion, rotacion, rotacion);
         }
