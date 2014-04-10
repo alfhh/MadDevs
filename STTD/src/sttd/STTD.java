@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,25 +25,47 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.awt.geom.AffineTransform;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
 
     private Graphics dbg; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
+    private Animacion animTorre; // Animacion de la torre
+    private LinkedList tower; // Lista de las Torres
+    private double rotacion; // Rotacion que se le dara a las torres
+    private AffineTransform identidad; // Variable tipo AffineTransform
+    private boolean main; // booleano que muestra la pantalla principal
+    private boolean instr; // booleano que muestra las instrucciones
 
     public STTD() {
         // Setup
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1368, 730);
         setTitle("Star Wars: Tower Defense");
-        
+        rotacion = Math.PI / 60;
+        main = true;
+        instr = false;
+
         // Images
-        //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
-        
+        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+        Image t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual60.png"));
+        animTorre = new Animacion();
+        animTorre.sumaCuadro(t, 100);
+
+        // Tower
+        tower = new LinkedList();
+        tower.add(new Tower(300, 300, animTorre, 1));
+        tower.add(new Tower(500, 400, animTorre, 1));
+        tower.add(new Tower(300, 500, animTorre, 1));
+        tower.add(new Tower(200, 200, animTorre, 1));
+        tower.add(new Tower(300, 400, animTorre, 1));
+
         Thread th = new Thread(this);
         th.start();
+
+        addMouseListener(this);
     }
 
     /**
@@ -80,8 +104,39 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
     }
 
+    /**
+     * Metodo mouseClicked
+     *
+     * sirve para que se detecten los clicks en los lugares deseados
+     *
+     * @param e
+     */
     public void mouseClicked(MouseEvent e) {
+        if (instr) {
+            instr = false;
+        }
+        if (main) { // si se esta en la pantalla de inicio
+            Rectangle rect = new Rectangle(476, 430, 421, 44);
+            // si se da click en el boton de SOLO
+            if (rect.contains(e.getPoint())) {
+                main = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+            }
+            // si se da click en el boton de CO-OP
+            rect.setLocation(476, 488);
+            if (rect.contains(e.getPoint())) {
+                main = false;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+            }
+            // si se da click en el boton de INSTRUCTIONS
+            rect.setLocation(476, 535);
+            if (rect.contains(e.getPoint())) {
+                instr = true;
+                // ALF PON LAS INSTRUCCIONES AQUI PLIS
+                //background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+            }
 
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -131,6 +186,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void paint1(Graphics g) {
         g.drawImage(background, 8, 31, this);
+        if (!main) {
+            for (int i = 0; i < tower.size(); i++) {
+                Tower temp = (Tower) tower.get(i);
+                g.drawImage(temp.getAnimacion().getImagen(), temp.getPosX(), temp.getPosY(), this);
+            }
+        }
     }
 
     /**
