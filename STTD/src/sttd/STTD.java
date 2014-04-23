@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
@@ -28,7 +29,7 @@ import java.io.IOException;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 
-public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
+public class STTD extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     private Graphics dbg; // Graphic Object
     private Graphics dbgtower; // Graphic Object
@@ -46,7 +47,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private double rotacion; // Rotacion que se le dara a las torres
     
     private int towerid; //Valor utilizado para identificar el id de la torre sin importar su posición en la linked list
-    private double testingangle = 0; //solo de prueba
+    private int mousex; //Posición en X del mouse
+    private int mousey; //Posición en Y del mouse
     
     private AffineTransform identidad; // Variable tipo AffineTransform
     
@@ -69,7 +71,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual60.png"));
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png"));
         animTorre = new Animacion();
         animTorre.sumaCuadro(t, 100);
 
@@ -87,6 +89,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         addMouseListener(this);
         addKeyListener(this);
+        addMouseMotionListener(this);
     }
 
     /**
@@ -110,7 +113,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
-
+    for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                
+        }
     }
 
     public void keyTyped(KeyEvent e) {
@@ -123,7 +129,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     {
         for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-                t.setAngle(t.getAngle()+ 0.2);
+                t.setAngle(t.getAngle()- 5);
         }
  
     }
@@ -131,7 +137,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     {
         for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-                t.setAngle(t.getAngle()- 0.2);
+                t.setAngle(t.getAngle()+ 5);
         }
     }
     }
@@ -222,6 +228,28 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
     }
+    
+     /**
+	 * Metodo <I>mouseDragged</I> sobrescrito de la interface <code>KeyListener</code>.<P>
+	 * En este metodo maneja el evento que se genera al presionar una boton del mouse y arrastarlo.
+	 * @param e es el <code>evento</code> que se genera en al presionar las teclas.
+	 */
+    public void mouseDragged(MouseEvent e){
+       
+
+        }
+        
+    
+     /**
+	 * Metodo <I>mouseMoved</I> sobrescrito de la interface <code>MouseMotionListener</code>.<P>
+	 * En este metodo maneja el evento que se genera al arrastarlo sin presionar un boton.
+	 * @param e es el <code>evento</code> que se genera en al presionar las teclas.
+	 */
+    public void mouseMoved(MouseEvent e){
+    
+       
+    }
+    
 
     /**
      * Metodo que actuliza las animaciones
@@ -246,11 +274,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         dbg.setColor(getForeground());
         paint1(dbg);
         
-        dbgtower.setColor(getForeground());
         //dibujar imagenes de torres
+        dbgtower.setColor(getForeground());
         towerpaint1(dbgtower);
             
-
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
     }
@@ -263,6 +290,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void paint1(Graphics g) {
         
         g.drawImage(background, 8, 31, this);
+        if (game)
+        {
+        //Used for testing
+        for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                g.setColor(Color.white);
+                g.fillRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
+                g.drawRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
+                g.setColor(Color.black);         
+                g.drawString("Angulo = " + (t.getAngle()-90), t.getPosX(), t.getPosY());
+        }
+        }
         
     }
     
@@ -279,18 +318,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Tower t = (Tower) tower.get(i);
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
-                z.rotate(t.getAngle(), -t.getAncho() / 2, -t.getAlto() / 2);
+                z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
                 g2d.transform(z);
-                g2d.drawImage(t.getAnimacion().getImagen(), (int) -(t.getAncho()), (int) -(t.getAlto()), this);
+                g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
                 try {
                     g2d.transform(z.createInverse());
                 } catch (NoninvertibleTransformException e) {
                     //...
                 }
 
-//         g2d.translate(1368/2, 730/2); // Translate the center of our coordinates.
-//         g2d.rotate(testingangle, t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2);
-//         g2d.drawImage(t.getAnimacion().getImagen(), t.getPosX(), t.getPosY(), this);
             }
         }
     }
