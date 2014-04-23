@@ -15,14 +15,16 @@ public class Bullet extends Base {
     int angle; //angulo de la bala
     int speed = 3; // Velocidad de las bala. -1 convoca lazer instantaneo
     int distance = 45; // Distancia recorrida antes de desaparecer
-    
+    int playerid = 1; //Dueño de la bala
 
     
-    public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, int ang) {
+    public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, int ang, int range, int pl) {
         super(posX, posY, animacion);
         damage = dmg;
         speed = sp;
         angle = ang;
+        distance = range * 2;
+        playerid = pl;
     }
     //Metodo para obtener el angulo de la torre
     int getAngle()
@@ -46,5 +48,19 @@ public class Bullet extends Base {
     void setSpeed(int s)
     {
         speed = s;
+    }
+    
+    //Metodo que mide el tiempo de vida de la bala y si es true en el main, borra el objeto
+    boolean distanceTime()
+    {
+        distance -= speed;
+        if (distance <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
