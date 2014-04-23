@@ -20,6 +20,7 @@ public class Tower extends Base {
     int rateoffire = 10; //Delay entre disparos
     int towerid; //Id de la torre (Utilizado para identificar la torre independientemente de su lugar en la linked list)
     int value; //Valor de venta de la torre
+    int target = 0; // enemigo a apuntar
     
     
     

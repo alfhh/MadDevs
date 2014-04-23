@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener {
 
@@ -40,6 +41,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Animacion animTorre; // Animacion de la torre
     
     private LinkedList tower; // Lista de las Torres
+    private LinkedList towergraphics; // Lista de las imagenes de las torres
     
     private double rotacion; // Rotacion que se le dara a las torres
     
@@ -73,8 +75,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         // Tower
         tower = new LinkedList();
+        towergraphics = new LinkedList();
         tower.add(new Tower(1368/2, 730/2, animTorre, 1,1));
-
+        tower.add(new Tower(1368/3, 730/3, animTorre, 1,1));
+        tower.add(new Tower(2*1368/3, 2*730/3, animTorre, 1,1));
+        
+        
 
         Thread th = new Thread(this);
         th.start();
@@ -115,7 +121,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
  
     if(e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-        testingangle = -0.2;
+        testingangle += -0.2;
 //       for (int i = 0; i < tower.size(); i++) {
 //                Tower temp = (Tower) tower.get(i);
 //                temp.setAngle(temp.getAngle() - 10);
@@ -123,7 +129,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
     if(e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-        testingangle = 0.2;
+        testingangle += 0.2;
 //       for (int i = 0; i < tower.size(); i++) {
 //                Tower temp = (Tower) tower.get(i);
 //                temp.setAngle(temp.getAngle() + 10);
@@ -133,11 +139,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyReleased(KeyEvent e) {
-   if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT)
-    {
-        testingangle = 0;
-    }
-    
+   
     }
 
     /**
@@ -233,12 +235,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (dbImage == null) {
             dbImage = createImage(this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
-            dbgtower = dbImage.getGraphics();
-            
+            dbgtower = dbImage.getGraphics();       
         }
         
-        
-
         // Actualiza la imagen de fondo.
         dbg.setColor(getBackground());
         dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
@@ -278,13 +277,26 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param t
      */
     public void towerpaint1(Graphics g, Tower t) {
+        Graphics2D g2d=(Graphics2D)g; // Create a Java2D version of g.
         if (game)
         {
-     Graphics2D g2d=(Graphics2D)g; // Create a Java2D version of g.
+            AffineTransform z = new AffineTransform();
+    z.translate(t.getPosX(), t.getPosY());        
+  
+    z.rotate(testingangle, -t.getAncho()/2, -t.getAlto()/2);
+    g2d.transform(z);
+    g2d.drawImage(t.getAnimacion().getImagen(), (int)-(t.getAncho()), (int)-(t.getAlto()), this);
+    try{
+        g2d.transform(z.createInverse());
+    }catch(NoninvertibleTransformException e){
+        //...
+    }
+
 //         g2d.translate(1368/2, 730/2); // Translate the center of our coordinates.
-         g2d.rotate(testingangle, t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2);
-         g2d.drawImage(t.getAnimacion().getImagen(), t.getPosX(), t.getPosY(), this);
+//         g2d.rotate(testingangle, t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2);
+//         g2d.drawImage(t.getAnimacion().getImagen(), t.getPosX(), t.getPosY(), this);
         }
+        
        
     }
 
