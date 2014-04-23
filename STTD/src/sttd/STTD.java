@@ -121,20 +121,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
  
     if(e.getKeyCode() == KeyEvent.VK_LEFT)
     {
-        testingangle += -0.2;
-//       for (int i = 0; i < tower.size(); i++) {
-//                Tower temp = (Tower) tower.get(i);
-//                temp.setAngle(temp.getAngle() - 10);
-//            } 
+        for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                t.setAngle(t.getAngle()+ 0.2);
+        }
+ 
     }
     if(e.getKeyCode() == KeyEvent.VK_RIGHT)
     {
-        testingangle += 0.2;
-//       for (int i = 0; i < tower.size(); i++) {
-//                Tower temp = (Tower) tower.get(i);
-//                temp.setAngle(temp.getAngle() + 10);
-//            } 
-        
+        for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                t.setAngle(t.getAngle()- 0.2);
+        }
     }
     }
 
@@ -250,10 +248,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         
         dbgtower.setColor(getForeground());
         //dibujar imagenes de torres
-        for (int i = 0; i < tower.size(); i++) {
-                Tower temp = (Tower) tower.get(i);
-                towerpaint1(dbgtower,temp);
-            }
+        towerpaint1(dbgtower);
+            
 
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
@@ -276,28 +272,27 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param g
      * @param t
      */
-    public void towerpaint1(Graphics g, Tower t) {
-        Graphics2D g2d=(Graphics2D)g; // Create a Java2D version of g.
-        if (game)
-        {
-            AffineTransform z = new AffineTransform();
-    z.translate(t.getPosX(), t.getPosY());        
-  
-    z.rotate(testingangle, -t.getAncho()/2, -t.getAlto()/2);
-    g2d.transform(z);
-    g2d.drawImage(t.getAnimacion().getImagen(), (int)-(t.getAncho()), (int)-(t.getAlto()), this);
-    try{
-        g2d.transform(z.createInverse());
-    }catch(NoninvertibleTransformException e){
-        //...
-    }
+    public void towerpaint1(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
+        if (game) {
+            for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                AffineTransform z = new AffineTransform();
+                z.translate(t.getPosX(), t.getPosY());
+                z.rotate(t.getAngle(), -t.getAncho() / 2, -t.getAlto() / 2);
+                g2d.transform(z);
+                g2d.drawImage(t.getAnimacion().getImagen(), (int) -(t.getAncho()), (int) -(t.getAlto()), this);
+                try {
+                    g2d.transform(z.createInverse());
+                } catch (NoninvertibleTransformException e) {
+                    //...
+                }
 
 //         g2d.translate(1368/2, 730/2); // Translate the center of our coordinates.
 //         g2d.rotate(testingangle, t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2);
 //         g2d.drawImage(t.getAnimacion().getImagen(), t.getPosX(), t.getPosY(), this);
+            }
         }
-        
-       
     }
 
     /**
