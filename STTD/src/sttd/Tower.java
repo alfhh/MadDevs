@@ -12,7 +12,7 @@ package sttd;
  */
 public class Tower extends Base {
     int type = 0; //tipo de torre.
-    double angle = ((double) (Math.random() * (8))); //angulo de la torre
+    double angle = ((double) (Math.random() * (16))); //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
     int range = 30; //Rango circular de la torre. 
     int damage = 5; //Daño de la torre
