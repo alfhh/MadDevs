@@ -18,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -64,12 +65,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
     private boolean game; // booleano que deja que el juego corra
-    
+
     //Checar si un punto esta dentro de un circulo
-    public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius){
-		return java.lang.Math.pow((circleX - clickX),2) + java.lang.Math.pow((circleY -clickY),2) < java.lang.Math.pow(radius,2);
-	}
-    
+    public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
+        return java.lang.Math.pow((circleX - clickX), 2) + java.lang.Math.pow((circleY - clickY), 2) < java.lang.Math.pow(radius, 2);
+    }
 
     public STTD() {
         // Setup
@@ -82,7 +82,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         instr = false;
         menu = false;
         towerid = 0;
-        grid = new int[40][23];
+        grid = new int[23][40];
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
@@ -141,41 +141,42 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
-        
+
         if (towerid > 0) {// Si se esta cargando una torre
             PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
             Point b = a.getLocation();
-            Tower t = (Tower) tower.getLast();
-            if (b.getX() < 1208) {
-                t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
-                t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
-            } else {
-                t.setPosX((int) b.getX() - t.getAncho() / 2);
-                t.setPosY((int) b.getY() - t.getAlto() / 2);
-
+            try {
+                Tower t = (Tower) tower.getLast();
+                if (b.getX() < 1208) {
+                    t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
+                    t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
+                } else {
+                    t.setPosX((int) b.getX() - t.getAncho() / 2);
+                    t.setPosY((int) b.getY() - t.getAlto() / 2);
+                }
+            } catch (NoSuchElementException n) {
+                towerid = 0;
             }
-
         }
 
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
 
         }
-        
-         //Disparar bala a la dirección deseada
+
+        //Disparar bala a la dirección deseada
         PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
         Point b = a.getLocation();
-        
-        for (int i = 0; i < tower.size(); i++) {
-                Tower t = (Tower) tower.get(i);
-                if (inCircle(t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2,(int)b.getX(),(int)b.getY(), (int)t.getRange()))           
-                {
 
-                    double bullet_angle = Math.atan2((t.getPosX() + t.getAncho()/2) - (int)b.getX(), (t.getPosY() + t.getAlto()/2) - (int)b.getY()) - Math.PI / 2;
-                    t.setAngle(Math.toDegrees(-bullet_angle-Math.PI/2));
-                    
-                }
-                
+        for (int i = 0; i < tower.size(); i++) {
+            Tower t = (Tower) tower.get(i);
+            if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, (int) b.getX(), (int) b.getY(), (int) t.getRange())) {
+
+                double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int) b.getX(), (t.getPosY() + t.getAlto() / 2) - (int) b.getY()) - Math.PI / 2;
+                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI / 2));
+
+            }
+
         }
     }
 
@@ -217,14 +218,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (e.getX() < 1208) {// se planta una torreta en la grid
                 towerid = 0;
             } else {                // Se remueve la torreta
-                tower.removeLast(); 
+                tower.removeLast();
                 towerid = 0;
             }
         }
         if (game) {
             if (e.getX() > 1200 && towerid == 0) { // si el mouse esta en el HUD
                 // creacion de torretas
-                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) { 
+                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                     towerid = 1;
                     tower.add(new Tower(e.getX(), e.getY(), animNormal, 0, 0));
                 }
@@ -291,6 +292,32 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                {
+                    int b[][] = {
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2},
+                        {1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 2, 2, 2},
+                        {1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 2, 2, 2},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
+                }
             }
             rect.setLocation(879, 232);
             if (rect.contains(e.getPoint())) {
@@ -315,9 +342,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
     public void mousePressed(MouseEvent e) {
 
-       
-        
-        
     }
 
     public void mouseReleased(MouseEvent e) {
