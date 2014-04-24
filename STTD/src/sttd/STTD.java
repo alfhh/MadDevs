@@ -401,6 +401,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 g.setColor(Color.white);
+                //Dibujar circulos del rango
+                g.drawOval(t.getPosX()+ t.getAncho()/2 -(int)t.getRange(), t.getPosY()+ t.getAlto()/2 -(int)t.getRange(),(int)t.getRange()*2 ,(int)t.getRange()*2);
+                
                 g.fillRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.drawRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.setColor(Color.black);
@@ -421,6 +424,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (game) {
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
+                
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
