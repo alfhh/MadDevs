@@ -14,13 +14,14 @@ public class Tower extends Base {
     int type = 0; //tipo de torre.
     double angle = ((double) (Math.random() * (360))); //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
-    int range = 30; //Rango circular de la torre. 
+    double range = 90; //Rango circular de la torre. 
     int damage = 5; //Daño de la torre
     int playerid = 1; //Dueño de la torre
     int rateoffire = 10; //Delay entre disparos
     int towerid; //Id de la torre (Utilizado para identificar la torre independientemente de su lugar en la linked list)
     int value; //Valor de venta de la torre
     int target = 0; // enemigo a apuntar
+    int canshoot = 0; //Timer para poder disparar
     
     
     
@@ -52,5 +53,31 @@ public class Tower extends Base {
     void setSpeed(int s)
     {
         speed = s;
+    }
+    
+    //Metodo para obtener el rango de la torre
+    double getRange()
+    {
+        return range;
+    }
+    
+    //Metodo para asignar el rango de la torre
+    void setRange(int r)
+    {
+        range = r;
+    }
+    
+    boolean canShoot()
+    {
+        if (canshoot == 0)
+        {
+            return true;
+        }
+        else
+        {
+            canshoot += -1;
+            return false;
+        }
+        
     }
 }
