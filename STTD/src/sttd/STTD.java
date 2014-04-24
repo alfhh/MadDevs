@@ -148,7 +148,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             try {
                 Tower t = (Tower) tower.getLast();
                 if (b.getX() < 1208) {
-                    
                     t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                     t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
                 } else {
