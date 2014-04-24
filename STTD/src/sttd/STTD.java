@@ -155,6 +155,23 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Tower t = (Tower) tower.get(i);
 
         }
+        
+         //Disparar bala a la dirección deseada
+        PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
+        Point b = a.getLocation();
+        
+        for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+//                if ((( (((int) b.getX() - (int) t.getPosX()/2)^2) + ((int) b.getY() - (int) t.getPosY()/2)^2)) < ((int)t.getRange()^2))
+//                    
+                {
+
+                    double bullet_angle = Math.atan2((t.getPosX() + t.getAncho()/2) - (int)b.getX(), (t.getPosY() + t.getAlto()/2) - (int)b.getY()) - Math.PI / 2;
+                    t.setAngle(Math.toDegrees(-bullet_angle-Math.PI/2));
+                    
+                }
+                
+        }
     }
 
     public void keyTyped(KeyEvent e) {
@@ -293,6 +310,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
     public void mousePressed(MouseEvent e) {
 
+       
+        
+        
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -379,7 +399,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.fillRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.drawRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.setColor(Color.black);
-                g.drawString("Angulo = " + (t.getAngle() - 90), t.getPosX(), t.getPosY());
+                g.drawString("Angulo = " + (t.getAngle()), t.getPosX(), t.getPosY());
             }
         }
 
