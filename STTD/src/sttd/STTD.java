@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.PointerInfo;
+import java.awt.Point;
+import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyEvent;
@@ -36,20 +39,27 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Image background; // Background Image
     private Image imgmenu; // Menu Image
     private Image t; // Torreta Image
-    
-    
-    private Animacion animTorre; // Animacion de la torre
-    
+
+    private Animacion animNormal; // Animacion de la torre
+    private Animacion animDual; // Animacion de la torre
+    private Animacion animSniper; // Animacion de la torre
+    private Animacion animFuerte; // Animacion de la torre
+    private Animacion animQuad; // Animacion de la torre
+    private Animacion animLaser; // Animacion de la torre
+    private Animacion animWat; // Animacion de la torre
+
+    private char tipo;
+
     private LinkedList tower; // Lista de las Torres
     private LinkedList towergraphics; // Lista de las imagenes de las torres
-    
+
     private double rotacion; // Rotacion que se le dara a las torres
-    
+    private int grid[][]; // Grid conceptual del mapa
     private int towerid; //Valor utilizado para identificar el id de la torre sin importar su posición en la linked list
     private double testingangle = 0; //solo de prueba
-    
+
     private AffineTransform identidad; // Variable tipo AffineTransform
-    
+
     private boolean main; // booleano que muestra la pantalla principal
     private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
@@ -65,22 +75,36 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         main = true;
         instr = false;
         menu = false;
-        
+        tipo = 0;
+        grid = new int[40][23];
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual60.png"));
-        animTorre = new Animacion();
-        animTorre.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretanormal.png"));
+        animNormal = new Animacion();
+        animNormal.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png"));
+        animDual = new Animacion();
+        animDual.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniper.png"));
+        animSniper = new Animacion();
+        animSniper.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png"));
+        animFuerte = new Animacion();
+        animFuerte.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png"));
+        animQuad = new Animacion();
+        animQuad.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png"));
+        animLaser = new Animacion();
+        animLaser.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretawatulio.png"));
+        animWat = new Animacion();
+        animWat.sumaCuadro(t, 100);
 
         // Tower
         tower = new LinkedList();
         towergraphics = new LinkedList();
-        tower.add(new Tower(1368/2, 730/2, animTorre, 1,1));
-        tower.add(new Tower(1368/3, 730/3, animTorre, 1,1));
-        tower.add(new Tower(2*1368/3, 2*730/3, animTorre, 1,1));
-        
-        
 
         Thread th = new Thread(this);
         th.start();
@@ -110,34 +134,46 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
+        if (tipo > 0) {
+            PointerInfo a = MouseInfo.getPointerInfo();
+            Point b = a.getLocation();
+            Tower t = (Tower) tower.getLast();
+            if (b.getX() < 1208) {
+                t.setPosX(((int) b.getX() + 30) - ((int) b.getX() - 8) % 30);
+                t.setPosY(((int) b.getY() + 31) - ((int) b.getY()) % 30);
+            } else {
+                t.setPosX((int) b.getX() + t.getAncho() / 2);
+                t.setPosY((int) b.getY() + t.getAlto() / 2);
+
+            }
+
+        }
 
     }
 
     public void keyTyped(KeyEvent e) {
-       
+
     }
 
     public void keyPressed(KeyEvent e) {
- 
-    if(e.getKeyCode() == KeyEvent.VK_LEFT)
-    {
-        for (int i = 0; i < tower.size(); i++) {
+
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-                t.setAngle(t.getAngle()+ 0.2);
+                t.setAngle(t.getAngle() + 0.2);
+            }
+
         }
- 
-    }
-    if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-    {
-        for (int i = 0; i < tower.size(); i++) {
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-                t.setAngle(t.getAngle()- 0.2);
+                t.setAngle(t.getAngle() - 0.2);
+            }
         }
-    }
     }
 
     public void keyReleased(KeyEvent e) {
-   
+
     }
 
     /**
@@ -148,6 +184,46 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
+        if (tipo > 0) {
+            if (e.getX() < 1208) {
+                tipo = 0;
+            } else {
+                tower.removeLast();
+                tipo = 0;
+            }
+        }
+        if (game) {
+            if (e.getX() > 1200 && tipo == 0) {
+                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
+                    tipo = 1;
+                    tower.add(new Tower(e.getX(), e.getY(), animNormal, 0, 0));
+                }
+                if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
+                    tipo = 2;
+                    tower.add(new Tower(e.getX(), e.getY(), animDual, 0, 0));
+                }
+                if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
+                    tipo = 3;
+                    tower.add(new Tower(e.getX(), e.getY(), animSniper, 0, 0));
+                }
+                if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
+                    tipo = 4;
+                    tower.add(new Tower(e.getX(), e.getY(), animQuad, 0, 0));
+                }
+                if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
+                    tipo = 5;
+                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, 0, 0));
+                }
+                if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
+                    tipo = 6;
+                    tower.add(new Tower(e.getX(), e.getY(), animLaser, 0, 0));
+                }
+                if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
+                    tipo = 7;
+                    tower.add(new Tower(e.getX(), e.getY(), animWat, 0, 0));
+                }
+            }
+        }
         if (instr) {// si se esta en las instrucciones
             Rectangle rect = new Rectangle(45, 55, 94, 84);
             if (rect.contains(e.getPoint())) {
@@ -233,9 +309,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (dbImage == null) {
             dbImage = createImage(this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
-            dbgtower = dbImage.getGraphics();       
+            dbgtower = dbImage.getGraphics();
         }
-        
+
         // Actualiza la imagen de fondo.
         dbg.setColor(getBackground());
         dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
@@ -245,11 +321,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         // Actualiza el Foreground.
         dbg.setColor(getForeground());
         paint1(dbg);
-        
+
         dbgtower.setColor(getForeground());
         //dibujar imagenes de torres
         towerpaint1(dbgtower);
-            
 
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
@@ -261,11 +336,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param g
      */
     public void paint1(Graphics g) {
-        
+
         g.drawImage(background, 8, 31, this);
-        
+
     }
-    
+
     /**
      * Metodo para dibujar las torres que giran
      *
