@@ -147,9 +147,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Point b = a.getLocation();
             try {
                 Tower t = (Tower) tower.getLast();
-                if (b.getX() < 1208) {
-                    t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
-                    t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
+
+
+                if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
+                    if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
+                        t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
+                        t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
+                    }
                 } else {
                     t.setPosX((int) b.getX() - t.getAncho() / 2);
                     t.setPosY((int) b.getY() - t.getAlto() / 2);
@@ -389,11 +393,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 //  
 //            };
 //            grid = b;
+            }
         }
     }
-}
 
-public void mousePressed(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
 
     }
 
