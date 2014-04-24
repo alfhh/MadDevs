@@ -64,6 +64,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
     private boolean game; // booleano que deja que el juego corra
+    
+    //Checar si un punto esta dentro de un circulo
+    public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius){
+		return java.lang.Math.pow((circleX - clickX),2) + java.lang.Math.pow((circleY -clickY),2) < java.lang.Math.pow(radius,2);
+	}
+    
 
     public STTD() {
         // Setup
@@ -162,8 +168,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         
         for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-//                if ((( (((int) b.getX() - (int) t.getPosX()/2)^2) + ((int) b.getY() - (int) t.getPosY()/2)^2)) < ((int)t.getRange()^2))
-//                    
+                if (inCircle(t.getPosX()+ t.getAncho()/2, t.getPosY()+ t.getAlto()/2,(int)b.getX(),(int)b.getY(), (int)t.getRange()))           
                 {
 
                     double bullet_angle = Math.atan2((t.getPosX() + t.getAncho()/2) - (int)b.getX(), (t.getPosY() + t.getAlto()/2) - (int)b.getY()) - Math.PI / 2;

@@ -14,7 +14,7 @@ public class Tower extends Base {
     int type = 0; //tipo de torre.
     double angle = ((double) (Math.random() * (360))); //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
-    double range = 30; //Rango circular de la torre. 
+    double range = 90; //Rango circular de la torre. 
     int damage = 5; //Daño de la torre
     int playerid = 1; //Dueño de la torre
     int rateoffire = 10; //Delay entre disparos
