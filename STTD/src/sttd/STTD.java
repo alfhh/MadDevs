@@ -41,15 +41,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Image imgmenu; // Menu Image
     private Image t; // Torreta Image
 
-    private Animacion animNormal; // Animacion de la torre
-    private Animacion animDual; // Animacion de la torre
-    private Animacion animSniper; // Animacion de la torre
-    private Animacion animFuerte; // Animacion de la torre
-    private Animacion animQuad; // Animacion de la torre
-    private Animacion animLaser; // Animacion de la torre
-    private Animacion animWat; // Animacion de la torre
-
-    private char tipo;
+    private Animacion animNormal; // Animacion de la torre Normal
+    private Animacion animDual; // Animacion de la torre Dual
+    private Animacion animSniper; // Animacion de la torre Sniper
+    private Animacion animFuerte; // Animacion de la torre DualFuerte
+    private Animacion animQuad; // Animacion de la torre Quadrupeda
+    private Animacion animLaser; // Animacion de la torre SniperLaser
+    private Animacion animWat; // Animacion de la torre Watulio
 
     private LinkedList tower; // Lista de las Torres
     private LinkedList towergraphics; // Lista de las imagenes de las torres
@@ -77,7 +75,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         main = true;
         instr = false;
         menu = false;
-        tipo = 0;
+        towerid = 0;
         grid = new int[40][23];
 
         // Images
@@ -137,8 +135,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
-        if (tipo > 0) {
-            PointerInfo a = MouseInfo.getPointerInfo();
+        
+        if (towerid > 0) {// Si se esta cargando una torre
+            PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
             Point b = a.getLocation();
             Tower t = (Tower) tower.getLast();
             if (b.getX() < 1208) {
@@ -192,42 +191,43 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
-        if (tipo > 0) {
-            if (e.getX() < 1208) {
-                tipo = 0;
-            } else {
-                tower.removeLast();
-                tipo = 0;
+        if (towerid > 0) {
+            if (e.getX() < 1208) {// se planta una torreta en la grid
+                towerid = 0;
+            } else {                // Se remueve la torreta
+                tower.removeLast(); 
+                towerid = 0;
             }
         }
         if (game) {
-            if (e.getX() > 1200 && tipo == 0) {
-                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
-                    tipo = 1;
+            if (e.getX() > 1200 && towerid == 0) { // si el mouse esta en el HUD
+                // creacion de torretas
+                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) { 
+                    towerid = 1;
                     tower.add(new Tower(e.getX(), e.getY(), animNormal, 0, 0));
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
-                    tipo = 2;
+                    towerid = 2;
                     tower.add(new Tower(e.getX(), e.getY(), animDual, 0, 0));
                 }
                 if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
-                    tipo = 3;
+                    towerid = 3;
                     tower.add(new Tower(e.getX(), e.getY(), animSniper, 0, 0));
                 }
                 if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
-                    tipo = 4;
+                    towerid = 4;
                     tower.add(new Tower(e.getX(), e.getY(), animQuad, 0, 0));
                 }
                 if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
-                    tipo = 5;
+                    towerid = 5;
                     tower.add(new Tower(e.getX(), e.getY(), animFuerte, 0, 0));
                 }
                 if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
-                    tipo = 6;
+                    towerid = 6;
                     tower.add(new Tower(e.getX(), e.getY(), animLaser, 0, 0));
                 }
                 if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
-                    tipo = 7;
+                    towerid = 7;
                     tower.add(new Tower(e.getX(), e.getY(), animWat, 0, 0));
                 }
             }
