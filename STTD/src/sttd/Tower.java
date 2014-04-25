@@ -12,6 +12,7 @@ package sttd;
  */
 public class Tower extends Base {
     int type = 0; //tipo de torre.
+    boolean set; // Boleano que representa se la torreta ya esta puesta
     double angle = ((double) (Math.random() * (360))); //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
     double range = 90; //Rango circular de la torre. 

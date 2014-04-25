@@ -6,49 +6,55 @@
 
 package sttd;
 
+import java.awt.Point;
+
 /**
  *
  * @author LuisJuan
  */
 public class Enemy extends Base {
-    int type = 0; //tipo de torre.
-    double angle = ((double) (Math.random() * (16))); //angulo de la torre
+    int type = 0; //tipo de enemigo.
+    Point start;
+    Point end;
+    char movment;
+    double angle = ((double) (Math.random() * (16))); //angulo de la enemigo
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
-    int range = 30; //Rango circular de la torre. 
-    int damage = 5; //Daño de la torre
-    int playerid = 1; //Dueño de la torre
+    int range = 30; //Rango circular de la enemigo. 
+    int damage = 5; //Daño de la enemigo
+    int playerid = 1; //Dueño de la enemigo
     int rateoffire = 10; //Delay entre disparos
-    int towerid; //Id de la torre (Utilizado para identificar la torre independientemente de su lugar en la linked list)
-    int value; //Valor de venta de la torre
+    int towerid; //Id de la enemigo (Utilizado para identificar la enemigo independientemente de su lugar en la linked list)
+    int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
     
     
     
-    public Enemy (int posX, int posY, Animacion animacion, int t, int pl) {
+    public Enemy (int posX, int posY, Animacion animacion, int t) {
         super(posX, posY, animacion);
         type = t;
-        playerid = pl;
-        
+        Point p = new Point(posX,posY);
+        end=p;
+        start = end;    
     }
-    //Metodo para obtener el angulo de la torre
+    //Metodo para obtener el angulo de la enemigo
     double getAngle()
     {
         return angle;
     }
     
-    //Metodo para asignar el angulo de la torre
+    //Metodo para asignar el angulo de la enemigo
     void setAngle(double a)
     {
         angle = a;
     }
     
-    //Metodo para obtener el angulo de la torre
+    //Metodo para obtener el angulo de la enemigo
     int getSpeed()
     {
         return speed;
     }
     
-    //Metodo para asignar el angulo de la torre
+    //Metodo para asignar el angulo de la enemigo
     void setSpeed(int s)
     {
         speed = s;

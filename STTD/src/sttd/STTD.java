@@ -49,8 +49,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Animacion animQuad; // Animacion de la torre Quadrupeda
     private Animacion animLaser; // Animacion de la torre SniperLaser
     private Animacion animWat; // Animacion de la torre Watulio
+    private Animacion animEnemigo; // Animacion del enemigo
 
     private LinkedList tower; // Lista de las Torres
+    private LinkedList levelstart; // Lista de los puntos de comienzo del mapa
+    private LinkedList wrench; // Lista de los enemigos
     private LinkedList towergraphics; // Lista de las imagenes de las torres
 
     private double rotacion; // Rotacion que se le dara a las torres
@@ -59,6 +62,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private double testingangle = 0; //solo de prueba
     private int mousex; //Posición en X del mouse
     private int mousey; //Posición en Y del mouse
+    private int countx; // Contador del tiempo de enemigos
     private AffineTransform identidad; // Variable tipo AffineTransform
 
     private boolean main; // booleano que muestra la pantalla principal
@@ -82,6 +86,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         instr = false;
         menu = false;
         towerid = 0;
+        countx = 50;
         grid = new int[23][40];
 
         // Images
@@ -107,9 +112,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretawatulio.png"));
         animWat = new Animacion();
         animWat.sumaCuadro(t, 100);
+        Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwingtemp.jpg"));
+        animEnemigo = new Animacion();
+        animEnemigo.sumaCuadro(e, 100);
 
         // Tower
         tower = new LinkedList();
+        levelstart = new LinkedList();
+        wrench = new LinkedList();
         towergraphics = new LinkedList();
 
         Thread th = new Thread(this);
@@ -125,8 +135,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void run() {
         while (true) {
-            //checaColision();tr
-            actualiza();
+            if (game) {
+                //checaColision();tr
+                actualiza();
+            }
             repaint();
             try {
                 Thread.sleep(20);
@@ -161,6 +173,30 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
 
+        countx--;
+        if (countx == 0) {
+            Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
+            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1));
+            countx = 50;
+        }
+        for (int i = 0; i < wrench.size(); i++) {
+            Enemy w = (Enemy) wrench.get(i);
+            if (w.end == new Point(w.getPosX(), w.getPosY())) {
+                Point p = w.start;
+                if (grid[(int) p.getY()][(int) p.getX() + 1] == 1) {
+                    w.end.setLocation(p.getX() + 1, p.getY());
+                    w.movment = '1';
+                }
+            }
+            switch (w.movment) {
+                case '1':
+                    w.setPosX(w.getPosX() + 10);
+                    break;
+                default:
+                    break;
+            }
+
+        }
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
 
@@ -319,6 +355,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
                 grid = b;
+                levelstart.add(new Point(8, 61));
+                levelstart.add(new Point(8, 661));
             }
             rect.setLocation(879, 232);
             if (rect.contains(e.getPoint())) {
@@ -496,6 +534,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         g.drawImage(background, 8, 31, this);
 
+        for (int i = 0; i < wrench.size(); i++) {
+            Enemy w = (Enemy) wrench.get(i);
+            g.drawImage(w.getAnimacion().getImagen(), w.getPosX(), w.getPosY(), this);
+        }
         if (game) {
             //Used for testing
             for (int i = 0; i < tower.size(); i++) {
@@ -503,7 +545,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.setColor(Color.white);
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
-
                 g.fillRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.drawRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
                 g.setColor(Color.black);
