@@ -159,6 +159,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Point b = a.getLocation();
             try {
                 Tower t = (Tower) tower.getLast();
+
+
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
@@ -209,9 +211,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
             if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, (int) b.getX(), (int) b.getY(), (int) t.getRange())) {
-
                 double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int) b.getX(), (t.getPosY() + t.getAlto() / 2) - (int) b.getY()) - Math.PI / 2;
-                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI / 2));
+                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI ));
 
             }
 
@@ -223,21 +224,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyPressed(KeyEvent e) {
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            for (int i = 0; i < tower.size(); i++) {
-                Tower t = (Tower) tower.get(i);
-                t.setAngle(t.getAngle() - 5);
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            for (int i = 0; i < tower.size(); i++) {
-                Tower t = (Tower) tower.get(i);
-
-                t.setAngle(t.getAngle() + 5);
-
-            }
-        }
+        
     }
 
     public void keyReleased(KeyEvent e) {
@@ -265,31 +252,32 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // creacion de torretas
                 if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                     towerid = 1;
-                    tower.add(new Tower(e.getX(), e.getY(), animNormal, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100,90));
+                    
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
                     towerid = 2;
-                    tower.add(new Tower(e.getX(), e.getY(), animDual, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 4, 7, 25, 250,96));
                 }
                 if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
                     towerid = 3;
-                    tower.add(new Tower(e.getX(), e.getY(), animSniper, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350,130));
                 }
                 if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 4;
-                    tower.add(new Tower(e.getX(), e.getY(), animQuad, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550,100));
                 }
                 if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 5;
-                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 8, 12, 20, 780,145));
                 }
                 if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 6;
-                    tower.add(new Tower(e.getX(), e.getY(), animLaser, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050,240));
                 }
                 if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
                     towerid = 7;
-                    tower.add(new Tower(e.getX(), e.getY(), animWat, 0, 0));
+                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200,60));
                 }
             }
         }

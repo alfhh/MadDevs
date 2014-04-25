@@ -26,10 +26,15 @@ public class Tower extends Base {
     
     
     
-    public Tower (int posX, int posY, Animacion animacion, int t, int pl) {
+    public Tower (int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng) {
         super(posX, posY, animacion);
         type = t;
         playerid = pl;
+        speed = s;
+        damage = dmg;
+        rateoffire = ra;
+        value = val;
+        range = rng;
         
     }
     //Metodo para obtener el angulo de la torre
@@ -66,6 +71,30 @@ public class Tower extends Base {
     void setRange(int r)
     {
         range = r;
+    }
+    
+    //Metodo para obtener el daño de la torre
+    int getDamage()
+    {
+        return damage;
+    }
+    
+    //Metodo para asignar el daño de la torre
+    void setDamage(int d)
+    {
+        damage = d;
+    }
+    
+    //Metodo para obtener el daño de la torre
+    int getRate()
+    {
+        return rateoffire;
+    }
+    
+    //Metodo para asignar el daño de la torre
+    void setRate(int ra)
+    {
+        rateoffire = ra;
     }
     
     boolean canShoot()

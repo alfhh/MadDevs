@@ -23,7 +23,7 @@ public class Bullet extends Base {
         damage = dmg;
         speed = sp;
         angle = ang;
-        distance = range * 2;
+        distance = range;
         playerid = pl;
     }
     //Metodo para obtener el angulo de la torre
