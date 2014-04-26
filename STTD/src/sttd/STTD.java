@@ -114,7 +114,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretawatulio.png"));
         animWat = new Animacion();
         animWat.sumaCuadro(t, 100);
-        Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwingtemp.jpg"));
+        Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwing.jpg"));
         animEnemigo = new Animacion();
         animEnemigo.sumaCuadro(e, 100);
 
@@ -159,15 +159,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (towerid > 0) {// Si se esta cargando una torre
             PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
             Point b = a.getLocation();
-            try {
+            try { // Intenta tomar la ultima torre del arreglo
                 Tower t = (Tower) tower.getLast();
-
+                // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
+                        //Lo acomoda en la matriz
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                         t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
                     }
                 } else {
+                    // se pone en medio del cursor
                     t.setPosX((int) b.getX() - t.getAncho() / 2);
                     t.setPosY((int) b.getY() - t.getAlto() / 2);
                 }
@@ -177,55 +179,60 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
 
         countx--;
-        if (countx == 0) {
+        if (countx == 0) { // Addicion de un enemigo nuevo
             Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
             wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1));
             countx = 50;
         }
         for (int i = 0; i < wrench.size(); i++) {
             Enemy w = (Enemy) wrench.get(i);
+            // Cuando se encuentra excactamente en la posicion del cuadrante
             if ((w.getPosX() - 8) % 30 == 0 && (w.getPosY() - 31) % 30 == 0) {
                 Point p = new Point(w.getPosX(), w.getPosY());
-                w.start.setLocation(w.end.getLocation());
+                w.getStart().setLocation(w.getEnd().getLocation());
                 boolean ready = false;
-                char past = w.movment;
+                char past = w.getMov();
                 try {
+                    // Si el cuadrante de abajo es camino y no va hacia arriba
                     if (grid[((int) p.getY() - 31) / 30 + 1][((int) p.getX() - 8) / 30] == 0
                             && past != 'u') {
-                        w.end.setLocation(p.getX(), p.getY() + 30);
-                        w.movment = 'd';
+                        w.getEnd().setLocation(p.getX(), p.getY() + 30);
+                        w.setMov('d');
                         ready = true;
                     }
                 } catch (ArrayIndexOutOfBoundsException a) {
                 }
                 try {
+                    // Si el cuadrante de arriba es camino y no va hacia abajo
                     if (grid[((int) p.getY() - 31) / 30 - 1][((int) p.getX() - 8) / 30] == 0
                             && past != 'd' && !ready) {
-                        w.end.setLocation(p.getX(), p.getY() - 30);
-                        w.movment = 'u';
+                        w.getEnd().setLocation(p.getX(), p.getY() - 30);
+                        w.setMov('u');
                         ready = true;
                     }
                 } catch (ArrayIndexOutOfBoundsException a) {
                 }
                 try {
+                    // Si el cuadrante de izquierda es camino y no va hacia derecha
                     if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 - 1] == 0
                             && past != 'r' && !ready) {
-                        w.end.setLocation(p.getX() - 30, p.getY());
-                        w.movment = 'l';
+                        w.getEnd().setLocation(p.getX() - 30, p.getY());
+                        w.setMov('l');
                         ready = true;
                     }
                 } catch (ArrayIndexOutOfBoundsException a) {
                 }
                 try {
+                    // Si el cuadrante de derecha es camino y no va hacia izquierda
                     if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 + 1] == 0
                             && past != 'l') {
-                        w.end.setLocation(p.getX() + 30, p.getY());
-                        w.movment = 'r';
+                        w.getEnd().setLocation(p.getX() + 30, p.getY());
+                        w.setMov('r');
                     }
                 } catch (ArrayIndexOutOfBoundsException a) {
                 }
             }
-            switch (w.movment) {
+            switch (w.getMov()) {
                 case 'r':
                     w.setPosX(w.getPosX() + w.getSpeed()); // Va hacia la derecha
                     break;
@@ -241,8 +248,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 default:
                     break;
             }
+            // Si el enemigo llega a la base
             if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
-                wrench.remove(i);
+                wrench.remove(i); // Desaparece
             }
         }
         for (int i = 0; i < tower.size(); i++) {
@@ -299,7 +307,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                     towerid = 1;
                     tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100, 90));
-
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
                     towerid = 2;
