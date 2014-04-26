@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.lang.ArrayIndexOutOfBoundsException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -63,6 +64,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int mousex; //Posición en X del mouse
     private int mousey; //Posición en Y del mouse
     private int countx; // Contador del tiempo de enemigos
+    private int base; // marca la localizacion en y de la base
     private AffineTransform identidad; // Variable tipo AffineTransform
 
     private boolean main; // booleano que muestra la pantalla principal
@@ -160,7 +162,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             try {
                 Tower t = (Tower) tower.getLast();
 
-
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
@@ -183,21 +184,66 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
         for (int i = 0; i < wrench.size(); i++) {
             Enemy w = (Enemy) wrench.get(i);
-            if (w.end == new Point(w.getPosX(), w.getPosY())) {
-                Point p = w.start;
-                if (grid[(int) p.getY()][(int) p.getX() + 1] == 1) {
-                    w.end.setLocation(p.getX() + 1, p.getY());
-                    w.movment = '1';
+            if ((w.getPosX() - 8) % 30 == 0 && (w.getPosY() - 31) % 30 == 0) {
+                Point p = new Point(w.getPosX(), w.getPosY());
+                w.start.setLocation(w.end.getLocation());
+                boolean ready = false;
+                char past = w.movment;
+                try {
+                    if (grid[((int) p.getY() - 31) / 30 + 1][((int) p.getX() - 8) / 30] == 0
+                            && past != 'u') {
+                        w.end.setLocation(p.getX(), p.getY() + 30);
+                        w.movment = 'd';
+                        ready = true;
+                    }
+                } catch (ArrayIndexOutOfBoundsException a) {
+                }
+                try {
+                    if (grid[((int) p.getY() - 31) / 30 - 1][((int) p.getX() - 8) / 30] == 0
+                            && past != 'd' && !ready) {
+                        w.end.setLocation(p.getX(), p.getY() - 30);
+                        w.movment = 'u';
+                        ready = true;
+                    }
+                } catch (ArrayIndexOutOfBoundsException a) {
+                }
+                try {
+                    if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 - 1] == 0
+                            && past != 'r' && !ready) {
+                        w.end.setLocation(p.getX() - 30, p.getY());
+                        w.movment = 'l';
+                        ready = true;
+                    }
+                } catch (ArrayIndexOutOfBoundsException a) {
+                }
+                try {
+                    if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 + 1] == 0
+                            && past != 'l') {
+                        w.end.setLocation(p.getX() + 30, p.getY());
+                        w.movment = 'r';
+                    }
+                } catch (ArrayIndexOutOfBoundsException a) {
                 }
             }
             switch (w.movment) {
-                case '1':
-                    w.setPosX(w.getPosX() + 10);
+                case 'r':
+                    w.setPosX(w.getPosX() + w.getSpeed()); // Va hacia la derecha
+                    break;
+                case 'l':
+                    w.setPosX(w.getPosX() - w.getSpeed()); // Va hacia la izquierda
+                    break;
+                case 'd':
+                    w.setPosY(w.getPosY() + w.getSpeed()); // Va hacia abajo
+                    break;
+                case 'u':
+                    w.setPosY(w.getPosY() - w.getSpeed()); // Va hacia arriba
                     break;
                 default:
                     break;
             }
-
+            if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
+                wrench.remove(i);
+            }
         }
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
@@ -212,7 +258,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Tower t = (Tower) tower.get(i);
             if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, (int) b.getX(), (int) b.getY(), (int) t.getRange())) {
                 double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int) b.getX(), (t.getPosY() + t.getAlto() / 2) - (int) b.getY()) - Math.PI / 2;
-                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI ));
+                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
 
             }
 
@@ -224,7 +270,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyPressed(KeyEvent e) {
-        
+
     }
 
     public void keyReleased(KeyEvent e) {
@@ -252,32 +298,32 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // creacion de torretas
                 if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                     towerid = 1;
-                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100,90));
-                    
+                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100, 90));
+
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
                     towerid = 2;
-                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 4, 7, 25, 250,96));
+                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 4, 7, 25, 250, 96));
                 }
                 if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
                     towerid = 3;
-                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350,130));
+                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350, 130));
                 }
                 if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 4;
-                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550,100));
+                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550, 100));
                 }
                 if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 5;
-                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 8, 12, 20, 780,145));
+                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 8, 12, 20, 780, 145));
                 }
                 if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
                     towerid = 6;
-                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050,240));
+                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050, 240));
                 }
                 if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
                     towerid = 7;
-                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200,60));
+                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60));
                 }
             }
         }
@@ -370,12 +416,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1},
                     {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
-                    {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                    {1, 1, 1, 1, 1, 69, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
                 grid = b;
+                levelstart.add(new Point(158, 31));
+                levelstart.add(new Point(8, 181));
+                levelstart.add(new Point(158, 691));
+                levelstart.add(new Point(8, 541));
             }
             rect.setLocation(139, 496);
             if (rect.contains(e.getPoint())) {
@@ -407,6 +457,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
                 grid = b;
+                levelstart.add(new Point(8, 331));
+                levelstart.add(new Point(398, 31));
+                levelstart.add(new Point(398, 691));
             }
             rect.setLocation(879, 496);
             if (rect.contains(e.getPoint())) {
@@ -438,6 +491,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
                 grid = b;
+                levelstart.add(new Point(8, 361));
+                levelstart.add(new Point(578, 31));
+                levelstart.add(new Point(1178, 361));
+                levelstart.add(new Point(578, 691));
+
             }
         }
     }

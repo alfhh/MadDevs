@@ -16,7 +16,7 @@ public class Enemy extends Base {
     int type = 0; //tipo de enemigo.
     Point start;
     Point end;
-    char movment;
+    char movment = '0';
     double angle = ((double) (Math.random() * (16))); //angulo de la enemigo
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
     int range = 30; //Rango circular de la enemigo. 
@@ -32,9 +32,8 @@ public class Enemy extends Base {
     public Enemy (int posX, int posY, Animacion animacion, int t) {
         super(posX, posY, animacion);
         type = t;
-        Point p = new Point(posX,posY);
-        end=p;
-        start = end;    
+        end = new Point(posX,posY);
+        start = new Point(posX,posY);
     }
     //Metodo para obtener el angulo de la enemigo
     double getAngle()
