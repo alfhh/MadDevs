@@ -181,7 +181,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         countx--;
         if (countx == 0) { // Addicion de un enemigo nuevo
             Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1,3,50));
+            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 3, 50));
             countx = 50;
         }
         for (int i = 0; i < wrench.size(); i++) {
@@ -265,15 +265,25 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Disparar bala a la dirección deseada
         PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
         Point b = a.getLocation();
-
+        int priority = -1; //-1 = no apuntar a nada
+        double max_distance = 10000;
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
-            if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, (int) b.getX(), (int) b.getY(), (int) t.getRange())) {
-                double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int) b.getX(), (t.getPosY() + t.getAlto() / 2) - (int) b.getY()) - Math.PI / 2;
-                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
-
+            for (int j = 0; j < wrench.size(); j++) {
+                Enemy w = (Enemy) wrench.get(j);
+                if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
+                    double distance = Math.sqrt(Math.pow(t.getPosX() + t.getAncho() / 2 - w.getPosX() + w.getAncho() / 2, 2) + Math.pow(t.getPosY() + t.getAlto() / 2 - w.getPosY() + w.getAlto() / 2, 2));
+                    if (distance < max_distance) {
+                        priority = j;
+                        max_distance = distance;
+                    }
+                }
             }
-
+            if (priority != -1) {
+                Enemy g = (Enemy) wrench.get(priority);
+                double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
+                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
+            }
         }
     }
 
@@ -631,7 +641,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
 
             }
-            
+
             for (int i = 0; i < wrench.size(); i++) {
                 Enemy t = (Enemy) wrench.get(i);
                 AffineTransform z = new AffineTransform();
