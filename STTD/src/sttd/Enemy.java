@@ -24,6 +24,7 @@ public class Enemy extends Base {
     int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
     int health = 100; //Vida
+    
 
     public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
         super(posX, posY, animacion);

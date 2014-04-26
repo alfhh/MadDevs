@@ -269,29 +269,26 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
         Point b = a.getLocation();
         int priority; //-1 = no apuntar a nada
-        
-        double max_distance;//distancia a comparar
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
             priority = -1;
-            max_distance = 10000; //distancia a comparar
-            for (int j = 0; j < wrench.size(); j++) {
+            for (int j = wrench.size() - 1; j >= 0; j--) {
                 Enemy w = (Enemy) wrench.get(j);
                 if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) 
                 {
-                    double distance = Math.sqrt(Math.pow(w.getPosX() + w.getAncho() / 2 - basex, 2) + Math.pow(w.getPosY() + w.getAlto() / 2 - basey, 2));
-                    if (distance < max_distance)
-                    {
-                        priority = j;
-                        max_distance = distance;
-                    }
+                     priority = j;    
                 }
-            }
-            if (priority != -1) {
+            if (priority != -1)
+            {
+                if(!t.isMine()) //si es torre apuntar a ella 
+                {
                 Enemy g = (Enemy) wrench.get(priority);
                 double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
                 t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
+                }
+                //Aqui iria la acción de disparar
             }
+        }
         }
     }
 
@@ -327,32 +324,39 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (e.getX() > 1200 && towerid == 0) { // si el mouse esta en el HUD
                 // creacion de torretas
                 if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
+                    //Torre normal
                     towerid = 1;
-                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100, 90));
+                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 3, 5, 50, 100, 90, false));
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
+                    //Torre dual
                     towerid = 2;
-                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 4, 7, 25, 250, 96));
+                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 4, 7, 25, 250, 96, false));
                 }
                 if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
+                    //Torre sniper
                     towerid = 3;
-                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350, 130));
+                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350, 130, false));
                 }
                 if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
+                    //Torre quad
                     towerid = 4;
-                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550, 100));
+                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550, 100, false));
                 }
                 if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
+                    //Torre dual fuerte
                     towerid = 5;
-                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 8, 12, 20, 780, 145));
+                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 8, 12, 20, 780, 145, false));
                 }
                 if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
+                    //Torre laser
                     towerid = 6;
-                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050, 240));
+                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050, 240, false));
                 }
                 if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
+                    //Torre wat
                     towerid = 7;
-                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60));
+                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
                 }
             }
         }

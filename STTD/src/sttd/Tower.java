@@ -13,7 +13,7 @@ package sttd;
 public class Tower extends Base {
     int type = 0; //tipo de torre.
     boolean set; // Boleano que representa se la torreta ya esta puesta
-    double angle = ((double) (Math.random() * (360))); //angulo de la torre
+    double angle = -90; //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
     double range = 90; //Rango circular de la torre. 
     int damage = 5; //Daño de la torre
@@ -23,10 +23,11 @@ public class Tower extends Base {
     int value; //Valor de venta de la torre
     int target = 0; // enemigo a apuntar
     int canshoot = 0; //Timer para poder disparar
+    boolean mine = false; //Ver si es una mina o no
     
     
     
-    public Tower (int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng) {
+    public Tower (int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng, boolean m) {
         super(posX, posY, animacion);
         type = t;
         playerid = pl;
@@ -35,6 +36,7 @@ public class Tower extends Base {
         rateoffire = ra;
         value = val;
         range = rng;
+        mine = m;
         
     }
     //Metodo para obtener el angulo de la torre
@@ -96,6 +98,13 @@ public class Tower extends Base {
     {
         rateoffire = ra;
     }
+    
+    //Metodo para ver si es una mina o no
+    boolean isMine()
+    {
+        return mine;
+    }
+    
     
     boolean canShoot()
     {
