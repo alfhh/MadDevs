@@ -189,6 +189,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 w.start.setLocation(w.end.getLocation());
                 boolean ready = false;
                 char past = w.movment;
+                
                 try {
                     if (grid[((int) p.getY() - 31) / 30 + 1][((int) p.getX() - 8) / 30] == 0
                             && past != 'u') {
@@ -228,15 +229,19 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             switch (w.movment) {
                 case 'r':
                     w.setPosX(w.getPosX() + w.getSpeed()); // Va hacia la derecha
+                    w.setAngle(0);
                     break;
                 case 'l':
                     w.setPosX(w.getPosX() - w.getSpeed()); // Va hacia la izquierda
+                    w.setAngle(180);
                     break;
                 case 'd':
                     w.setPosY(w.getPosY() + w.getSpeed()); // Va hacia abajo
+                    w.setAngle(90);
                     break;
                 case 'u':
                     w.setPosY(w.getPosY() - w.getSpeed()); // Va hacia arriba
+                    w.setAngle(270);
                     break;
                 default:
                     break;
@@ -580,10 +585,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         g.drawImage(background, 8, 31, this);
 
-        for (int i = 0; i < wrench.size(); i++) {
-            Enemy w = (Enemy) wrench.get(i);
-            g.drawImage(w.getAnimacion().getImagen(), w.getPosX(), w.getPosY(), this);
-        }
         if (game) {
             //Used for testing
             for (int i = 0; i < tower.size(); i++) {
@@ -612,6 +613,21 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
 
+                AffineTransform z = new AffineTransform();
+                z.translate(t.getPosX(), t.getPosY());
+                z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                g2d.transform(z);
+                g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
+                try {
+                    g2d.transform(z.createInverse());
+                } catch (NoninvertibleTransformException e) {
+                    //...
+                }
+
+            }
+            
+            for (int i = 0; i < wrench.size(); i++) {
+                Enemy t = (Enemy) wrench.get(i);
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
