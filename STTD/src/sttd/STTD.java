@@ -179,7 +179,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         countx--;
         if (countx == 0) {
             Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1));
+            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1,3,50));
             countx = 50;
         }
         for (int i = 0; i < wrench.size(); i++) {

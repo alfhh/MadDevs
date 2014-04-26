@@ -18,20 +18,20 @@ public class Enemy extends Base {
     Point end;
     char movment = '0';
     double angle = ((double) (Math.random() * (16))); //angulo de la enemigo
-    int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
+    int speed = ((int) (Math.random() * (5-2)))+ 2; // Velocidad del enemigo
     int range = 30; //Rango circular de la enemigo. 
     int damage = 5; //Daño de la enemigo
-    int playerid = 1; //Dueño de la enemigo
-    int towerid; //Id de la enemigo (Utilizado para identificar la enemigo independientemente de su lugar en la linked list)
     int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
     int health = 100; //Vida
 
-    public Enemy(int posX, int posY, Animacion animacion, int t) {
+    public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
         super(posX, posY, animacion);
         type = t;
         end = new Point(posX, posY);
         start = new Point(posX, posY);
+        speed = sp;
+        health = hp;
         
     }
 
