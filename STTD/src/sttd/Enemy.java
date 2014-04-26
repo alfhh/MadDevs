@@ -22,16 +22,17 @@ public class Enemy extends Base {
     int range = 30; //Rango circular de la enemigo. 
     int damage = 5; //Daño de la enemigo
     int playerid = 1; //Dueño de la enemigo
-    int rateoffire = 10; //Delay entre disparos
     int towerid; //Id de la enemigo (Utilizado para identificar la enemigo independientemente de su lugar en la linked list)
     int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
+    int health = 100; //Vida
 
     public Enemy(int posX, int posY, Animacion animacion, int t) {
         super(posX, posY, animacion);
         type = t;
         end = new Point(posX, posY);
         start = new Point(posX, posY);
+        
     }
 
     //Metodo para obtener el angulo de la enemigo
@@ -53,11 +54,24 @@ public class Enemy extends Base {
     void setSpeed(int s) {
         speed = s;
     }
+    
+    //Metodo para obtener el angulo de la enemigo
+    int getHealth() {
+        return health;
+    }
+
+    //Metodo para asignar el angulo de la enemigo
+    void setHealth(int h) {
+        health = h;
+    }
+    
 
     //Metodo para asignar el movimiento
     void setMov(char m) {
         movment = m;
     }
+    
+    
 
     //Metodo para obtener el movimiento
     char getMov() {
