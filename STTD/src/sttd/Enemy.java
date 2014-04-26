@@ -93,7 +93,7 @@ public class Enemy extends Base {
         end.setLocation(p.getLocation());
     }
 
-    //Metodo para obtener el movimiento
+    //Metodo para obtener el bloque siguiente
     Point getEnd() {
         return end;
     }
