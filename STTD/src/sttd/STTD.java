@@ -64,7 +64,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int mousex; //Posición en X del mouse
     private int mousey; //Posición en Y del mouse
     private int countx; // Contador del tiempo de enemigos
-    private int base; // marca la localizacion en y de la base
+    private int basex; // marca la localizacion en x de la base
+    private int basey; // marca la localizacion en y de la base
+    
+    
     private AffineTransform identidad; // Variable tipo AffineTransform
 
     private boolean main; // booleano que muestra la pantalla principal
@@ -265,15 +268,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Disparar bala a la dirección deseada
         PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
         Point b = a.getLocation();
-        int priority = -1; //-1 = no apuntar a nada
-        double max_distance = 10000;
+        int priority; //-1 = no apuntar a nada
+        
+        double max_distance;//distancia a comparar
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
+            priority = -1;
+            max_distance = 10000; //distancia a comparar
             for (int j = 0; j < wrench.size(); j++) {
                 Enemy w = (Enemy) wrench.get(j);
-                if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
-                    double distance = Math.sqrt(Math.pow(t.getPosX() + t.getAncho() / 2 - w.getPosX() + w.getAncho() / 2, 2) + Math.pow(t.getPosY() + t.getAlto() / 2 - w.getPosY() + w.getAlto() / 2, 2));
-                    if (distance < max_distance) {
+                if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) 
+                {
+                    double distance = Math.sqrt(Math.pow(t.getPosX() + t.getAncho() / 2 - basex, 2) + Math.pow(t.getPosY() + t.getAlto() / 2 - basey, 2));
+                    if (distance < max_distance)
+                    {
                         priority = j;
                         max_distance = distance;
                     }
@@ -382,6 +390,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (menu) {// si se esta en la pantalla de menu
             Rectangle rect = new Rectangle(139, 232, 352, 164);
             if (rect.contains(e.getPoint())) {
+                //nivel 1
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
@@ -412,9 +421,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 grid = b;
                 levelstart.add(new Point(8, 61));
                 levelstart.add(new Point(8, 661));
+                basex = 1154;
+                basey = 357;
             }
             rect.setLocation(879, 232);
             if (rect.contains(e.getPoint())) {
+                //Nivel 2
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2.png"));
@@ -447,9 +459,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 levelstart.add(new Point(8, 181));
                 levelstart.add(new Point(158, 691));
                 levelstart.add(new Point(8, 541));
+                basex = 1154;
+                basey = 357;
             }
             rect.setLocation(139, 496);
             if (rect.contains(e.getPoint())) {
+                //Nivel 3
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3.png"));
@@ -481,9 +496,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 levelstart.add(new Point(8, 331));
                 levelstart.add(new Point(398, 31));
                 levelstart.add(new Point(398, 691));
+                basex = 1154;
+                basey = 357;
             }
             rect.setLocation(879, 496);
             if (rect.contains(e.getPoint())) {
+                //nivel 4
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4.png"));
@@ -516,6 +534,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 levelstart.add(new Point(578, 31));
                 levelstart.add(new Point(1178, 361));
                 levelstart.add(new Point(578, 691));
+                basex = 585;
+                basey = 357;
 
             }
         }
