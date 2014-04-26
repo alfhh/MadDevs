@@ -184,7 +184,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         countx--;
         if (countx == 0) { // Addicion de un enemigo nuevo
             Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 3, 50));
+            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 2, 50));
             countx = 50;
         }
         for (int i = 0; i < wrench.size(); i++) {
@@ -279,7 +279,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Enemy w = (Enemy) wrench.get(j);
                 if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) 
                 {
-                    double distance = Math.sqrt(Math.pow(t.getPosX() + t.getAncho() / 2 - basex, 2) + Math.pow(t.getPosY() + t.getAlto() / 2 - basey, 2));
+                    double distance = Math.sqrt(Math.pow(w.getPosX() + w.getAncho() / 2 - basex, 2) + Math.pow(w.getPosY() + w.getAlto() / 2 - basey, 2));
                     if (distance < max_distance)
                     {
                         priority = j;
