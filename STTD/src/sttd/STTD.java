@@ -414,8 +414,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyPressed(KeyEvent e) {
-        tower.add(new Tower(200, 200, animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
-
+        
     }
 
     public void keyReleased(KeyEvent e) {
