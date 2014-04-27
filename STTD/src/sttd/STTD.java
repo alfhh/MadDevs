@@ -137,6 +137,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         wrench = new LinkedList();
         towergraphics = new LinkedList();
         mine = new LinkedList();
+        bullet = new LinkedList();
 
         Thread th = new Thread(this);
         th.start();
@@ -172,7 +173,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * Este metodo checa colisiones con objetos
      */
     public void checaColision() {
-
+        for (int i = 0; i < wrench.size(); i++) {
+            Enemy e = (Enemy) wrench.get(i);
+            for (int j = 0; j < mine.size(); j++) {
+                Mine m = (Mine) mine.get(j);
+                if (m.getSet() && e.getPerimetro().intersects(m.getPerimetro())) {
+                    e.setHealth(e.getHealth() - m.getDam());
+                    mine.remove(j);
+                }
+            }
+        }
     }
 
     /**
@@ -324,7 +334,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     default:
                         break;
                 }
-
+                // Si el enemigo no tiene vida;
+                if (w.getHealth() <= 0) {
+                    wrench.remove(i); // Desaparece
+                }
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
                     wrench.remove(i); // Desaparece
