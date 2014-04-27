@@ -56,6 +56,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private LinkedList tower; // Lista de las Torres
     private LinkedList levelstart; // Lista de los puntos de comienzo del mapa
     private LinkedList wrench; // Lista de los enemigos
+    private LinkedList mine; // Lista de las Minas
+    private LinkedList bullet; // Lista de las balas
     private LinkedList towergraphics; // Lista de las imagenes de las torres
 
     private double rotacion; // Rotacion que se le dara a las torres
@@ -79,6 +81,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean instr; // booleano que muestra las instrucciones
     private boolean game; // booleano que deja que el juego corra
     private boolean wavego; // booleano que inicia la oleada
+    private boolean bmine; // booleano que muestra si seleccionaron una mina
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -102,6 +105,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         wavecount = 0;
         wave = 0;
         wavebegin = 750;
+        bmine=false;
 
         // Images
         //imagenes animadas
@@ -488,6 +492,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     //Torre wat
                     towerid = 7;
                     tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
+                }
+                if (new Rectangle(1268, 291, 30, 30).contains(e.getPoint())) {
+                    //Mina
+                    bmine = true;
+                    mine.add(new Mine(e.getX(), e.getY(), animMine,1));
                 }
             }
         }
