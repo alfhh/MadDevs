@@ -179,7 +179,37 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Mine m = (Mine) mine.get(j);
                 if (m.getSet() && e.getPerimetro().intersects(m.getPerimetro())) {
                     e.setHealth(e.getHealth() - m.getDam());
-                    mine.remove(j);
+                    m.setExp(117);
+                    m.setSet(false);
+                    Image i1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp1.png"));
+                    Image i2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp2.png"));
+                    Image i3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp3.png"));
+                    Image i4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp4.png"));
+                    Image i5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp5.png"));
+                    Image i6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp6.png"));
+                    Image i7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp7.png"));
+                    Image i8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp8.png"));
+                    Image i9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp9.png"));
+                    Image i10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp10.png"));
+                    Image i11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp11.png"));
+                    Image i12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp12.png"));
+                    
+                    Animacion a = new Animacion();
+                    a.sumaCuadro(i1, 100);
+                    a.sumaCuadro(i2, 100);
+                    a.sumaCuadro(i3, 100);
+                    a.sumaCuadro(i4, 100);
+                    a.sumaCuadro(i5, 100);
+                    a.sumaCuadro(i6, 100);
+                    a.sumaCuadro(i7, 100);
+                    a.sumaCuadro(i8, 100);
+                    a.sumaCuadro(i9, 100);
+                    a.sumaCuadro(i10, 100);
+                    a.sumaCuadro(i11, 100);
+                    a.sumaCuadro(i12, 100);
+                    
+                    m.setAnimacion(a);
+                    
                 }
             }
         }
@@ -217,10 +247,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Actualizacion de las minas
         for (int i = 0; i < mine.size(); i++) {
             Mine m = (Mine) mine.get(i);
-            if (m.getSet() && m.getPosX() > 1200) {
+            if (m.getSet() && m.getPosX() > 1200 || m.getExp() == -1) {
                 mine.remove(i);
             } else {
                 m.getAnimacion().actualiza(tiempoTranscurrido);
+            }
+            if (m.getExp() > 0){
+                m.Exp();
             }
         }
 

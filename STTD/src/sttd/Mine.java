@@ -14,6 +14,7 @@ public class Mine extends Base {
     boolean set; // Boleano que representa se la torreta ya esta puesta
     int damage = 25; //Daño de la torre
     int playerid; //Dueño de la torre
+    int explosion = 0;
 
     public Mine(int posX, int posY, Animacion animacion, int pi) {
         super(posX, posY, animacion);
@@ -34,5 +35,20 @@ public class Mine extends Base {
     //Metodo para ver el daño
     int getDam() {
         return damage;
+    }
+
+    //Metodo de acceso a explosion
+    int getExp() {
+        return explosion;
+    }
+
+    //Metodo de modificacion de explosion
+    void setExp(int e){
+        explosion = e;
+    }
+    
+    //Metodo de actualizar la explosion
+    void Exp() {
+        explosion -= 2;
     }
 }
