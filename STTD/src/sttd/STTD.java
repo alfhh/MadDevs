@@ -320,7 +320,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             countx--;
             if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
                 Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-                wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, (wave - 1) / 5 + 1, 50));
+                wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 5 , 50));
                 countx = 100;
                 wavecount--;
             }
@@ -418,7 +418,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         if (!t.isMine()) //si es torre apuntar a ella 
                         {
                             Enemy g = (Enemy) wrench.get(priority);
-                            double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
+                            //double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
+                            double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int)(g.getPosX() + g.getAncho() / 2 + ((g.getAncho() / 2)  * Math.cos(Math.toRadians(g.getAngle())))),(t.getPosY() + t.getAlto() / 2)  - (int)(g.getPosY() + g.getAlto() / 2 - 1 + ((g.getAlto() / 2-2)  * Math.sin(Math.toRadians(g.getAngle()))))) - Math.PI / 2;
                             t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
                         }
                         
@@ -619,7 +620,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                     //Torre normal
                     towerid = 3;
-                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 6, 5, 50, 100, 90, false));
+                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 15, 5, 50, 100, 90, false));
                 }
                 if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
                     //Torre dual
@@ -629,12 +630,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
                     //Torre sniper
                     towerid = 5;
-                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350, 130, false));
+                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 15, 25, 75, 350, 150, false));
                 }
                 if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
                     //Torre quad
                     towerid = 6;
-                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 12, 550, 100, false));
+                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 5, 10, 4, 550, 100, false));
                 }
                 if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
                     //Torre dual fuerte
