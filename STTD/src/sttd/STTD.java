@@ -212,11 +212,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         animLaser = new Animacion();
         animLaser.sumaCuadro(t, 100);
 
+        // Imagen del enemigo
         Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwing.jpg"));
         animEnemigo = new Animacion();
         animEnemigo.sumaCuadro(e, 100);
 
-        // Tower
         tower = new LinkedList();
         levelstart = new LinkedList();
         wrench = new LinkedList();
@@ -265,12 +265,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
+<<<<<<< HEAD
         //Actualiza la animación en base al tiempo transcurrido de la animacion de watulio
+=======
+        //Actualiza la animación en base al tiempo transcurrido de Torre Watulio
+>>>>>>> 25a9611fef0a27a189937bf4202f2db018d48555
         animWat.actualiza(tiempoTranscurrido);
 
         //Actualiza la animación en base al tiempo transcurrido de los malos
         for (int i = 0; i < wrench.size(); i++) {
+<<<<<<< HEAD
             Enemy t = (Enemy) wrench.get(0);
+=======
+            Enemy t = (Enemy) wrench.get(i);
+>>>>>>> 25a9611fef0a27a189937bf4202f2db018d48555
             t.getAnimacion().actualiza(tiempoTranscurrido);
         }
 
