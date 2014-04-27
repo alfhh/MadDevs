@@ -86,6 +86,12 @@ public class Tower extends Base {
     void setRate(int ra) {
         rateoffire = ra;
     }
+    
+    //Metodo para obtener el numero del jugador de la torre
+    int getPlayer() {
+        return playerid;
+    }
+
 
     //Metodo para ver si puede disparar
     boolean canShoot() {

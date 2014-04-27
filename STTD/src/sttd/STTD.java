@@ -50,6 +50,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Animacion animQuad; // Animacion de la torre Quadrupeda
     private Animacion animLaser; // Animacion de la torre SniperLaser
     private Animacion animEnemigo; // Animacion del enemigo
+    private Animacion animBala; // Animacion del enemigo
 
     private LinkedList tower; // Lista de las Torres
     private LinkedList levelstart; // Lista de los puntos de comienzo del mapa
@@ -126,6 +127,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png"));
         animLaser = new Animacion();
         animLaser.sumaCuadro(t, 100);
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/bala.png"));
+        animBala = new Animacion();
+        animBala.sumaCuadro(t, 100);
 
         // Imagen del enemigo
         Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwing.jpg"));
