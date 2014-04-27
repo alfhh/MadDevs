@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sttd;
 
 /**
@@ -11,6 +10,7 @@ package sttd;
  * @author LuisJuan
  */
 public class Tower extends Base {
+
     int type = 0; //tipo de torre.
     boolean set; // Boleano que representa se la torreta ya esta puesta
     double angle = ((double) (Math.random() * (360))); //angulo de la torre
@@ -23,10 +23,8 @@ public class Tower extends Base {
     int value; //Valor de venta de la torre
     int target = 0; // enemigo a apuntar
     int canshoot = 0; //Timer para poder disparar
-    
-    
-    
-    public Tower (int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng) {
+
+    public Tower(int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng) {
         super(posX, posY, animacion);
         type = t;
         playerid = pl;
@@ -35,79 +33,73 @@ public class Tower extends Base {
         rateoffire = ra;
         value = val;
         range = rng;
-        
+        set = false;
+
     }
+
     //Metodo para obtener el angulo de la torre
-    double getAngle()
-    {
+    double getAngle() {
         return angle;
     }
-    
+
     //Metodo para asignar el angulo de la torre
-    void setAngle(double a)
-    {
+    void setAngle(double a) {
         angle = a;
     }
-    
+
     //Metodo para obtener el angulo de la torre
-    int getSpeed()
-    {
+    int getSpeed() {
         return speed;
     }
-    
+
     //Metodo para asignar el angulo de la torre
-    void setSpeed(int s)
-    {
+    void setSpeed(int s) {
         speed = s;
     }
-    
+
     //Metodo para obtener el rango de la torre
-    double getRange()
-    {
+    double getRange() {
         return range;
     }
-    
+
     //Metodo para asignar el rango de la torre
-    void setRange(int r)
-    {
+    void setRange(int r) {
         range = r;
     }
-    
+
     //Metodo para obtener el daño de la torre
-    int getDamage()
-    {
+    int getDamage() {
         return damage;
     }
-    
+
     //Metodo para asignar el daño de la torre
-    void setDamage(int d)
-    {
+    void setDamage(int d) {
         damage = d;
     }
-    
+
     //Metodo para obtener el daño de la torre
-    int getRate()
-    {
+    int getRate() {
         return rateoffire;
     }
-    
+
     //Metodo para asignar el daño de la torre
-    void setRate(int ra)
-    {
+    void setRate(int ra) {
         rateoffire = ra;
     }
-    
-    boolean canShoot()
-    {
-        if (canshoot == 0)
-        {
-            return true;
-        }
-        else
-        {
-            canshoot += -1;
+
+    boolean canShoot() {
+        if (set) {
+            if (canshoot == 0) {
+                return true;
+            } else {
+                canshoot += -1;
+                return false;
+            }
+        } else {
             return false;
         }
-        
+    }
+    void setSet(boolean s){
+        set = s;
     }
 }

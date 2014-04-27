@@ -66,14 +66,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int countx; // Contador del tiempo de enemigos
     private int basex; // marca la localizacion en x de la base
     private int basey; // marca la localizacion en y de la base
-    
-    
+    private int wavecount; // numero de malos por oleada
+    private int wave; // numero de oleada
+    private int wavebegin; // tiempo antes que empieze la oleada
+
     private AffineTransform identidad; // Variable tipo AffineTransform
 
     private boolean main; // booleano que muestra la pantalla principal
     private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
     private boolean game; // booleano que deja que el juego corra
+    private boolean wavego; // booleano que inicia la oleada
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -93,6 +96,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         towerid = 0;
         countx = 50;
         grid = new int[23][40];
+        wavego = false;
+        wavecount = 0;
+        wave = 0;
+        wavebegin = 750;
 
         // Images
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
@@ -180,117 +187,117 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 towerid = 0;
             }
         }
-
-        countx--;
-        if (countx == 0) { // Addicion de un enemigo nuevo
-            Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-            wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 2, 50));
-            countx = 50;
-        }
-        for (int i = 0; i < wrench.size(); i++) {
-            Enemy w = (Enemy) wrench.get(i);
-            // Cuando se encuentra excactamente en la posicion del cuadrante
-            if ((w.getPosX() - 8) % 30 == 0 && (w.getPosY() - 31) % 30 == 0) {
-                Point p = new Point(w.getPosX(), w.getPosY());
-                w.getStart().setLocation(w.getEnd().getLocation());
-                boolean ready = false;
-                char past = w.getMov();
-                try {
-                    // Si el cuadrante de abajo es camino y no va hacia arriba
-                    if (grid[((int) p.getY() - 31) / 30 + 1][((int) p.getX() - 8) / 30] == 0
-                            && past != 'u') {
-                        w.getEnd().setLocation(p.getX(), p.getY() + 30);
-                        w.setMov('d');
-                        ready = true;
+        if (wavego) {
+            countx--;
+            if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
+                Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
+                wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, (wave - 1) / 10 + 1, 50));
+                countx = 100;
+                wavecount--;
+            }
+            for (int i = 0; i < wrench.size(); i++) {
+                Enemy w = (Enemy) wrench.get(i);
+                // Cuando se encuentra excactamente en la posicion del cuadrante
+                if ((w.getPosX() - 8) % 30 == 0 && (w.getPosY() - 31) % 30 == 0) {
+                    Point p = new Point(w.getPosX(), w.getPosY());
+                    w.getStart().setLocation(w.getEnd().getLocation());
+                    boolean ready = false;
+                    char past = w.getMov();
+                    try {
+                        // Si el cuadrante de abajo es camino y no va hacia arriba
+                        if (grid[((int) p.getY() - 31) / 30 + 1][((int) p.getX() - 8) / 30] == 0
+                                && past != 'u') {
+                            w.getEnd().setLocation(p.getX(), p.getY() + 30);
+                            w.setMov('d');
+                            ready = true;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException a) {
                     }
-                } catch (ArrayIndexOutOfBoundsException a) {
+                    try {
+                        // Si el cuadrante de arriba es camino y no va hacia abajo
+                        if (grid[((int) p.getY() - 31) / 30 - 1][((int) p.getX() - 8) / 30] == 0
+                                && past != 'd' && !ready) {
+                            w.getEnd().setLocation(p.getX(), p.getY() - 30);
+                            w.setMov('u');
+                            ready = true;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException a) {
+                    }
+                    try {
+                        // Si el cuadrante de izquierda es camino y no va hacia derecha
+                        if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 - 1] == 0
+                                && past != 'r' && !ready) {
+                            w.getEnd().setLocation(p.getX() - 30, p.getY());
+                            w.setMov('l');
+                            ready = true;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException a) {
+                    }
+                    try {
+                        // Si el cuadrante de derecha es camino y no va hacia izquierda
+                        if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 + 1] == 0
+                                && past != 'l') {
+                            w.getEnd().setLocation(p.getX() + 30, p.getY());
+                            w.setMov('r');
+                        }
+                    } catch (ArrayIndexOutOfBoundsException a) {
+                    }
                 }
-                try {
-                    // Si el cuadrante de arriba es camino y no va hacia abajo
-                    if (grid[((int) p.getY() - 31) / 30 - 1][((int) p.getX() - 8) / 30] == 0
-                            && past != 'd' && !ready) {
-                        w.getEnd().setLocation(p.getX(), p.getY() - 30);
-                        w.setMov('u');
-                        ready = true;
-                    }
-                } catch (ArrayIndexOutOfBoundsException a) {
+                switch (w.getMov()) {
+                    case 'r':
+                        w.setPosX(w.getPosX() + w.getSpeed()); // Va hacia la derecha
+                        w.setAngle(0);
+                        break;
+                    case 'l':
+                        w.setPosX(w.getPosX() - w.getSpeed()); // Va hacia la izquierda
+                        w.setAngle(180);
+                        break;
+                    case 'd':
+                        w.setPosY(w.getPosY() + w.getSpeed()); // Va hacia abajo
+                        w.setAngle(90);
+                        break;
+                    case 'u':
+                        w.setPosY(w.getPosY() - w.getSpeed()); // Va hacia arriba
+                        w.setAngle(270);
+                        break;
+                    default:
+                        break;
                 }
-                try {
-                    // Si el cuadrante de izquierda es camino y no va hacia derecha
-                    if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 - 1] == 0
-                            && past != 'r' && !ready) {
-                        w.getEnd().setLocation(p.getX() - 30, p.getY());
-                        w.setMov('l');
-                        ready = true;
-                    }
-                } catch (ArrayIndexOutOfBoundsException a) {
-                }
-                try {
-                    // Si el cuadrante de derecha es camino y no va hacia izquierda
-                    if (grid[((int) p.getY() - 31) / 30][((int) p.getX() - 8) / 30 + 1] == 0
-                            && past != 'l') {
-                        w.getEnd().setLocation(p.getX() + 30, p.getY());
-                        w.setMov('r');
-                    }
-                } catch (ArrayIndexOutOfBoundsException a) {
+                // Si el enemigo llega a la base
+                if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
+                    wrench.remove(i); // Desaparece
                 }
             }
-            switch (w.getMov()) {
-                case 'r':
-                    w.setPosX(w.getPosX() + w.getSpeed()); // Va hacia la derecha
-                    w.setAngle(0);
-                    break;
-                case 'l':
-                    w.setPosX(w.getPosX() - w.getSpeed()); // Va hacia la izquierda
-                    w.setAngle(180);
-                    break;
-                case 'd':
-                    w.setPosY(w.getPosY() + w.getSpeed()); // Va hacia abajo
-                    w.setAngle(90);
-                    break;
-                case 'u':
-                    w.setPosY(w.getPosY() - w.getSpeed()); // Va hacia arriba
-                    w.setAngle(270);
-                    break;
-                default:
-                    break;
-            }
-            // Si el enemigo llega a la base
-            if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
-                wrench.remove(i); // Desaparece
-            }
-        }
-        for (int i = 0; i < tower.size(); i++) {
-            Tower t = (Tower) tower.get(i);
-
-        }
-
-        //Disparar bala a la dirección deseada
-        PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
-        Point b = a.getLocation();
-        int priority; //-1 = no apuntar a nada
-        
-        double max_distance;//distancia a comparar
-        for (int i = 0; i < tower.size(); i++) {
-            Tower t = (Tower) tower.get(i);
-            priority = -1;
-            max_distance = 10000; //distancia a comparar
-            for (int j = 0; j < wrench.size(); j++) {
-                Enemy w = (Enemy) wrench.get(j);
-                if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) 
-                {
-                    double distance = Math.sqrt(Math.pow(w.getPosX() + w.getAncho() / 2 - basex, 2) + Math.pow(w.getPosY() + w.getAlto() / 2 - basey, 2));
-                    if (distance < max_distance)
-                    {
+            //Disparar bala a la dirección deseada
+            PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
+            Point b = a.getLocation();
+            int priority; //-1 = no apuntar a nada
+            for (int i = 0; i < tower.size(); i++) {
+                Tower t = (Tower) tower.get(i);
+                priority = -1;
+                for (int j = wrench.size() - 1; j >= 0; j--) {
+                    Enemy w = (Enemy) wrench.get(j);
+                    if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
                         priority = j;
-                        max_distance = distance;
                     }
                 }
+                if (priority != -1) {
+                    Enemy g = (Enemy) wrench.get(priority);
+                    double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
+                    t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
+                }
             }
-            if (priority != -1) {
-                Enemy g = (Enemy) wrench.get(priority);
-                double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (g.getPosX() + g.getAncho() / 2), (t.getPosY() + t.getAlto() / 2) - (g.getPosY() + g.getAlto() / 2)) - Math.PI / 2;
-                t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
+            if (wavecount == 0 && wrench.isEmpty()) {
+                wavego = false;
+            }
+        } else {
+            if (wavebegin == 0) {
+                wavebegin = 499;
+                wavego = true;
+                wave++;
+                wavecount = 19 + wave;
+            } else {
+                wavebegin--;
             }
         }
     }
@@ -318,6 +325,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (towerid > 0) {
             if (e.getX() < 1208) {// se planta una torreta en la grid
                 towerid = 0;
+                Tower t = (Tower) tower.getLast();
+                t.setSet(true);
             } else {                // Se remueve la torreta
                 tower.removeLast();
                 towerid = 0;
@@ -620,18 +629,21 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void paint1(Graphics g) {
 
         g.drawImage(background, 8, 31, this);
-
         if (game) {
+            if (!wavego) {
+                g.setFont(new Font("Consolas", Font.PLAIN, 50));
+                g.drawString("Wave starts in: " , 400, 400);
+                g.drawString("" + ((wavebegin * 20) / 1000 + 1), 570, 450);
+            }
+            g.setFont(new Font("Consolas", Font.PLAIN, 30));
+            g.setColor(new Color(1346085));
+            g.drawString("" + wave, 1312, 437);
             //Used for testing
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 g.setColor(Color.white);
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
-                g.fillRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
-                g.drawRect(t.getPosX(), t.getPosY(), t.getAncho(), -20);
-                g.setColor(Color.black);
-                g.drawString("Angulo = " + (t.getAngle()), t.getPosX(), t.getPosY());
             }
         }
 
