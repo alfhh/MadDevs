@@ -111,6 +111,11 @@ public class Tower extends Base {
         set = s;
     }
 
+    //Metodo para ver si esta puesta
+    boolean getSet() {
+        return set;
+    }
+
     //Metodo para obtener el tipo de la torre
     int getId() {
         return towerid;

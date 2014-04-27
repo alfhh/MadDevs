@@ -201,7 +201,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Actualiza la animación en base al tiempo transcurrido de Torre Watulio
         for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
-            t.getAnimacion().actualiza(tiempoTranscurrido);
+            if (t.getSet() && t.getPosX() > 1200) {
+                tower.remove(i);
+            } else {
+                t.getAnimacion().actualiza(tiempoTranscurrido);
+            }
         }
 
         //Actualiza la animación en base al tiempo transcurrido de los malos
@@ -213,7 +217,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Actualizacion de las minas
         for (int i = 0; i < mine.size(); i++) {
             Mine m = (Mine) mine.get(i);
-            m.getAnimacion().actualiza(tiempoTranscurrido);
+            if (m.getSet() && m.getPosX() > 1200) {
+                mine.remove(i);
+            } else {
+                m.getAnimacion().actualiza(tiempoTranscurrido);
+            }
         }
 
         if (towerid > 0) {// Si se esta cargando una torre
