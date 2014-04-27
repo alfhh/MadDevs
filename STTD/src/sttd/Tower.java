@@ -106,6 +106,11 @@ public class Tower extends Base {
             return false;
         }
     }
+    
+    void shoot()
+    {
+        canshoot = rateoffire;
+    }
 
     //Metodo para ver si es una mina o no
     boolean isMine() {
