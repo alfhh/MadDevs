@@ -16,15 +16,17 @@ public class Bullet extends Base {
     int speed = 3; // Velocidad de las bala. -1 convoca lazer instantaneo
     int distance = 45; // Distancia recorrida antes de desaparecer
     int playerid = 1; //Dueño de la bala
+    int towernum; // numero de indice de la torreta
 
     
-    public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, double ang, int range, int pl) {
+    public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, double ang, int range, int pl, int t) {
         super(posX, posY, animacion);
         damage = dmg;
         speed = sp;
         angle = ang;
         distance = range ;
         playerid = pl;
+        towernum = t;
     }
     //Metodo para obtener el angulo de la torre
     double getAngle()
@@ -84,5 +86,10 @@ public class Bullet extends Base {
         {
             return false;
         }
+    }
+    
+    //Metodo que regresa la torreta que la disparo
+    int getTower(){
+        return towernum;
     }
 }
