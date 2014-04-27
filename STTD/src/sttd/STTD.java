@@ -67,7 +67,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int countx; // Contador del tiempo de enemigos
     private int basex; // marca la localizacion en x de la base
     private int basey; // marca la localizacion en y de la base
-    private int animrand; //diferentes animaciones
+    private double animrand; //diferentes animaciones
     private int wavecount; // numero de malos por oleada
     private int wave; // numero de oleada
     private int wavebegin; // tiempo antes que empieze la oleada
@@ -482,13 +482,34 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     Image mine27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine27.png"));
                     Image mine28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine28.png"));
                     Image mine29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine29.png"));
+                    Image mine101 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine101.png"));
+                    Image mine102 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine102.png"));
+                    Image mine103 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine103.png"));
+                    Image mine104 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine104.png"));
+                    Image mine105 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine105.png"));
+                    Image mine106 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine106.png"));
+                    Image mine107 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine107.png"));
+                    Image mine108 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine108.png"));
+                    Image mine109 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine109.png"));
+                    Image mine110 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine110.png"));
+                    Image mine111 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine111.png"));
+                    Image mine112 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine112.png"));
+                    Image mine113 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine113.png"));
+                    Image mine114 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine114.png"));
+                    Image mine115 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine115.png"));
+                    Image mine116 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine116.png"));
+                    Image mine117 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine117.png"));
+                    Image mine118 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine118.png"));
+                    Image mine119 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine119.png"));
+                    Image mine120 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine120.png"));
+                    Image mine121 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine121.png"));
 
                     //Se crea la animación
                     Animacion animWat = new Animacion();
                     animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
                     animWat.sumaCuadro(mine2, 100);
-                    animrand = ((int) Math.random() * (2));
-                    if (animrand < 1) {
+                    animrand = (Math.random() * (4));
+                    if (animrand < 2) {
                         animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
                         animWat.sumaCuadro(mine2, 100);
                         animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
@@ -523,6 +544,50 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         animWat.sumaCuadro(mine27, 50);
                         animWat.sumaCuadro(mine28, 50);
                         animWat.sumaCuadro(mine29, 100);
+                    } else {
+                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                        animWat.sumaCuadro(mine2, 100);
+                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                        animWat.sumaCuadro(mine2, 100);
+                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                        animWat.sumaCuadro(mine101, 600);
+                        animWat.sumaCuadro(mine102, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine102, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine102, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine102, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine102, 75);
+                        animWat.sumaCuadro(mine103, 75);
+                        animWat.sumaCuadro(mine104, 100);
+                        animWat.sumaCuadro(mine105, 100);
+                        animWat.sumaCuadro(mine106, 100);
+                        animWat.sumaCuadro(mine107, 100);
+                        animWat.sumaCuadro(mine108, 300);
+                        animWat.sumaCuadro(mine109, 100);
+                        animWat.sumaCuadro(mine110, 100);
+                        animWat.sumaCuadro(mine111, 100);
+                        animWat.sumaCuadro(mine112, 100);
+                        animWat.sumaCuadro(mine113, 100);
+                        animWat.sumaCuadro(mine112, 100);
+                        animWat.sumaCuadro(mine113, 100);
+                        animWat.sumaCuadro(mine112, 100);
+                        animWat.sumaCuadro(mine113, 100);
+                        animWat.sumaCuadro(mine112, 100);
+                        animWat.sumaCuadro(mine113, 100);
+                        animWat.sumaCuadro(mine114, 200);
+                        animWat.sumaCuadro(mine113, 100);
+                        animWat.sumaCuadro(mine115, 100);
+                        animWat.sumaCuadro(mine116, 100);
+                        animWat.sumaCuadro(mine117, 100);
+                        animWat.sumaCuadro(mine118, 200);
+                        animWat.sumaCuadro(mine119, 1000);
+                        animWat.sumaCuadro(mine120, 100);
+                        animWat.sumaCuadro(mine121, 90);
+
                     }
                     towerid = 9;
                     tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
