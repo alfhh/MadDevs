@@ -11,7 +11,6 @@ package sttd;
  */
 public class Tower extends Base {
 
-    int type = 0; //tipo de torre.
     boolean set; // Boleano que representa se la torreta ya esta puesta
     double angle = 0; //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
@@ -27,7 +26,7 @@ public class Tower extends Base {
 
     public Tower(int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng, boolean m) {
         super(posX, posY, animacion);
-        type = t;
+        towerid = t;
         playerid = pl;
         speed = s;
         damage = dmg;
@@ -107,8 +106,13 @@ public class Tower extends Base {
         return girar;
     }
 
-    //Metodo para ver si esta puesta
+    //Metodo para modificar si esta puesta
     void setSet(boolean s) {
         set = s;
+    }
+
+    //Metodo para obtener el tipo de la torre
+    int getId() {
+        return towerid;
     }
 }

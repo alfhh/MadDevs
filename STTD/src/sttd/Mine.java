@@ -19,7 +19,20 @@ public class Mine extends Base {
         super(posX, posY, animacion);
         set = false;
         playerid = pi;
-
     }
 
+    //Metodo para modificar si esta puesta
+    void setSet(boolean s) {
+        set = s;
+    }
+
+    //Metodo para ver si esta puesta
+    boolean getSet() {
+        return set;
+    }
+
+    //Metodo para ver el daño
+    int getDam() {
+        return damage;
+    }
 }
