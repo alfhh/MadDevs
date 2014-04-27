@@ -27,7 +27,9 @@ public class Base {
     public Base (int posX, int posY, Animacion animacion) {
         this.posX = posX;
         this.posY = posY;
-        this.animacion = animacion;
+        Animacion a = new Animacion();
+        a = animacion;
+        this.animacion = a;
     }
 
     /**

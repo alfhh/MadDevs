@@ -265,16 +265,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
-        //Actualiza la animación en base al tiempo transcurrido de las torres
-        for (int i = 0; i < tower.size(); i++) {
-            Tower t = (Tower) tower.get(i);
-            t.animacion.actualiza(tiempoTranscurrido);
-        }
+        //Actualiza la animación en base al tiempo transcurrido de la animacion de watulio
+        animWat.actualiza(tiempoTranscurrido);
 
         //Actualiza la animación en base al tiempo transcurrido de los malos
         for (int i = 0; i < wrench.size(); i++) {
-            Enemy t = (Enemy) wrench.get(i);
-            t.animacion.actualiza(tiempoTranscurrido);
+            Enemy t = (Enemy) wrench.get(0);
+            t.getAnimacion().actualiza(tiempoTranscurrido);
         }
 
         if (towerid > 0) {// Si se esta cargando una torre
