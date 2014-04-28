@@ -1,6 +1,6 @@
 /**
- * Star Wars Tower Defense Developed by Mad Devs "Stay on the rigth side, the
- * Made side" Version: Alpha Date: 4/07/2014
+ * Star Wars Tower Defense Developed by Mad Devs "Stay on the right side, the
+ * Mad side" Version: Alpha Date: 4/07/2014
  */
 package sttd;
 
@@ -136,24 +136,24 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         
         
         animIntro = new Animacion();
-        animIntro.sumaCuadro(in1,100);
-        animIntro.sumaCuadro(in2,100);
-        animIntro.sumaCuadro(in3,100);
-        animIntro.sumaCuadro(in4,100);
-        animIntro.sumaCuadro(in5,100);
-        animIntro.sumaCuadro(in6,100);
-        animIntro.sumaCuadro(in7,100);
-        animIntro.sumaCuadro(in8,100);
-        animIntro.sumaCuadro(in9,100);
-        animIntro.sumaCuadro(in10,100);
-        animIntro.sumaCuadro(in11,100);
-        animIntro.sumaCuadro(in12,100);
-        animIntro.sumaCuadro(in13,100);
-        animIntro.sumaCuadro(in14,100);
-        animIntro.sumaCuadro(in15,100);
-        animIntro.sumaCuadro(in16,100);
-        animIntro.sumaCuadro(in17,100);
-        animIntro.sumaCuadro(in18,100);
+        animIntro.sumaCuadro(in1,20);
+        animIntro.sumaCuadro(in2,20);
+        animIntro.sumaCuadro(in3,20);
+        animIntro.sumaCuadro(in4,20);
+        animIntro.sumaCuadro(in5,20);
+        animIntro.sumaCuadro(in6,20);
+        animIntro.sumaCuadro(in7,20);
+        animIntro.sumaCuadro(in8,20);
+        animIntro.sumaCuadro(in9,20);
+        animIntro.sumaCuadro(in10,20);
+        animIntro.sumaCuadro(in11,20);
+        animIntro.sumaCuadro(in12,20);
+        animIntro.sumaCuadro(in13,20);
+        animIntro.sumaCuadro(in14,20);
+        animIntro.sumaCuadro(in15,20);
+        animIntro.sumaCuadro(in16,20);
+        animIntro.sumaCuadro(in17,20);
+        animIntro.sumaCuadro(in18,20);
         animIntro.sumaCuadro(in19,100);
         animIntro.sumaCuadro(in20,100);
         animIntro.sumaCuadro(in21,100);
@@ -389,6 +389,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             for (int i = 0; i < wrench.size(); i++) {
                 Enemy w = (Enemy) wrench.get(i);
+                w.addLifeTime();
                 // Cuando se encuentra excactamente en la posicion del cuadrante
                 if ((w.getPosX() - 8) % 30 == 0 && (w.getPosY() - 31) % 30 == 0) {
                     Point p = new Point(w.getPosX(), w.getPosY());
@@ -469,13 +470,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
             Point b = a.getLocation();
             int priority; //-1 = no apuntar a nada
+            int lifetimep; //ver quien es el que va más avanzado en el area
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 priority = -1;
+                lifetimep = 0;
                 for (int j = wrench.size() - 1; j >= 0; j--) {
                     Enemy w = (Enemy) wrench.get(j);
                     if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
-                        priority = j;
+                        if (w.getLifeTime() > lifetimep)
+                        {
+                            priority = j;
+                        }
                     }
                     if (priority != -1) {
                         if (!t.isMine()) //si es torre apuntar a ella 
@@ -1122,7 +1128,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void paint1(Graphics g) {
         
         g.drawImage(background, 8, 31, this);
-        g.drawImage(animIntro.getImagen(), 8, 31, this);
+//        g.drawImage(animIntro.getImagen(), 8, 31, this);
         if (game) {
             if (!wavego) {
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
