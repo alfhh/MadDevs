@@ -88,12 +88,11 @@ public class Tower extends Base {
     void setRate(int ra) {
         rateoffire = ra;
     }
-    
+
     //Metodo para obtener el numero del jugador de la torre
     int getPlayer() {
         return playerid;
     }
-
 
     //Metodo para ver si puede disparar
     boolean canShoot() {
@@ -108,9 +107,8 @@ public class Tower extends Base {
             return false;
         }
     }
-    
-    void shoot()
-    {
+
+    void shoot() {
         canshoot = rateoffire;
     }
 
@@ -132,5 +130,20 @@ public class Tower extends Base {
     //Metodo para obtener el tipo de la torre
     int getId() {
         return towerid;
+    }
+
+    // Metodo que suma experiencia
+    void Exp() {
+        exp++;
+    }
+
+    // Metodo que access la experiencia
+    int getExp() {
+        return exp;
+    }
+
+    // Metodo que modifica la experiencia
+    void setExp(int e) {
+        exp = e;
     }
 }
