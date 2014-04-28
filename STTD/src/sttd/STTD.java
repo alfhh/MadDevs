@@ -277,7 +277,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     Tower t = (Tower) tower.get(bl.getTower());
                     t.Exp();
                     bl.destroy();
-
+                    // Si el enemigo no tiene vida;
+                if (e.getHealth() <= 0) {
+                    wrench.remove(i); // Desaparece
+                }
+                break;
                 }
 
             }
@@ -461,10 +465,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     default:
                         break;
                 }
-                // Si el enemigo no tiene vida;
-                if (w.getHealth() <= 0) {
-                    wrench.remove(i); // Desaparece
-                }
+                
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
                     wrench.remove(i); // Desaparece
