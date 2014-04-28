@@ -312,6 +312,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 bmine = false;
             }
         }
+        
+        //Movimiento de las balas
+            for (int i = 0; i < bullet.size(); i++) {
+                Bullet t = (Bullet) bullet.get(i);
+                if (!t.distanceTime()) {
+                    t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
+                    t.setPosY(t.getPosY() + (int) (t.getSpeed() * Math.sin(Math.toRadians(t.getAngle()))));
+                } else {
+                    bullet.remove(i);
+                }
+            }
+            
         if (wavego) {
             countx--;
             if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
@@ -525,16 +537,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
             }
 
-            //Movimiento de las balas
-            for (int i = 0; i < bullet.size(); i++) {
-                Bullet t = (Bullet) bullet.get(i);
-                if (!t.distanceTime()) {
-                    t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
-                    t.setPosY(t.getPosY() + (int) (t.getSpeed() * Math.sin(Math.toRadians(t.getAngle()))));
-                } else {
-                    bullet.remove(i);
-                }
-            }
+            
 
             //Manejo de las waves
             if (wavecount == 0 && wrench.isEmpty()) {
