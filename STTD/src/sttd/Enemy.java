@@ -104,4 +104,9 @@ public class Enemy extends Base {
     void addLifeTime() {
          lifetime += speed;
     }
+    
+    //Metodo que regresa su tiempo de vida
+    int getLifeTime() {
+         return lifetime;
+    }
 }
