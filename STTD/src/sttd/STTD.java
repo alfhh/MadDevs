@@ -320,6 +320,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 m.Exp();
             }
         }
+        
+        //Actualiza la animación del intro
+        animIntro.actualiza(tiempoTranscurrido);
+        
 
         if (towerid > 0) {// Si se esta cargando una torre
             PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
@@ -1116,8 +1120,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param g
      */
     public void paint1(Graphics g) {
-
+        
         g.drawImage(background, 8, 31, this);
+        g.drawImage(animIntro.getImagen(), 8, 31, this);
         if (game) {
             if (!wavego) {
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
