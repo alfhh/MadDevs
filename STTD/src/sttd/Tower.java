@@ -22,6 +22,7 @@ public class Tower extends Base {
     int value; //Valor de venta de la torre
     int target = 0; // enemigo a apuntar
     int canshoot = 0; //Timer para poder disparar
+    int exp; //Experiencia de la torre
     boolean girar = false; //Ver si deberia de girar
 
     public Tower(int posX, int posY, Animacion animacion, int t, int pl, int s, int dmg, int ra, int val, int rng, boolean m) {
@@ -35,6 +36,7 @@ public class Tower extends Base {
         range = rng;
         set = false;
         girar = m;
+        exp = 0;
     }
 
     //Metodo para obtener el angulo de la torre

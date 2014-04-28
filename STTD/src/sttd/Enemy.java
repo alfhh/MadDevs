@@ -24,6 +24,7 @@ public class Enemy extends Base {
     int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
     int health = 100; //Vida
+    int lifetime = 0; //tiempo de vida
     
 
     public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
@@ -97,5 +98,10 @@ public class Enemy extends Base {
     //Metodo para obtener el bloque siguiente
     Point getEnd() {
         return end;
+    }
+    
+    //Metodo que actualize su tiempo de vida
+    void addLifeTime() {
+         lifetime += speed;
     }
 }
