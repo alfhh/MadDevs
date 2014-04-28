@@ -76,6 +76,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int wavecount; // numero de malos por oleada
     private int wave; // numero de oleada
     private int wavebegin; // tiempo antes que empieze la oleada
+    private int towerselect; // ID que marca el indice de la torreta seleccionada
     private long tiempoActual;
     private long tiempoInicial;
     private AffineTransform identidad; // Variable tipo AffineTransform
@@ -112,6 +113,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         bmine = false;
         lifeini = 20;
         life = lifeini;
+        towerselect = -1;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -139,29 +141,29 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         animIntro = new Animacion();
 
-        animIntro.sumaCuadro(in1,20);
-        animIntro.sumaCuadro(in2,20);
-        animIntro.sumaCuadro(in3,20);
-        animIntro.sumaCuadro(in4,20);
-        animIntro.sumaCuadro(in5,20);
-        animIntro.sumaCuadro(in6,20);
-        animIntro.sumaCuadro(in7,20);
-        animIntro.sumaCuadro(in8,20);
-        animIntro.sumaCuadro(in9,20);
-        animIntro.sumaCuadro(in10,20);
-        animIntro.sumaCuadro(in11,20);
-        animIntro.sumaCuadro(in12,20);
-        animIntro.sumaCuadro(in13,20);
-        animIntro.sumaCuadro(in14,20);
-        animIntro.sumaCuadro(in15,20);
-        animIntro.sumaCuadro(in16,20);
-        animIntro.sumaCuadro(in17,20);
-        animIntro.sumaCuadro(in18,20);
-        animIntro.sumaCuadro(in19,100);
-        animIntro.sumaCuadro(in20,100);
-        animIntro.sumaCuadro(in21,100);
-        animIntro.sumaCuadro(in22,100);
-        
+        animIntro.sumaCuadro(in1, 20);
+        animIntro.sumaCuadro(in2, 20);
+        animIntro.sumaCuadro(in3, 20);
+        animIntro.sumaCuadro(in4, 20);
+        animIntro.sumaCuadro(in5, 20);
+        animIntro.sumaCuadro(in6, 20);
+        animIntro.sumaCuadro(in7, 20);
+        animIntro.sumaCuadro(in8, 20);
+        animIntro.sumaCuadro(in9, 20);
+        animIntro.sumaCuadro(in10, 20);
+        animIntro.sumaCuadro(in11, 20);
+        animIntro.sumaCuadro(in12, 20);
+        animIntro.sumaCuadro(in13, 20);
+        animIntro.sumaCuadro(in14, 20);
+        animIntro.sumaCuadro(in15, 20);
+        animIntro.sumaCuadro(in16, 20);
+        animIntro.sumaCuadro(in17, 20);
+        animIntro.sumaCuadro(in18, 20);
+        animIntro.sumaCuadro(in19, 100);
+        animIntro.sumaCuadro(in20, 100);
+        animIntro.sumaCuadro(in21, 100);
+        animIntro.sumaCuadro(in22, 100);
+
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretanormal.png"));
         animNormal = new Animacion();
@@ -277,11 +279,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     Tower t = (Tower) tower.get(bl.getTower());
                     t.Exp();
                     bl.destroy();
-                    // Si el enemigo no tiene vida;
-                if (e.getHealth() <= 0) {
-                    wrench.remove(i); // Desaparece
-                }
-                break;
                 }
 
             }
@@ -320,7 +317,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         //Actualizacion de las minas
         for (int i = 0; i < mine.size(); i++) {
             Mine m = (Mine) mine.get(i);
-            if (m.getSet() && m.getPosX() > 1200 || m.getExp() == -1) {
+            if ((Mine) mine.getLast() != m && m.getPosX() > 1200 || m.getExp() == -1) {
                 mine.remove(i);
             } else {
                 m.getAnimacion().actualiza(tiempoTranscurrido);
@@ -329,10 +326,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 m.Exp();
             }
         }
-        
+
         //Actualiza la animación del intro
         animIntro.actualiza(tiempoTranscurrido);
-        
 
         if (towerid > 0) {// Si se esta cargando una torre
             PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
@@ -363,9 +359,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 0) {
-                        //Lo acomoda en la matriz
-                        m.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
-                        m.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
+                        //Checa que no haya otra mina
+                        boolean over = false;
+                        for (int i = 0; i < mine.size(); i++) {
+                            Mine n = (Mine) mine.get(i);
+                            //Lo acomoda en la matriz
+                            if (n != m && n.getPosX() == (((int) b.getX()) - ((int) b.getX() - 8) % 30)
+                                    && n.getPosY() == (((int) b.getY()) - ((int) b.getY()) % 30)) {
+                                over = true;
+                            }
+                        }
+                        if (!over) {
+                            m.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
+                            m.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
+                        }
                     }
                 } else {
                     // se pone en medio del cursor
@@ -376,18 +383,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 bmine = false;
             }
         }
-        
+
         //Movimiento de las balas
-            for (int i = 0; i < bullet.size(); i++) {
-                Bullet t = (Bullet) bullet.get(i);
-                if (!t.distanceTime()) {
-                    t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
-                    t.setPosY(t.getPosY() + (int) (t.getSpeed() * Math.sin(Math.toRadians(t.getAngle()))));
-                } else {
-                    bullet.remove(i);
-                }
+        for (int i = 0; i < bullet.size(); i++) {
+            Bullet t = (Bullet) bullet.get(i);
+            if (!t.distanceTime()) {
+                t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
+                t.setPosY(t.getPosY() + (int) (t.getSpeed() * Math.sin(Math.toRadians(t.getAngle()))));
+            } else {
+                bullet.remove(i);
             }
-            
+        }
+
         if (wavego) {
             countx--;
             if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
@@ -465,7 +472,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     default:
                         break;
                 }
-                
+                // Si el enemigo no tiene vida;
+                if (w.getHealth() <= 0) {
+                    wrench.remove(i); // Desaparece
+                    break;
+                }
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
                     wrench.remove(i); // Desaparece
@@ -485,8 +496,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 for (int j = wrench.size() - 1; j >= 0; j--) {
                     Enemy w = (Enemy) wrench.get(j);
                     if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
-                        if (w.getLifeTime() > lifetimep)
-                        {
+                        if (w.getLifeTime() > lifetimep) {
                             priority = j;
                         }
                     }
@@ -517,11 +527,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (2));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             }
                             t.shoot();
@@ -530,7 +540,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         case 5: //sniper
 
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b3);
                             t.shoot();
                             break;
@@ -540,22 +550,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (5));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 if (randomizer < 2) {
 
                                     Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                            (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                            (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                     bullet.add(b2);
                                 } else {
                                     if (randomizer < 3) {
                                         Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                                (int) (t.getPosY() + t.getAlto() / 2 - 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                                (int) (t.getPosY() + t.getAlto() / 2 - 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                         bullet.add(b2);
                                     } else {
                                         Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                                (int) (t.getPosY() + t.getAlto() / 2 + 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                                (int) (t.getPosY() + t.getAlto() / 2 + 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                         bullet.add(b2);
                                     }
 
@@ -569,11 +579,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (2));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             }
                             t.shoot();
@@ -582,31 +592,25 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         case 8: //laser
 
                             Bullet b4 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2 - 3) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b4);
                             t.shoot();
                             break;
 
                         case 9: //watulion
                             Bullet b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(0)))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b5);
                             for (int l = 45; l <= 360; l += 45) {
                                 b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(l)))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala, t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala, t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b5);
                             }
                             t.shoot();
                             break;
-
                     }
-
                 }
-
             }
-
-            
-
             //Manejo de las waves
             if (wavecount == 0 && wrench.isEmpty()) {
                 wavego = false;
@@ -670,203 +674,213 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         if (game) {
-            if (e.getX() > 1200 && towerid == 0) { // si el mouse esta en el HUD
+            if (e.getX() > 1200) { // si el mouse esta en el HUD
                 // creacion de torretas
-                if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
-                    //Torre normal
-                    towerid = 3;
-                    tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 15, 25, 50, 100, 90, false));
-                }
-                if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
-                    //Torre dual
-                    towerid = 4;
-                    tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 20, 50, 25, 400, 100, false));
-                }
-                if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
-                    //Torre sniper
-                    towerid = 5;
-                    tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 30, 150, 75, 400, 180, false));
-                }
-                if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
-                    //Torre quad
-                    towerid = 6;
-                    tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 27, 100, 12, 1600, 120, false));
-                }
-                if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
-                    //Torre dual fuerte
-                    towerid = 7;
-                    tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 24, 400, 50, 1600, 120, false));
-                }
-                if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
-                    //Torre laser
-                    towerid = 8;
-                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050, 240, false));
-                }
+                if (towerid == 0) {
+                    if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
+                        //Torre normal
+                        towerid = 3;
+                        tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 15, 25, 50, 100, 90, false));
+                    }
+                    if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
+                        //Torre dual
+                        towerid = 4;
+                        tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 20, 50, 25, 400, 100, false));
+                    }
+                    if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
+                        //Torre sniper
+                        towerid = 5;
+                        tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 30, 150, 75, 400, 180, false));
+                    }
+                    if (new Rectangle(1208, 231, 30, 30).contains(e.getPoint())) {
+                        //Torre quad
+                        towerid = 6;
+                        tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 27, 100, 12, 1600, 120, false));
+                    }
+                    if (new Rectangle(1268, 231, 30, 30).contains(e.getPoint())) {
+                        //Torre dual fuerte
+                        towerid = 7;
+                        tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 24, 400, 50, 1600, 120, false));
+                    }
+                    if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
+                        //Torre laser
+                        towerid = 8;
+                        tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 30, 600, 75, 1600, 250, false));
+                    }
 
-                if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
+                    if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
                     //Torre wat
 
-                    //Animación de watmine, que enverdad es una torre pero parece mina
-                    Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
-                    Image mine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine2.png"));
-                    Image mine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine3.png"));
-                    Image mine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine4.png"));
-                    Image mine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine5.png"));
-                    Image mine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine6.png"));
-                    Image mine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine7.png"));
-                    Image mine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine8.png"));
-                    Image mine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine9.png"));
-                    Image mine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine10.png"));
-                    Image mine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine11.png"));
-                    Image mine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine12.png"));
-                    Image mine13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine13.png"));
-                    Image mine14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine14.png"));
-                    Image mine15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine15.png"));
-                    Image mine16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine16.png"));
-                    Image mine17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine17.png"));
-                    Image mine18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine18.png"));
-                    Image mine19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine19.png"));
-                    Image mine20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine20.png"));
-                    Image mine21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine21.png"));
-                    Image mine22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine22.png"));
-                    Image mine23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine23.png"));
-                    Image mine24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine24.png"));
-                    Image mine25 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine25.png"));
-                    Image mine26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine26.png"));
-                    Image mine27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine27.png"));
-                    Image mine28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine28.png"));
-                    Image mine29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine29.png"));
-                    Image mine101 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine101.png"));
-                    Image mine102 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine102.png"));
-                    Image mine103 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine103.png"));
-                    Image mine104 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine104.png"));
-                    Image mine105 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine105.png"));
-                    Image mine106 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine106.png"));
-                    Image mine107 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine107.png"));
-                    Image mine108 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine108.png"));
-                    Image mine109 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine109.png"));
-                    Image mine110 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine110.png"));
-                    Image mine111 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine111.png"));
-                    Image mine112 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine112.png"));
-                    Image mine113 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine113.png"));
-                    Image mine114 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine114.png"));
-                    Image mine115 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine115.png"));
-                    Image mine116 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine116.png"));
-                    Image mine117 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine117.png"));
-                    Image mine118 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine118.png"));
-                    Image mine119 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine119.png"));
-                    Image mine120 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine120.png"));
-                    Image mine121 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine121.png"));
+                        //Animación de watmine, que enverdad es una torre pero parece mina
+                        Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
+                        Image mine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine2.png"));
+                        Image mine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine3.png"));
+                        Image mine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine4.png"));
+                        Image mine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine5.png"));
+                        Image mine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine6.png"));
+                        Image mine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine7.png"));
+                        Image mine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine8.png"));
+                        Image mine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine9.png"));
+                        Image mine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine10.png"));
+                        Image mine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine11.png"));
+                        Image mine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine12.png"));
+                        Image mine13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine13.png"));
+                        Image mine14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine14.png"));
+                        Image mine15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine15.png"));
+                        Image mine16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine16.png"));
+                        Image mine17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine17.png"));
+                        Image mine18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine18.png"));
+                        Image mine19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine19.png"));
+                        Image mine20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine20.png"));
+                        Image mine21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine21.png"));
+                        Image mine22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine22.png"));
+                        Image mine23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine23.png"));
+                        Image mine24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine24.png"));
+                        Image mine25 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine25.png"));
+                        Image mine26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine26.png"));
+                        Image mine27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine27.png"));
+                        Image mine28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine28.png"));
+                        Image mine29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine29.png"));
+                        Image mine101 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine101.png"));
+                        Image mine102 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine102.png"));
+                        Image mine103 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine103.png"));
+                        Image mine104 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine104.png"));
+                        Image mine105 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine105.png"));
+                        Image mine106 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine106.png"));
+                        Image mine107 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine107.png"));
+                        Image mine108 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine108.png"));
+                        Image mine109 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine109.png"));
+                        Image mine110 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine110.png"));
+                        Image mine111 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine111.png"));
+                        Image mine112 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine112.png"));
+                        Image mine113 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine113.png"));
+                        Image mine114 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine114.png"));
+                        Image mine115 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine115.png"));
+                        Image mine116 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine116.png"));
+                        Image mine117 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine117.png"));
+                        Image mine118 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine118.png"));
+                        Image mine119 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine119.png"));
+                        Image mine120 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine120.png"));
+                        Image mine121 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine121.png"));
 
-                    //Se crea la animación
-                    Animacion animWat = new Animacion();
-                    animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                    animWat.sumaCuadro(mine2, 100);
-                    animrand = (int) (Math.random() * (4));
-                    if (animrand < 2) {
+                        //Se crea la animación
+                        Animacion animWat = new Animacion();
                         animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
                         animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine3, 200);
-                        animWat.sumaCuadro(mine4, 50);
-                        animWat.sumaCuadro(mine5, 100);
-                        animWat.sumaCuadro(mine6, 100);
-                        animWat.sumaCuadro(mine7, 400);
-                        animWat.sumaCuadro(mine8, 100);
-                        animWat.sumaCuadro(mine9, 300);
-                        animWat.sumaCuadro(mine10, 2000);
-                        animWat.sumaCuadro(mine11, 400);
-                        animWat.sumaCuadro(mine12, 300);
-                        animWat.sumaCuadro(mine13, 1000);
-                        animWat.sumaCuadro(mine14, 200);
-                        animWat.sumaCuadro(mine13, 400);
-                        animWat.sumaCuadro(mine15, 1000);
-                        animWat.sumaCuadro(mine16, 400);
-                        animWat.sumaCuadro(mine17, 100);
-                        animWat.sumaCuadro(mine18, 100);
-                        animWat.sumaCuadro(mine19, 100);
-                        animWat.sumaCuadro(mine20, 100);
-                        animWat.sumaCuadro(mine21, 100);
-                        animWat.sumaCuadro(mine22, 400);
-                        animWat.sumaCuadro(mine22, 30);
-                        animWat.sumaCuadro(mine23, 50);
-                        animWat.sumaCuadro(mine24, 50);
-                        animWat.sumaCuadro(mine25, 50);
-                        animWat.sumaCuadro(mine26, 50);
-                        animWat.sumaCuadro(mine27, 50);
-                        animWat.sumaCuadro(mine28, 50);
-                        animWat.sumaCuadro(mine29, 100);
-                    } else {
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine101, 600);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine104, 100);
-                        animWat.sumaCuadro(mine105, 100);
-                        animWat.sumaCuadro(mine106, 100);
-                        animWat.sumaCuadro(mine107, 100);
-                        animWat.sumaCuadro(mine108, 300);
-                        animWat.sumaCuadro(mine109, 100);
-                        animWat.sumaCuadro(mine110, 100);
-                        animWat.sumaCuadro(mine111, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine114, 200);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine115, 100);
-                        animWat.sumaCuadro(mine116, 100);
-                        animWat.sumaCuadro(mine117, 100);
-                        animWat.sumaCuadro(mine118, 200);
-                        animWat.sumaCuadro(mine119, 1000);
-                        animWat.sumaCuadro(mine120, 100);
-                        animWat.sumaCuadro(mine121, 90);
+                        animrand = (int) (Math.random() * (4));
+                        if (animrand < 2) {
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine2, 100);
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine2, 100);
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine3, 200);
+                            animWat.sumaCuadro(mine4, 50);
+                            animWat.sumaCuadro(mine5, 100);
+                            animWat.sumaCuadro(mine6, 100);
+                            animWat.sumaCuadro(mine7, 400);
+                            animWat.sumaCuadro(mine8, 100);
+                            animWat.sumaCuadro(mine9, 300);
+                            animWat.sumaCuadro(mine10, 2000);
+                            animWat.sumaCuadro(mine11, 400);
+                            animWat.sumaCuadro(mine12, 300);
+                            animWat.sumaCuadro(mine13, 1000);
+                            animWat.sumaCuadro(mine14, 200);
+                            animWat.sumaCuadro(mine13, 400);
+                            animWat.sumaCuadro(mine15, 1000);
+                            animWat.sumaCuadro(mine16, 400);
+                            animWat.sumaCuadro(mine17, 100);
+                            animWat.sumaCuadro(mine18, 100);
+                            animWat.sumaCuadro(mine19, 100);
+                            animWat.sumaCuadro(mine20, 100);
+                            animWat.sumaCuadro(mine21, 100);
+                            animWat.sumaCuadro(mine22, 400);
+                            animWat.sumaCuadro(mine22, 30);
+                            animWat.sumaCuadro(mine23, 50);
+                            animWat.sumaCuadro(mine24, 50);
+                            animWat.sumaCuadro(mine25, 50);
+                            animWat.sumaCuadro(mine26, 50);
+                            animWat.sumaCuadro(mine27, 50);
+                            animWat.sumaCuadro(mine28, 50);
+                            animWat.sumaCuadro(mine29, 100);
+                        } else {
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine2, 100);
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine2, 100);
+                            animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
+                            animWat.sumaCuadro(mine101, 600);
+                            animWat.sumaCuadro(mine102, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine102, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine102, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine102, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine102, 75);
+                            animWat.sumaCuadro(mine103, 75);
+                            animWat.sumaCuadro(mine104, 100);
+                            animWat.sumaCuadro(mine105, 100);
+                            animWat.sumaCuadro(mine106, 100);
+                            animWat.sumaCuadro(mine107, 100);
+                            animWat.sumaCuadro(mine108, 300);
+                            animWat.sumaCuadro(mine109, 100);
+                            animWat.sumaCuadro(mine110, 100);
+                            animWat.sumaCuadro(mine111, 100);
+                            animWat.sumaCuadro(mine112, 100);
+                            animWat.sumaCuadro(mine113, 100);
+                            animWat.sumaCuadro(mine112, 100);
+                            animWat.sumaCuadro(mine113, 100);
+                            animWat.sumaCuadro(mine112, 100);
+                            animWat.sumaCuadro(mine113, 100);
+                            animWat.sumaCuadro(mine112, 100);
+                            animWat.sumaCuadro(mine113, 100);
+                            animWat.sumaCuadro(mine114, 200);
+                            animWat.sumaCuadro(mine113, 100);
+                            animWat.sumaCuadro(mine115, 100);
+                            animWat.sumaCuadro(mine116, 100);
+                            animWat.sumaCuadro(mine117, 100);
+                            animWat.sumaCuadro(mine118, 200);
+                            animWat.sumaCuadro(mine119, 1000);
+                            animWat.sumaCuadro(mine120, 100);
+                            animWat.sumaCuadro(mine121, 90);
 
+                        }
+                        towerid = 9;
+                        tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
                     }
-                    towerid = 9;
-                    tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
-                }
-                if (new Rectangle(1298, 291, 30, 30).contains(e.getPoint())) {
-                    //Mina
-                    bmine = true;
-                    Animacion animMine; // Animacion de la mina 
-                    //Imagen de la mina animada
-                    Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine1.png"));
-                    Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine2.png"));
-                    Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine3.png"));
-                    Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine4.png"));
-                    Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine5.png"));
-                    Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine6.png"));
+                    if (new Rectangle(1298, 291, 30, 30).contains(e.getPoint())) {
+                        //Mina
+                        bmine = true;
+                        Animacion animMine; // Animacion de la mina 
+                        //Imagen de la mina animada
+                        Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine1.png"));
+                        Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine2.png"));
+                        Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine3.png"));
+                        Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine4.png"));
+                        Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine5.png"));
+                        Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine6.png"));
 
-                    //Se crea la animación
-                    animMine = new Animacion();
-                    animMine.sumaCuadro(nmine1, 200);
-                    animMine.sumaCuadro(nmine2, 200);
-                    animMine.sumaCuadro(nmine3, 200);
-                    animMine.sumaCuadro(nmine4, 200);
-                    animMine.sumaCuadro(nmine5, 200);
-                    animMine.sumaCuadro(nmine6, 200);
-                    mine.add(new Mine(e.getX(), e.getY(), animMine, 1));
+                        //Se crea la animación
+                        animMine = new Animacion();
+                        animMine.sumaCuadro(nmine1, 200);
+                        animMine.sumaCuadro(nmine2, 200);
+                        animMine.sumaCuadro(nmine3, 200);
+                        animMine.sumaCuadro(nmine4, 200);
+                        animMine.sumaCuadro(nmine5, 200);
+                        animMine.sumaCuadro(nmine6, 200);
+                        mine.add(new Mine(e.getX(), e.getY(), animMine, 1));
+                    }
+                }
+            } else {
+                Tower t;
+                for (int i = 0; i < tower.size(); i++) {
+                    t = (Tower) tower.get(i);
+                    if (t.getPerimetro().contains(e.getPoint())) {
+                        towerselect = i;
+                    }
                 }
             }
 
@@ -1051,7 +1065,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 levelstart.add(new Point(578, 691));
                 basex = 540;
                 basey = 331;
-
             }
         }
     }
@@ -1110,7 +1123,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             dbg = dbImage.getGraphics();
             dbgtower = dbImage.getGraphics();
         }
-
         // Actualiza la imagen de fondo.
         dbg.setColor(getBackground());
         dbg.fillRect(0, 0, this.getSize().width, this.getSize().height);
@@ -1133,7 +1145,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param g
      */
     public void paint1(Graphics g) {
-        
+
         g.drawImage(background, 8, 31, this);
 //        g.drawImage(animIntro.getImagen(), 8, 31, this);
         if (game) {
@@ -1155,6 +1167,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.setColor(Color.white);
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
+                if (towerselect == i) {
+                    g.setFont(new Font("Consolas", Font.BOLD, 12));
+                    g.setColor(Color.black);
+                    g.drawString("Damage: " + t.getDamage(), 1252, 485);
+                    g.drawString("Range: " + (int) t.getRange(), 1259, 500);
+                    g.drawString("Shots/m: " + (int) ((double) 60 / ((double) t.getRate() * 20 / 1000)), 1245, 515);
+                }
             }
             g.setColor(Color.red);
             g.fillRect(basex, basey - 3, 90, 3);
@@ -1179,6 +1198,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
                 g2d.setColor(Color.green);
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() % t.getAncho(), 1);
+                if (towerselect == i) {
+                    AffineTransform z = new AffineTransform();
+                    z.translate(1215, 480);
+                    z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                    g2d.transform(z);
+                    g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
+                    try {
+                        g2d.transform(z.createInverse());
+                    } catch (NoninvertibleTransformException e) {
+                        //...
+                    }
+                }
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
