@@ -43,6 +43,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Image imgmenu; // Menu Image
     private Image t; // Torreta Image
 
+    private Animacion animIntro; // Animacion de intro
+    
     private Animacion animNormal; // Animacion de la torre Normal
     private Animacion animDual; // Animacion de la torre Dual
     private Animacion animSniper; // Animacion de la torre Sniper
@@ -108,6 +110,55 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         bmine = false;
 
         // Images
+        
+        Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
+        Image in2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/2.png"));
+        Image in3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/3.png"));
+        Image in4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/4.png"));
+        Image in5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/5.png"));
+        Image in6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
+        Image in7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/6.png"));
+        Image in8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/7.png"));
+        Image in9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/8.png"));
+        Image in10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/9.png"));
+        Image in11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
+        Image in12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/10.png"));
+        Image in13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/11.png"));
+        Image in14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/12.png"));
+        Image in15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/13.png"));
+        Image in16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
+        Image in17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/14.png"));
+        Image in18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/15.png"));
+        Image in19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/16.png"));
+        Image in20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/17.png"));
+        Image in21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/18.png"));
+        Image in22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/19.png"));
+        
+        
+        animIntro = new Animacion();
+        animIntro.sumaCuadro(in1,100);
+        animIntro.sumaCuadro(in2,100);
+        animIntro.sumaCuadro(in3,100);
+        animIntro.sumaCuadro(in4,100);
+        animIntro.sumaCuadro(in5,100);
+        animIntro.sumaCuadro(in6,100);
+        animIntro.sumaCuadro(in7,100);
+        animIntro.sumaCuadro(in8,100);
+        animIntro.sumaCuadro(in9,100);
+        animIntro.sumaCuadro(in10,100);
+        animIntro.sumaCuadro(in11,100);
+        animIntro.sumaCuadro(in12,100);
+        animIntro.sumaCuadro(in13,100);
+        animIntro.sumaCuadro(in14,100);
+        animIntro.sumaCuadro(in15,100);
+        animIntro.sumaCuadro(in16,100);
+        animIntro.sumaCuadro(in17,100);
+        animIntro.sumaCuadro(in18,100);
+        animIntro.sumaCuadro(in19,100);
+        animIntro.sumaCuadro(in20,100);
+        animIntro.sumaCuadro(in21,100);
+        animIntro.sumaCuadro(in22,100);
+        
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretanormal.png"));
         animNormal = new Animacion();
@@ -1157,3 +1208,4 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
 }
+
