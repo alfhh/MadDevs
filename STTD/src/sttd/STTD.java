@@ -337,7 +337,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Tower t = (Tower) tower.getLast();
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
-                    if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
+                    if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 1) {
                         //Lo acomoda en la matriz
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                         t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
@@ -358,7 +358,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Mine m = (Mine) mine.getLast();
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
-                    if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 0) {
+                    if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 0) {
                         //Checa que no haya otra mina
                         boolean over = false;
                         for (int i = 0; i < mine.size(); i++) {
@@ -475,7 +475,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // Si el enemigo no tiene vida;
                 if (w.getHealth() <= 0) {
                     wrench.remove(i); // Desaparece
-                    break;
                 }
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
@@ -707,7 +706,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         towerid = 8;
                         tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 30, 600, 75, 1600, 250, false));
                     }
-
                     if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
                     //Torre wat
 
@@ -1194,6 +1192,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (game) {
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
+                //XP de la torre
                 g2d.setColor(Color.white);
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
                 g2d.setColor(Color.green);
@@ -1210,6 +1209,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         //...
                     }
                 }
+                //Rate of fire de la torre vertical
+                g2d.setColor(Color.white);
+                g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAlto());
+                g2d.setColor(Color.red);
+                g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAble() * t.getAlto() / t.getRate());
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);

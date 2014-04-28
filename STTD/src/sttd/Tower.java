@@ -107,9 +107,14 @@ public class Tower extends Base {
             return false;
         }
     }
-
+//Dispara!
     void shoot() {
         canshoot = rateoffire;
+    }
+    
+    
+    int getAble() {
+        return canshoot;
     }
 
     //Metodo para ver si es una mina o no
