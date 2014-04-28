@@ -337,7 +337,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Tower t = (Tower) tower.getLast();
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
-                    if (grid[((int) b.getY() - 31) / 30][((int) b.getX() - 8) / 30] == 1) {
+                    if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 1) {
                         //Lo acomoda en la matriz
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                         t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
