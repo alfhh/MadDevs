@@ -277,11 +277,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     Tower t = (Tower) tower.get(bl.getTower());
                     t.Exp();
                     bl.destroy();
-                    // Si el enemigo no tiene vida;
-                if (e.getHealth() <= 0) {
-                    wrench.remove(i); // Desaparece
-                }
-                break;
+
                 }
 
             }
@@ -465,7 +461,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     default:
                         break;
                 }
-                
+                // Si el enemigo no tiene vida;
+                if (w.getHealth() <= 0) {
+                    wrench.remove(i); // Desaparece
+                }
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
                     wrench.remove(i); // Desaparece
@@ -517,11 +516,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (2));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             }
                             t.shoot();
@@ -530,7 +529,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         case 5: //sniper
 
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b3);
                             t.shoot();
                             break;
@@ -540,22 +539,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (5));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 if (randomizer < 2) {
 
                                     Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                            (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                            (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                     bullet.add(b2);
                                 } else {
                                     if (randomizer < 3) {
                                         Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                                (int) (t.getPosY() + t.getAlto() / 2 - 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                                (int) (t.getPosY() + t.getAlto() / 2 - 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                         bullet.add(b2);
                                     } else {
                                         Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                                (int) (t.getPosY() + t.getAlto() / 2 + 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                                (int) (t.getPosY() + t.getAlto() / 2 + 10 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                         bullet.add(b2);
                                     }
 
@@ -569,11 +568,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             randomizer = (int) (Math.random() * (2));
                             if (randomizer < 1) {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 + 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             } else {
                                 Bullet b2 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 5 + ((t.getAlto() / 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b2);
                             }
                             t.shoot();
@@ -582,18 +581,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         case 8: //laser
 
                             Bullet b4 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2 - 3) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b4);
                             t.shoot();
                             break;
 
                         case 9: //watulion
                             Bullet b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(0)))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), 1);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b5);
                             for (int l = 45; l <= 360; l += 45) {
                                 b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(l)))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala, t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), 1);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala, t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b5);
                             }
                             t.shoot();
@@ -700,7 +699,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
                     //Torre laser
                     towerid = 8;
-                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 25, 50, 80, 1050, 240, false));
+                    tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 30, 600, 75, 1600, 250, false));
                 }
 
                 if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
@@ -1175,10 +1174,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (game) {
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
+                //XP de la torre
                 g2d.setColor(Color.white);
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
                 g2d.setColor(Color.green);
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() % t.getAncho(), 1);
+                //Rate of fire de la torre vertical
+                g2d.setColor(Color.white);
+                g2d.fillRect(t.getPosX()-1, t.getPosY(), 1, t.getAlto());
+                g2d.setColor(Color.red);
+                g2d.fillRect(t.getPosX()-1, t.getPosY(), 1, t.getAble()* t.getAlto() / t.getRate());
+                
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
