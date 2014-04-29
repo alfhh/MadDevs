@@ -5,6 +5,9 @@
  */
 package sttd;
 
+import java.awt.Toolkit;
+import java.awt.Image;
+
 /**
  *
  * @author LuisJuan
@@ -108,11 +111,11 @@ public class Tower extends Base {
         }
     }
 //Dispara!
+
     void shoot() {
         canshoot = rateoffire;
     }
-    
-    
+
     int getAble() {
         return canshoot;
     }
@@ -139,7 +142,9 @@ public class Tower extends Base {
 
     // Metodo que suma experiencia
     void Exp() {
-        exp++;
+        if (exp < this.getMAXExp()) {
+            exp++;
+        }
     }
 
     // Metodo que access la experiencia
@@ -150,5 +155,90 @@ public class Tower extends Base {
     // Metodo que modifica la experiencia
     void setExp(int e) {
         exp = e;
+    }
+
+    // Metodo que access la experiencia Maxima
+    int getMAXExp() {
+        if (towerid >= 6) {
+            return -1;
+        } else {
+            return (towerid / 4 * 300 + 100);
+        }
+    }
+
+    // Metodo que regresa la towerid de el ugrade izquierdo
+    void getUpgL() {
+        towerid += towerid / 2;
+        Animacion a;
+        switch (towerid) {
+            case 4:
+                speed = 20;
+                damage = 50;
+                rateoffire = 25;
+                range = 100;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png")), 100);
+                animacion = a;
+                break;
+            case 6:
+                speed = 27;
+                damage = 100;
+                rateoffire = 12;
+                range = 120;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png")), 100);
+                animacion = a;
+                break;
+            case 7:
+                speed = 24;
+                damage = 400;
+                rateoffire = 50;
+                range = 120;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 100);
+                animacion = a;
+                break;
+        }
+    }
+
+    // Metodo que regresa la towerid de el ugrade izquierdo
+    void getUpgR() {
+        towerid += towerid / 2 + 1;
+        Animacion a;
+        switch (towerid) {
+            case 5:
+                speed = 30;
+                damage = 150;
+                rateoffire = 75;
+                range = 180;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniper.png")), 100);
+                animacion = a;
+                break;
+            case 7:
+                speed = 24;
+                damage = 400;
+                rateoffire = 50;
+                range = 120;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 100);
+                animacion = a;
+                break;
+            case 8:
+                speed = 30;
+                damage = 600;
+                rateoffire = 75;
+                range = 250;
+                exp = 0;
+                a = new Animacion();
+                a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png")), 100);
+                animacion = a;
+                break;
+        }
     }
 }

@@ -674,6 +674,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
         if (game) {
             if (e.getX() > 1200) { // si el mouse esta en el HUD
+                //Upgrade de las torres
+                if (towerselect >= 0 && e.getY() > 458 && e.getY() < 532) {
+                    Tower t = (Tower) tower.get(towerselect);
+                    if (t.getExp() == t.getMAXExp()) {
+                        if (e.getX() > 1284) {
+                            t.getUpgR();
+                        } else {
+                            t.getUpgL();;
+                        }
+                    }
+                }
                 // creacion de torretas
                 if (towerid == 0) {
                     if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
@@ -878,6 +889,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     t = (Tower) tower.get(i);
                     if (t.getPerimetro().contains(e.getPoint())) {
                         towerselect = i;
+                        break;
+                    } else {
+                        towerselect = -1;
                     }
                 }
             }
@@ -1165,7 +1179,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.setColor(Color.white);
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
-                if (towerselect == i) {
+                if (towerselect == i && t.getExp() != t.getMAXExp()) {
                     g.setFont(new Font("Consolas", Font.BOLD, 12));
                     g.setColor(Color.black);
                     g.drawString("Damage: " + t.getDamage(), 1252, 485);
@@ -1193,20 +1207,69 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 //XP de la torre
-                g2d.setColor(Color.white);
-                g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
-                g2d.setColor(Color.green);
-                g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() % t.getAncho(), 1);
+                if (t.getId() < 6) {
+                    g2d.setColor(Color.white);
+                    g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
+                    g2d.setColor(Color.green);
+                    g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() * t.getAncho() / t.getMAXExp(), 1);
+                }
                 if (towerselect == i) {
-                    AffineTransform z = new AffineTransform();
-                    z.translate(1215, 480);
-                    z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
-                    g2d.transform(z);
-                    g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
-                    try {
-                        g2d.transform(z.createInverse());
-                    } catch (NoninvertibleTransformException e) {
-                        //...
+                    if (t.getExp() == t.getMAXExp()) {
+                        g2d.setFont(new Font("Consolas", Font.BOLD, 16));
+                        g2d.setColor(Color.black);
+                        g2d.drawString("UPGRADE!!!", 1240, 470);
+                        for (int k = 0; k < 2; k++) {
+                            g2d.setFont(new Font("Consolas", Font.BOLD, 12));
+                            g2d.setColor(Color.black);
+                            if (k == 1) {
+                                g2d.drawString("Power", 1231 + k * 76, 520);
+                            } else {
+                                g2d.drawString("Speed", 1231 + k * 76, 520);
+                            }
+                            AffineTransform z = new AffineTransform();
+                            z.translate(1231 + k * 76, 480);
+                            z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                            g2d.transform(z);
+                            switch (t.getId()) {
+                                case 3:
+                                    if (k == 0) {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png")), 0, 0, this);
+                                    } else {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniper.png")), 0, 0, this);
+                                    }
+                                    break;
+                                case 4:
+                                    if (k == 0) {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png")), 0, 0, this);
+                                    } else {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
+                                    }
+                                    break;
+                                case 5:
+                                    if (k == 0) {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
+                                    } else {
+                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png")), 0, 0, this);
+                                    }
+                                    break;
+                            }
+                            try {
+                                g2d.transform(z.createInverse());
+                            } catch (NoninvertibleTransformException e) {
+                                //...
+                            }
+                        }
+                    } else {
+                        AffineTransform z = new AffineTransform();
+                        z.translate(1215, 480);
+                        z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                        g2d.transform(z);
+                        g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
+                        try {
+                            g2d.transform(z.createInverse());
+                        } catch (NoninvertibleTransformException e) {
+                            //...
+                        }
                     }
                 }
                 //Rate of fire de la torre vertical
