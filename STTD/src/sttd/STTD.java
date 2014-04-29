@@ -87,6 +87,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean game; // booleano que deja que el juego corra
     private boolean wavego; // booleano que inicia la oleada
     private boolean bmine; // booleano que muestra si seleccionaron una mina
+    private boolean lose; // booleano que muestra si el jugador perdio
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -103,13 +104,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         main = true;
         instr = false;
         menu = false;
-        towerid = 0;
         countx = 50;
         grid = new int[23][40];
         wavego = false;
         wavecount = 0;
         wave = 0;
-        wavebegin = 150;
+        wavebegin = 750;
         bmine = false;
         lifeini = 20;
         life = lifeini;
@@ -221,7 +221,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(20);
+                Thread.sleep(2);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
@@ -481,6 +481,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     wrench.remove(i); // Desaparece
                     life--;
                 }
+                // Si la base no tiene vida
+                if (life == 0) {
+                    game = false;
+                    lose = true;
+                }
             }
 
             //Disparar bala a la dirección deseada
@@ -622,7 +627,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 wave++;
                 wavecount = 19 + wave;
             } else {
-                wavebegin--;
+                if (life != 0) {
+                    wavebegin--;
+                }
             }
         }
         for (int i = 0; i < tower.size(); i++) {
@@ -651,6 +658,26 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
+        if (lose) {
+            lose = false;
+            tower.clear();
+            mine.clear();
+            wrench.clear();
+            rotacion = Math.PI / 60;
+            towerid = 0;
+            main = true;
+            instr = false;
+            menu = false;
+            countx = 50;
+            wavego = false;
+            wavecount = 0;
+            wave = 0;
+            wavebegin = 750;
+            bmine = false;
+            life = lifeini;
+            towerselect = -1;
+            background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+        }
         if (towerid > 0) {
             Tower t = (Tower) tower.getLast();
             if (t.getPosX() < 1180) {// se planta una torreta en la grid
@@ -1160,6 +1187,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         g.drawImage(background, 8, 31, this);
 //        g.drawImage(animIntro.getImagen(), 8, 31, this);
+        if (lose) {
+            g.setColor(Color.red);
+            g.setFont(new Font("Consolas", Font.PLAIN, 100));
+            g.drawString("YOU LOST", 400, 400);
+            g.setFont(new Font("Consolas", Font.PLAIN, 50));
+            g.drawString("Click anywhere to return to the main menu", 100, 450);
+        }
         if (game) {
             if (!wavego) {
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
