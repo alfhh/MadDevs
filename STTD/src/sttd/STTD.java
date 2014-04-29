@@ -221,7 +221,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(2);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
