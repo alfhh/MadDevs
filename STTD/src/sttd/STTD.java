@@ -742,7 +742,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     if (new Rectangle(1328, 231, 30, 30).contains(e.getPoint())) {
                         //Torre laser
                         towerid = 8;
-                        tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 30, 600, 75, 1600, 250, false));
+                        tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 36, 600, 75, 1600, 250, false));
                     }
                     if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
                     //Torre wat
