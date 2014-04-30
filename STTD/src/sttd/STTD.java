@@ -4,6 +4,7 @@
  */
 package sttd;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Image;
@@ -32,6 +33,7 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
@@ -61,6 +63,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private LinkedList<Mine> mine; // Lista de las Minas
     private LinkedList<Bullet> bullet; // Lista de las balas
     private LinkedList<Animacion> towergraphics; // Lista de las imagenes de las torres
+    private LinkedList<Laser> lasers; // Lista de las imagenes de las torres
 
     private double rotacion; // Rotacion que se le dara a las torres
     private int grid[][]; // Grid conceptual del mapa
@@ -201,6 +204,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         towergraphics = new LinkedList<Animacion>();
         mine = new LinkedList<Mine>();
         bullet = new LinkedList<Bullet>();
+        lasers = new LinkedList<Laser>();
 
         Thread th = new Thread(this);
         th.start();
@@ -291,6 +295,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
+        
+        // para actualizar la vida del laser
+        for(int i = 0; i < lasers.size(); i++)
+            {
+                Laser l = (Laser) lasers.get(i);
+                if (!l.deathTime())
+                {
+                    lasers.remove(l);
+                }
+            }
 
         //para animar
         //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
@@ -582,9 +596,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
-                            Bullet b4 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 3) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
-                            bullet.add(b4);
+                            Enemy g = (Enemy) wrench.get(priority);
+                            Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
+                                    (int) (t.getPosY() + t.getAlto() / 2  + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))),g.getPosX()+g.getAncho()/2,g.getPosY() + g.getAlto()/2,t.getDamage(),t.getPlayer(),i);
+                            lasers.add(l1);
+                            g.setHealth(g.getHealth()- t.getDamage());
                             t.shoot();
                             break;
 
@@ -727,7 +743,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     }
                     if (new Rectangle(1238, 291, 30, 30).contains(e.getPoint())) {
                     //Torre wat
-
                         //Animación de watmine, que enverdad es una torre pero parece mina
                         Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
                         Image mine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine2.png"));
@@ -1204,7 +1219,32 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.drawString("Click anywhere to return to the main menu", 100, 450);
         }
         if (game) {
+            for(int i = 0; i < lasers.size(); i++)
+            {
+                Laser l = (Laser) lasers.get(i);
+                if (l.deathTime())
+                {
+                Graphics2D g2 = (Graphics2D) g;
+                if(l.getTime() > 24)
+                {
+                g.setColor(Color.RED);
+                g2.setStroke(new BasicStroke(3));
+                g2.draw(new Line2D.Float(l.getPosX(), l.getPosY(), l.getEndX(), l.getEndY()));
+                }
+                if(l.getTime() > 12)
+                {
+                g.setColor(Color.orange);
+                g2.setStroke(new BasicStroke(2));
+                g2.draw(new Line2D.Float(l.getPosX(), l.getPosY(), l.getEndX(), l.getEndY()));
+                }
+                g.setColor(Color.yellow);
+                g2.setStroke(new BasicStroke(1));
+                g2.draw(new Line2D.Float(l.getPosX(), l.getPosY(), l.getEndX(), l.getEndY()));
+                }
+                
+            }
             if (!wavego) {
+                g.setColor(Color.black);
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
                 g.drawString("Wave starts in: ", 400, 400);
                 g.drawString("" + ((wavebegin * 20) / 1000 + 1), 570, 450);
@@ -1247,6 +1287,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void towerpaint1(Graphics g) {
         Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
         if (game) {
+            
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 //XP de la torre
