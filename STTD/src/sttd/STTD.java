@@ -183,7 +183,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png"));
         animLaser = new Animacion();
         animLaser.sumaCuadro(t, 100);
-        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/bala.png"));
+        t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Bala.png"));
         animBala = new Animacion();
         animBala.sumaCuadro(t, 100);
 
@@ -638,6 +638,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyTyped(KeyEvent e) {
+
 
     }
 
