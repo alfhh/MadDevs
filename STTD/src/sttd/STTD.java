@@ -42,6 +42,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Image background; // Background Image
     private Image imgmenu; // Menu Image
     private Image t; // Torreta Image
+    private Font StarJedi; // Fuente de StarJedi
 
     private Animacion animIntro; // Animacion de intro
 
@@ -54,12 +55,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Animacion animEnemigo; // Animacion del enemigo
     private Animacion animBala; // Animacion del enemigo
 
-    private LinkedList tower; // Lista de las Torres
-    private LinkedList levelstart; // Lista de los puntos de comienzo del mapa
-    private LinkedList wrench; // Lista de los enemigos
-    private LinkedList mine; // Lista de las Minas
-    private LinkedList bullet; // Lista de las balas
-    private LinkedList towergraphics; // Lista de las imagenes de las torres
+    private LinkedList<Tower> tower; // Lista de las Torres
+    private LinkedList<Point> levelstart; // Lista de los puntos de comienzo del mapa
+    private LinkedList<Enemy> wrench; // Lista de los enemigos
+    private LinkedList<Mine> mine; // Lista de las Minas
+    private LinkedList<Bullet> bullet; // Lista de las balas
+    private LinkedList<Animacion> towergraphics; // Lista de las imagenes de las torres
 
     private double rotacion; // Rotacion que se le dara a las torres
     private int grid[][]; // Grid conceptual del mapa
@@ -77,6 +78,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int wave; // numero de oleada
     private int wavebegin; // tiempo antes que empieze la oleada
     private int towerselect; // ID que marca el indice de la torreta seleccionada
+    private int instrMouse; // Marca los pasos de las instrucciones
     private long tiempoActual;
     private long tiempoInicial;
     private AffineTransform identidad; // Variable tipo AffineTransform
@@ -114,6 +116,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         lifeini = 20;
         life = lifeini;
         towerselect = -1;
+        instrMouse = -1;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -192,12 +195,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         animEnemigo = new Animacion();
         animEnemigo.sumaCuadro(e, 100);
 
-        tower = new LinkedList();
-        levelstart = new LinkedList();
-        wrench = new LinkedList();
-        towergraphics = new LinkedList();
-        mine = new LinkedList();
-        bullet = new LinkedList();
+        tower = new LinkedList<Tower>();
+        levelstart = new LinkedList<Point>();
+        wrench = new LinkedList<Enemy>();
+        towergraphics = new LinkedList<Animacion>();
+        mine = new LinkedList<Mine>();
+        bullet = new LinkedList<Bullet>();
 
         Thread th = new Thread(this);
         th.start();
@@ -503,7 +506,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                     }
                 }
-
                 //Aqui iria la acción de disparar
                 if (t.canShoot() && priority != -1) {
                     int randomizer = (int) (Math.random() * (2));
@@ -514,7 +516,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             bullet.add(b1);
                             t.shoot();
                             break;
-
                         case 4: //Torre dual
                             randomizer = (int) (Math.random() * (2));
                             if (randomizer < 1) {
@@ -530,7 +531,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 5: //sniper
-
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
                                     (int) (t.getPosY() + t.getAlto() / 2  + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b3);
@@ -582,7 +582,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
-
                             Bullet b4 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 3) * Math.cos(Math.toRadians(t.getAngle())))),
                                     (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b4);
@@ -591,11 +590,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 9: //watulion
                             Bullet b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(0)))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala, t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
+                                    (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(0)))), animBala,
+                                    t.getDamage(), t.getSpeed(), t.getAngle(), (int) t.getRange(), t.getPlayer(), i);
                             bullet.add(b5);
                             for (int l = 45; l <= 360; l += 45) {
                                 b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(l)))),
-                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala, t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), i);
+                                        (int) (t.getPosY() + t.getAlto() / 2 - 1 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(l)))), animBala,
+                                        t.getDamage(), t.getSpeed(), l, (int) t.getRange(), t.getPlayer(), i);
                                 bullet.add(b5);
                             }
                             t.shoot();
@@ -658,26 +659,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
-        if (lose) {
-            lose = false;
-            tower.clear();
-            mine.clear();
-            wrench.clear();
-            rotacion = Math.PI / 60;
-            towerid = 0;
-            main = true;
-            instr = false;
-            menu = false;
-            countx = 50;
-            wavego = false;
-            wavecount = 0;
-            wave = 0;
-            wavebegin = 750;
-            bmine = false;
-            life = lifeini;
-            towerselect = -1;
-            background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
-        }
         if (towerid > 0) {
             Tower t = (Tower) tower.getLast();
             if (t.getPosX() < 1180) {// se planta una torreta en la grid
@@ -925,11 +906,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         }
         if (instr) {// si se esta en las instrucciones
-            Rectangle rect = new Rectangle(45, 55, 94, 84);
-            if (rect.contains(e.getPoint())) {
+            if (new Rectangle(45, 55, 94, 84).contains(e.getPoint())) {
                 instr = false;
                 main = true;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+            }
+            if (new Rectangle(291, 422, 186, 52).contains(e.getPoint())) {
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+
             }
         }
         if (main) { // si se esta en la pantalla de inicio
@@ -956,6 +940,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         if (menu) {// si se esta en la pantalla de menu
+            if (new Rectangle(45, 55, 94, 84).contains(e.getPoint())) {
+                menu = false;
+                main = true;
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
+            }
             Rectangle rect = new Rectangle(139, 232, 352, 164);
             if (rect.contains(e.getPoint())) {
                 //nivel 1
@@ -1105,6 +1094,26 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 basex = 540;
                 basey = 331;
             }
+        }
+        if (lose) {
+            lose = false;
+            tower.clear();
+            mine.clear();
+            wrench.clear();
+            rotacion = Math.PI / 60;
+            towerid = 0;
+            main = true;
+            instr = false;
+            menu = false;
+            countx = 50;
+            wavego = false;
+            wavecount = 0;
+            wave = 0;
+            wavebegin = 750;
+            bmine = false;
+            life = lifeini;
+            towerselect = -1;
+            background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
         }
     }
 

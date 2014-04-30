@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class Animacion{
 	
-	private ArrayList cuadros;
+	private ArrayList<cuadroDeAnimacion> cuadros;
 	private int indiceCuadroActual;
         private boolean cutscene;
        
@@ -31,7 +31,7 @@ public class Animacion{
 		Crea una nueva Animacion vacía
 	*/
 	public Animacion(){
-		cuadros = new ArrayList();
+		cuadros = new ArrayList<cuadroDeAnimacion>();
 		duracionTotal = 0;
 		iniciar();
 	}
