@@ -13,7 +13,7 @@ import java.awt.Image;
  * @author LuisJuan
  */
 public class Tower extends Base {
-
+    double buffmultiplier = 1; //termina que tanto se va a multiplicar el daño y rof de la nave
     boolean set; // Boleano que representa se la torreta ya esta puesta
     double angle = 0; //angulo de la torre
     int speed = 3; // Velocidad de las balas. -1 convoca lazer instantaneo
@@ -74,7 +74,7 @@ public class Tower extends Base {
 
     //Metodo para obtener el daño de la torre
     int getDamage() {
-        return damage;
+        return (int) (damage * buffmultiplier);
     }
 
     //Metodo para asignar el daño de la torre
@@ -84,7 +84,7 @@ public class Tower extends Base {
 
     //Metodo para obtener el daño de la torre
     int getRate() {
-        return rateoffire;
+        return (int)(rateoffire/ buffmultiplier);
     }
 
     //Metodo para asignar el daño de la torre
@@ -134,6 +134,19 @@ public class Tower extends Base {
     boolean getSet() {
         return set;
     }
+    
+    //Metodo para ver si esta bufiada
+    boolean isBuffed() {
+        if(buffmultiplier > 1)
+        {
+        return true;
+        }
+        else
+        {
+        return false;
+        }
+    }
+
 
     //Metodo para obtener el tipo de la torre
     int getId() {
@@ -155,6 +168,16 @@ public class Tower extends Base {
     // Metodo que modifica la experiencia
     void setExp(int e) {
         exp = e;
+    }
+    
+    // Metodo para obtener el multiplier
+    double getMul() {
+        return buffmultiplier;
+    }
+
+    // Metodo que modificar el multiplier
+    void setMul(double e) {
+        buffmultiplier = e;
     }
 
     // Metodo que access la experiencia Maxima
