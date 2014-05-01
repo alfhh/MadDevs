@@ -94,6 +94,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean wavego; // booleano que inicia la oleada
     private boolean bmine; // booleano que muestra si seleccionaron una mina
     private boolean lose; // booleano que muestra si el jugador perdio
+    private boolean pause; // booleano que pausa el juego
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -662,7 +663,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyTyped(KeyEvent e) {
-
+        if (e.getID() == KeyEvent.VK_I) {
+            if (game) {
+                game = false;
+                pause = true;
+            }
+            if(pause){
+                game = true;
+                pause = false;
+            }
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -681,6 +691,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * @param e
      */
     public void mouseClicked(MouseEvent e) {
+        if (pause){
+            
+        }
         if (towerid > 0) {
             Tower t = (Tower) tower.getLast();
             if (t.getPosX() < 1180) {// se planta una torreta en la grid
@@ -884,7 +897,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             animWat.sumaCuadro(mine119, 1000);
                             animWat.sumaCuadro(mine120, 100);
                             animWat.sumaCuadro(mine121, 90);
-
                         }
                         towerid = 9;
                         tower.add(new Tower(e.getX(), e.getY(), animWat, towerid, 1, 10, 200, 200, 4200, 60, true));
@@ -1227,7 +1239,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 36, 600, 75, 1600, 250, false));
                         }
                         if (new Rectangle(1238, 301, 30, 30).contains(e.getPoint())) {
-                        //Torre wat
+                            //Torre wat
                             //Animación de watmine, que enverdad es una torre pero parece mina
                             Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
                             Image mine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine2.png"));
@@ -1489,7 +1501,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setFont(new Font("Consolas", Font.PLAIN, 50));
             g.drawString("Click anywhere to return to the main menu", 100, 450);
         }
-        if (game) {
+        if (game || pause) {
             for (int i = 0; i < lasers.size(); i++) {
                 Laser l = (Laser) lasers.get(i);
                 if (l.deathTime()) {
@@ -1553,7 +1565,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void towerpaint1(Graphics g) {
         Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
-        if (game || instr) {
+        if (game || instr || pause) {
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 //XP de la torre
