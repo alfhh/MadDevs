@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.LinkedList;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
 import java.awt.Point;
@@ -24,7 +26,7 @@ import java.lang.ArrayIndexOutOfBoundsException;
  */
 public class Instruccion {
 
-    int waittime = 300;
+    int waittime = 100;
 
     Instruccion() {
     }
@@ -46,6 +48,9 @@ public class Instruccion {
                     i++;
                 }
                 break;
+            case 5:
+                i++;
+                break;
             case 8:
                 if (new Rectangle(1298, 301, 30, 30).contains(new Point(x, y))) {
                     i++;
@@ -55,6 +60,19 @@ public class Instruccion {
                 if (new Rectangle(698, 391, 30, 30).contains(new Point(x, y))) {
                     i++;
                 }
+                break;
+            case 14:
+                i++;
+                waittime = 300;
+                break;
+            case 15:
+                i++;
+                break;
+            case 16:
+                i++;
+                break;
+            case 17:
+                i++;
                 break;
             case 18:
                 i++;
@@ -178,14 +196,6 @@ public class Instruccion {
                 if (inCircle(tower1.getPosX() + tower1.getAncho() / 2, tower1.getPosY() + tower1.getAlto() / 2,
                         wrench1.getPosX() + wrench1.getAncho() / 2, wrench1.getPosY() + wrench1.getAlto() / 2, (int) tower1.getRange())) {
                     i++;
-                }
-                break;
-            case 5:
-                if (waittime == 0) {
-                    i++;
-                    waittime = 100;
-                } else {
-                    waittime--;
                 }
                 break;
             case 6:
@@ -367,7 +377,7 @@ public class Instruccion {
                 }
                 if (waittime == 0) {
                     i++;
-                    waittime = 400;
+                    waittime = 300;
                 } else {
                     waittime--;
                 }
@@ -542,8 +552,7 @@ public class Instruccion {
             case 14:
                 tower = t.getLast();
                 if (waittime == 0) {
-                    i++;
-                    waittime = 400;
+                    waittime = 300;
                 } else {
                     if (waittime % 10 == 0) {
                         tower.Exp();
@@ -553,21 +562,17 @@ public class Instruccion {
                 break;
             case 15:
                 tower = t.getLast();
-                if (waittime == 0) {
-                    i++;
-                    waittime = 400;
-                } else {
-                    if (waittime % 10 == 0) {
-                        tower.Exp();
-                    }
-                    waittime--;
+                if (waittime % 10 == 0) {
+                    tower.Exp();
+                    waittime += 10;
                 }
+                waittime--;
                 break;
+
             case 16:
                 tower = t.getLast();
                 if (waittime == 0) {
                     waittime = 300;
-                    i++;
                 } else {
                     if (waittime % 10 == 0) {
                         tower.Exp();
@@ -576,10 +581,23 @@ public class Instruccion {
                 }
                 break;
             case 17:
+                tower = t.getLast();
                 if (waittime == 0) {
                     waittime = 300;
-                    i++;
                 } else {
+                    if (waittime % 10 == 0) {
+                        tower.Exp();
+                    }
+                    waittime--;
+                }
+            case 18:
+                tower = t.getLast();
+                if (waittime == 0) {
+                    waittime = 300;
+                } else {
+                    if (waittime % 10 == 0) {
+                        tower.Exp();
+                    }
                     waittime--;
                 }
                 break;
@@ -595,16 +613,19 @@ public class Instruccion {
 
     }
 
-    void Paint(Graphics g, int i
+    void PaintMouse(Graphics g, int i
     ) {
         switch (i) {
             case 0:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
                 g.setColor(new Color(16769536));
                 g.drawString("Welcome to the tutorial", 350, 100);
-                g.drawString("Lets start by selecting this tower", 270, 150);
+                g.drawString("Lets start by clicking this tower", 270, 150);
                 g.setColor(Color.red);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
                 g.drawRect(1268, 121, 30, 30);
+                g2.setStroke(new BasicStroke(1));
                 break;
             case 2:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -613,7 +634,10 @@ public class Instruccion {
                 g.drawString("Now, let's put it here to protect", 250, 150);
                 g.drawString("ourselves for incomming badies", 250, 200);
                 g.setColor(Color.red);
+                g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
                 g.drawRect(128, 301, 30, 30);
+                g2.setStroke(new BasicStroke(1));
                 break;
             case 5:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -622,6 +646,7 @@ public class Instruccion {
                 g.drawString("within the range of our turret", 270, 200);
                 g.drawString("Just sit back and", 270, 250);
                 g.drawString("let the turret handle business", 270, 300);
+                g.drawString("Click anywhere to continue", 500, 700);
                 break;
             case 8:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -631,7 +656,10 @@ public class Instruccion {
                 g.drawString("Lets put a mine here so it won't", 270, 250);
                 g.drawString("go any further", 270, 300);
                 g.setColor(Color.red);
+                g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
                 g.drawRect(1298, 301, 30, 30);
+                g2.setStroke(new BasicStroke(1));
                 break;
             case 10:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -641,7 +669,10 @@ public class Instruccion {
                 g.drawString("Lets put a mine here so it won't", 270, 250);
                 g.drawString("go any further", 270, 300);
                 g.setColor(Color.red);
+                g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
                 g.drawRect(698, 391, 30, 30);
+                g2.setStroke(new BasicStroke(1));
                 break;
             case 14:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -650,6 +681,7 @@ public class Instruccion {
                 g.drawString("place a turret and a mine", 270, 200);
                 g.drawString("And looks like your turret", 270, 250);
                 g.drawString("got some XP from that shot", 270, 300);
+                g.drawString("Click anywhere to continue", 500, 700);
                 break;
             case 15:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -658,6 +690,7 @@ public class Instruccion {
                 g.drawString("Note: its that green bar that's", 270, 200);
                 g.drawString("filling up right now above", 270, 250);
                 g.drawString("the turret", 270, 300);
+                g.drawString("Click anywhere to continue", 500, 700);
                 break;
             case 16:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -666,6 +699,7 @@ public class Instruccion {
                 g.drawString("The bar on the side of the tower", 270, 200);
                 g.drawString("is its cooldown meter, meaning", 270, 250);
                 g.drawString("it won't shoot until its empty", 270, 300);
+                g.drawString("Click anywhere to continue", 500, 700);
                 break;
             case 17:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
@@ -674,6 +708,11 @@ public class Instruccion {
                 g.drawString("XP, an upgrade is available", 250, 200);
                 g.drawString("The left upgrade focuses on Shots/m", 250, 250);
                 g.drawString("and the right focuses on power", 250, 300);
+                g.drawString("Click anywhere to continue", 500, 700);
+                g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(8));
+                g.drawRect(1208, 458, 150, 74);
+                g2.setStroke(new BasicStroke(1));
                 break;
             case 18:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
