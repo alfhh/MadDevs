@@ -17,6 +17,7 @@ public class Bullet extends Base {
     int distance = 45; // Distancia recorrida antes de desaparecer
     int playerid = 1; //Dueño de la bala
     int towernum; // numero de indice de la torreta
+    boolean watower; //balas penetradoras
 
     
     public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, double ang, int range, int pl, int t) {
@@ -92,4 +93,18 @@ public class Bullet extends Base {
     int getTower(){
         return towernum;
     }
+    
+    //Metodo para confirmar que una bala es de watulio
+    void setWatower()
+    {
+        watower = true;
+    }
+    
+    //Metodo para saber si una bala es de watulio
+    boolean getWatower()
+    {
+        return watower;
+    }
+    
+    
 }

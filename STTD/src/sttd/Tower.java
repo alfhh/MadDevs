@@ -156,6 +156,10 @@ public class Tower extends Base {
     // Metodo que suma experiencia
     void Exp() {
         if (exp < this.getMAXExp()) {
+            if(isBuffed())
+            {
+               exp++; 
+            }
             exp++;
         }
     }
