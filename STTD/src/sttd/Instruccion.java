@@ -52,7 +52,7 @@ public class Instruccion {
                 i++;
                 break;
             case 8:
-                if (new Rectangle(1298, 301, 30, 30).contains(new Point(x, y))) {
+                if (new Rectangle(1268, 361, 30, 30).contains(new Point(x, y))) {
                     i++;
                 }
                 break;
@@ -658,7 +658,7 @@ public class Instruccion {
                 g.setColor(Color.red);
                 g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(8));
-                g.drawRect(1298, 301, 30, 30);
+                g.drawRect(1268, 361, 30, 30);
                 g2.setStroke(new BasicStroke(1));
                 break;
             case 10:
