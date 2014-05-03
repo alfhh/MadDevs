@@ -25,6 +25,7 @@ public class Enemy extends Base {
     int target = 0; // enemigo a apuntar
     int health = 100; //Vida
     int lifetime = 0; //tiempo de vida
+    int slow = 1; //mutliplier para alentarlo
     
 
     public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
@@ -49,7 +50,7 @@ public class Enemy extends Base {
 
     //Metodo para obtener el angulo de la enemigo
     int getSpeed() {
-        return speed;
+        return speed * slow;
     }
 
     //Metodo para asignar el angulo de la enemigo
@@ -64,6 +65,23 @@ public class Enemy extends Base {
 
     //Metodo para asignar el angulo de la enemigo
     void setHealth(int h) {
+        health = h;
+    }
+    
+    //Saber si esta debilitado
+    boolean getSlow() {
+        if (slow < 1)
+        {
+        return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //Metodo para asignar el angulo de la enemigo
+    void setSlow(int h) {
         health = h;
     }
     
