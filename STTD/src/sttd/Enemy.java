@@ -24,6 +24,7 @@ public class Enemy extends Base {
     int value; //Valor de venta de la enemigo
     int target = 0; // enemigo a apuntar
     int health = 100; //Vida
+    int basehealth; //Vida inicial
     int lifetime = 0; //tiempo de vida
     int slow = 1; //mutliplier para alentarlo
     
@@ -35,8 +36,15 @@ public class Enemy extends Base {
         start = new Point(posX, posY);
         speed = sp;
         health = hp;
+        basehealth = hp;
         
     }
+    
+    //Metodo para obtener el tipo del enemigo
+    double getType() {
+        return type;
+    }
+
 
     //Metodo para obtener el angulo de la enemigo
     double getAngle() {
@@ -56,6 +64,16 @@ public class Enemy extends Base {
     //Metodo para asignar el angulo de la enemigo
     void setSpeed(int s) {
         speed = s;
+    }
+    
+    //Metodo para obtener el angulo de la enemigo
+    int getBaseHealth() {
+        return basehealth;
+    }
+
+    //Metodo para asignar el angulo de la enemigo
+    void setBaseHealth(int h) {
+        basehealth = h;
     }
     
     //Metodo para obtener el angulo de la enemigo

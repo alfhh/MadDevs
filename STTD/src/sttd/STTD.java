@@ -54,9 +54,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private Animacion animFuerte; // Animacion de la torre DualFuerte
     private Animacion animQuad; // Animacion de la torre Quadrupeda
     private Animacion animLaser; // Animacion de la torre SniperLaser
-    private Animacion animEnemigo; // Animacion del enemigo
     private Animacion animBala; // Animacion del enemigo
     private Animacion animBuff; // Animacion de la torre de buff
+    
+    private Animacion animAwing; // Animacion del Awing
+    private Animacion animYwing; // Animacion del Ywing
+    private Animacion animXwing; // Animacion del Xwing
 
     private LinkedList<Tower> tower; // Lista de las Torres
     private LinkedList<Point> levelstart; // Lista de los puntos de comienzo del mapa
@@ -78,7 +81,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int basex; // marca la localizacion en x de la base
     private int basey; // marca la localizacion en y de la base
     private double animrand; //diferentes animaciones
+    
+    
     private int wavecount; // numero de malos por oleada
+    //numero de malos por tipo
+    private LinkedList<Integer> wavecountarr; // Lista de las imagenes de las torres
+    private int wavecountx; // numero de malos por oleada de xwing
+    private int wavecounty; // numero de malos por oleada de ywing
+    private int wavecounta; // numero de malos por oleada de awing
+    private String wavetype; //Nombre de la wave
+    
+    
     private int wave; // numero de oleada
     private int wavebegin; // tiempo antes que empieze la oleada
     private int towerselect; // ID que marca el indice de la torreta seleccionada
@@ -580,8 +593,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         // Imagen de los enemigos
         Image e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ywing.png"));
-        animEnemigo = new Animacion();
-        animEnemigo.sumaCuadro(e, 100);
+        animYwing = new Animacion();
+        animYwing.sumaCuadro(e, 100);
+        e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/xwing.jpg"));
+        animXwing = new Animacion();
+        animXwing.sumaCuadro(e, 100);
+        e = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/awing.png"));
+        animAwing = new Animacion();
+        animAwing.sumaCuadro(e, 100);
 
         tower = new LinkedList<Tower>();
         levelstart = new LinkedList<Point>();
@@ -590,6 +609,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         mine = new LinkedList<Mine>();
         bullet = new LinkedList<Bullet>();
         lasers = new LinkedList<Laser>();
+        wavecountarr = new LinkedList<Integer>();
+        
+
 
         Thread th = new Thread(this);
         th.start();
@@ -825,7 +847,64 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             countx--;
             if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
                 Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
-                wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animEnemigo, 1, 6, (50 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                if (wave < 0)
+                {
+                  wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                }
+                else
+                {
+                    //Cual enemigo va a salir?
+                   int randome = (int)(Math.random()*3); 
+                   if(wavecounta + wavecountx > 0)
+                   {
+                        switch (randome) {
+                            case 0:
+                                if (wavecounta > 0) {
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                    wavecounta--;
+                                } else {
+                                    if (wavecountx > 0) {
+                                        wavecountx--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                    } else {
+                                        wavecounty--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                    }
+                                }
+                            break;
+                                 case 1:
+                                if (wavecounty > 0) {
+                                    wavecounty--;
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                    
+                                } else {
+                                    if (wavecountx > 0) {
+                                        wavecountx--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                    } else {
+                                        wavecounta--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                    }
+                                }
+                            break;
+                            default:
+                                if (wavecountx > 0) {
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                     wavecountx--;
+                                } else {
+                                    if (wavecounta > 0) {
+                                        wavecounta--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                    } else {
+                                        wavecounty--;
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                    }
+                                }
+                            break;
+                        }
+                    }
+
+                }
                 countx = 75;
                 wavecount--;
             }
@@ -1046,13 +1125,28 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (wavecount == 0 && wrench.isEmpty()) {
                 wavego = false;
                 wavebegin = 499;
+                //manejo d
             }
         } else {
             if (wavebegin == 0) {
                 wavego = true;
                 countx = 100;
                 wave++;
+                //Decir cuantos enemigos van a salir
                 wavecount = 19 + wave;
+                if (wave < 0)
+                {
+                wavecountx = wavecount;  
+                }
+                else
+                {
+                wavecounty = (int)(Math.random() * wavecount/5)+1;
+                wavecounta = (int)(Math.random() * wavecount/5)+1;
+                wavecountx = wavecount - wavecounty - wavecountx;
+                               
+                }
+                
+                
             } else {
                 if (life != 0) {
                     wavebegin--;
@@ -1580,7 +1674,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                       g.drawString("Shots/m: " + (int) ((double) 60 / ((double) t.getRate() * 20 / 1000)), 1245, 515);
                     }
                     g.drawString("Range: " + (int) t.getRange(), 1259, 500);
-                    
                 }
             }
             g.setColor(Color.red);
@@ -1610,7 +1703,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() * t.getAncho() / t.getMAXExp(), 1);
                 }
                 if (towerselect == i) {
-                    if (t.getExp() >= t.getMAXExp()) {
+                    if (t.getExp() >= t.getMAXExp() && t.getId()<6) {
                         g2d.setFont(new Font("Consolas", Font.BOLD, 16));
                         g2d.setColor(Color.black);
                         g2d.drawString("UPGRADE!!!", 1240, 470);
@@ -1692,12 +1785,24 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 
             }
+            //dibujar vida de los enemigos y los enemigos
             for (int i = 0; i < wrench.size(); i++) {
                 Enemy t = (Enemy) wrench.get(i);
                 g2d.setColor(Color.red);
                 g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
-                g2d.setColor(Color.green);
-                g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.health * t.getAncho() / (50 + ((int) Math.pow(wave - 1, 2))), 1);
+                if(t.getType() == 1)
+                {
+                 g2d.setColor(Color.green);   
+                }
+                if(t.getType() == 2)
+                {
+                 g2d.setColor(Color.yellow);   
+                }
+                if(t.getType() == 3)
+                {
+                 g2d.setColor(Color.blue);   
+                }                
+                g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.health * t.getAncho() / t.getBaseHealth(), 1);
                 AffineTransform z = new AffineTransform();
                 z.translate(t.getPosX(), t.getPosY());
                 z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
