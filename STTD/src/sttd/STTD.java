@@ -102,7 +102,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int player2money = 0;
     private int introtimer = 330; // variable que marca el intro del juego
 
-    private SoundClip song; // cancion del juego
+    private SoundClip intro; // cancion del juego
+    private SoundClip lost; // cancion de perder
+    private SoundClip instrsong; // cancion del tutorial
+    private SoundClip gamesong; // cancion de Marcha imperial
+    private SoundClip gamesong1; // cancion del Duel of Fates
 
     private AffineTransform identidad; // Variable tipo AffineTransform
     private Instruccion instruccion; // Objeto usado para las instrucciones
@@ -115,6 +119,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean bmine; // booleano que muestra si seleccionaron una mina
     private boolean lose; // booleano que muestra si el jugador perdio
     private boolean pause; // booleano que pausa el juego
+    private boolean music; // booleano que abilita la musica
+    private boolean fx; // booleano que abilita los effectos especiales
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -448,7 +454,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         }
                     }
                     if (towerid == 0) {
-                        if (new Rectangle(1261, 361, 30, 30).contains(e.getPoint())) {
+                        if (new Rectangle(1268, 361, 30, 30).contains(e.getPoint())) {
                             //Mina
                             bmine = true;
                             Animacion animMine; // Animacion de la mina 
@@ -497,7 +503,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         setTitle("Star Wars: Tower Defense");
         rotacion = Math.PI / 60;
         towerid = 0;
-        main = true;
+        main = false;
         instr = false;
         menu = false;
         countx = 50;
@@ -505,7 +511,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         wavego = false;
         wavecount = 0;
         wave = 0;
-        wavebegin = 50;
+        wavebegin = 750;
         bmine = false;
         lifeini = 20;
         life = lifeini;
@@ -514,7 +520,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         player1money = 0;
         player2money = 0;
         instruccion = new Instruccion();
-        song = new SoundClip("sounds/introMedley.wav");
+        intro = new SoundClip("sounds/introMedley.wav");
+        lost = new SoundClip("sounds/lose.wav");
+        instrsong = new SoundClip("sounds/tutorial.wav");
+        gamesong = new SoundClip("sounds/duel.wav");
+        gamesong1 = new SoundClip("sounds/march.wav");
+        music = true;
+        fx = true;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -627,14 +639,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void run() {
         //Guarda el tiempo actual del sistema
         tiempoActual = System.currentTimeMillis();
-//        song.play();
+        intro.play();
         while (true) {
-            if (song.getClip().getLongFramePosition() == song.getClip().getFrameLength() - 1) {
-
-            }
+//            if (intro.getClip().getLongFramePosition() == intro.getClip().getFrameLength() - 1) {
+//
+//            }
             if (introtimer > 0) {
                 introtimer--;
             } else if (introtimer == 0) {
+                main = true;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
                 introtimer--;
             }
@@ -648,6 +661,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     instrMouse = -1;
                     instr = false;
                     main = true;
+                    instrsong.stop();
+                    intro.play();
                     background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
                 }
             }
@@ -721,7 +736,21 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      * This method updates..
      */
     public void actualiza() {
+        if (music) {
+            if (gamesong1.getClip().getFrameLength() == gamesong1.getClip().getFramePosition()
+                    || gamesong.getClip().getFrameLength() == gamesong.getClip().getFramePosition()) {
+                if (Math.random() * 2 > 1) {
+                    gamesong.getClip().setFramePosition(0);
+                    gamesong.stop();
+                    gamesong1.play();
+                } else {
+                    gamesong1.getClip().setFramePosition(0);
+                    gamesong1.stop();
+                    gamesong.play();
 
+                }
+            }
+        }
         // para actualizar la vida del laser
         for (int i = 0; i < lasers.size(); i++) {
             Laser l = (Laser) lasers.get(i);
@@ -990,6 +1019,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (life == 0) {
                     game = false;
                     lose = true;
+                    gamesong.stop();
+                    gamesong1.stop();
+                    lost.play();
                 }
             }
 
@@ -1171,20 +1203,19 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     }
 
     public void keyTyped(KeyEvent e) {
-        if (e.getID() == KeyEvent.VK_I) {
+
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
             if (game) {
                 game = false;
                 pause = true;
-            }
-            if (pause) {
+            } else if (pause) {
                 game = true;
                 pause = false;
             }
         }
-    }
-
-    public void keyPressed(KeyEvent e) {
-
     }
 
     public void keyReleased(KeyEvent e) {
@@ -1207,7 +1238,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
 
         if (pause) {
-
+            if (new Rectangle(600, 190, 52, 49).contains(e.getPoint())) {
+                music = !music;
+                if (music) {
+                    if (gamesong.getClip().getFramePosition() > gamesong1.getClip().getFramePosition()) {
+                        gamesong.play();
+                    } else {
+                        gamesong1.play();
+                    }
+                } else {
+                    gamesong.stop();
+                    gamesong1.stop();
+                }
+            }
+            if (new Rectangle(600, 260, 52, 49).contains(e.getPoint())) {
+                fx = !fx;
+            }
         }
         if (towerid > 0) {
             Tower t = (Tower) tower.getLast();
@@ -1241,6 +1287,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             if (new Rectangle(291, 422, 186, 52).contains(e.getPoint()) && instrMouse == -1) {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                intro.stop();
+                instrsong.setLooping(true);
+                instrsong.play();
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -1301,6 +1350,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             Rectangle rect = new Rectangle(139, 232, 352, 164);
             if (rect.contains(e.getPoint())) {
+                intro.stop();
+                gamesong1.play();
                 //nivel 1
                 game = true;
                 menu = false;
@@ -1337,6 +1388,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             rect.setLocation(879, 232);
             if (rect.contains(e.getPoint())) {
+                intro.stop();
+                gamesong1.play();
                 //Nivel 2
                 game = true;
                 menu = false;
@@ -1375,6 +1428,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             rect.setLocation(139, 496);
             if (rect.contains(e.getPoint())) {
+                intro.stop();
+                gamesong1.play();
                 //Nivel 3
                 game = true;
                 menu = false;
@@ -1412,6 +1467,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             rect.setLocation(879, 496);
             if (rect.contains(e.getPoint())) {
+                intro.stop();
+                gamesong1.play();
                 //nivel 4
                 game = true;
                 menu = false;
@@ -1450,6 +1507,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         if (lose) {
+            lost.stop();
+            intro.play();
             lose = false;
             tower.clear();
             mine.clear();
@@ -1609,6 +1668,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.drawString("" + wave, 1312, 437);
             //Decirle al jugador que perdio
             g.setFont(new Font("Consolas", Font.PLAIN, 100));
+            g.setColor(Color.red);
             g.drawString("YOU LOST", 400, 400);
             g.setFont(new Font("Consolas", Font.PLAIN, 50));
             g.drawString("Click anywhere to return to the main menu", 100, 450);
@@ -1632,7 +1692,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g2.setStroke(new BasicStroke(1));
                     g2.draw(new Line2D.Float(l.getPosX(), l.getPosY(), l.getEndX(), l.getEndY()));
                 }
-
             }
             //mostrar dinero
             g.setFont(new Font("Consolas", Font.PLAIN, 22));
@@ -1825,6 +1884,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g2d.transform(z.createInverse());
                 } catch (NoninvertibleTransformException e) {
                     //...
+                }
+            }
+            if (pause) {
+                g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/pausa.jpg")), 400, 31, this);
+                if (music) {
+                    g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/check.png")), 600, 190, this);
+                } else {
+                    g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/uncheck.png")), 600, 190, this);
+                }
+                if (fx) {
+                    g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/check.png")), 600, 260, this);
+
+                } else {
+                    g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/uncheck.png")), 600, 260, this);
                 }
             }
         }
