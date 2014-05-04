@@ -101,8 +101,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int instrMouse; // Marca los pasos de las instrucciones
     private long tiempoActual;
     private long tiempoInicial;
-    private int player1money = 0;
-    private int player2money = 0;
+    private int player1money = 400;
+    private int player2money = 400;
     private int introtimer = 330; // variable que marca el intro del juego
 
     private SoundClip intro; // cancion del juego
@@ -418,45 +418,69 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     if (!bmine) {
                         if (new Rectangle(1268, 121, 30, 30).contains(e.getPoint())) {
                             //Torre normal
+                            if(player1money >= 100)
+                            {
                             towerid = 3;
                             tower.add(new Tower(e.getX(), e.getY(), animNormal, towerid, 1, 15, 25, 50, 100, 90, false));
                         }
+                        }
                         if (new Rectangle(1238, 181, 30, 30).contains(e.getPoint())) {
                             //Torre dual
+                            if(player1money >= 500)
+                            {
                             towerid = 4;
-                            tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 20, 50, 12, 400, 100, false));
+                            tower.add(new Tower(e.getX(), e.getY(), animDual, towerid, 1, 20, 50, 12, 500, 100, false));
+                        }
                         }
                         if (new Rectangle(1298, 181, 30, 30).contains(e.getPoint())) {
                             //Torre sniper
+                            if(player1money >= 420)
+                            {
                             towerid = 5;
-                            tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 30, 150, 75, 400, 180, false));
+                            tower.add(new Tower(e.getX(), e.getY(), animSniper, towerid, 1, 30, 150, 75, 420, 180, false));
+                        }
                         }
                         if (new Rectangle(1208, 241, 30, 30).contains(e.getPoint())) {
                             //Torre quad
+                            if(player1money >= 800)
+                            {
                             towerid = 6;
-                            tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 27, 30, 3, 1600, 120, false));
+                            tower.add(new Tower(e.getX(), e.getY(), animQuad, towerid, 1, 27, 30, 3, 800, 120, false));
+                        }
                         }
                         if (new Rectangle(1268, 241, 30, 30).contains(e.getPoint())) {
                             //Torre dual fuerte
+                            if(player1money >= 900)
+                            {
                             towerid = 7;
-                            tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 36, 100, 12, 1600, 160, false));
+                            tower.add(new Tower(e.getX(), e.getY(), animFuerte, towerid, 1, 36, 100, 12, 900, 160, false));
+                        }
                         }
                         if (new Rectangle(1328, 241, 30, 30).contains(e.getPoint())) {
                             //Torre laser
+                            if(player1money >= 1050)
+                            {
                             towerid = 8;
-                            tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 36, 600, 75, 1600, 250, false));
-                        }
+                            tower.add(new Tower(e.getX(), e.getY(), animLaser, towerid, 1, 36, 600, 75, 1050, 250, false));
+                            }
+                            }
                         if (new Rectangle(1238, 301, 30, 30).contains(e.getPoint())) {
                             //torre de watulion
+                            if(player1money >= 2000)
+                            {
                             watulioCreation(e.getX(), e.getY());
+                            }
                         }
                         if (new Rectangle(1298, 301, 30, 30).contains(e.getPoint())) {
                             //torre de buff
+                            if(player1money >= 2000)
+                            {
                             towerid = 10;
                             tower.add(new Tower(e.getX(), e.getY(), animBuff, towerid, 1, 36, 0, 75, 1600, 150, true));
                         }
+                        }
                     }
-                    if (towerid == 0 && !bmine) {
+                    if (towerid == 0 && !bmine && player1money >= 410) {
                         if (new Rectangle(1268, 361, 30, 30).contains(e.getPoint())) {
                             //Mina
                             bmine = true;
@@ -564,6 +588,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         setSize(1368, 730);
         setTitle("Star Wars: Tower Defense");
         rotacion = Math.PI / 60;
+        player1money = 400;
+        player2money = 400;
         towerid = 0;
         main = false;
         score1 = 0;
@@ -580,8 +606,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         life = lifeini;
         towerselect = -1;
         instrMouse = -1;
-        player1money = 0;
-        player2money = 0;
         instruccion = new Instruccion();
         intro = new SoundClip("sounds/introMedley.wav");
         lost = new SoundClip("sounds/lose.wav");
@@ -771,6 +795,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         m.setExp(117);
                     if(e.getType() < 3)
                     {
+                      player1money+= 20;
                       wrench.remove(i);
                     }
                     else
@@ -1173,6 +1198,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 // Si el enemigo no tiene vida;
                 if (w.getHealth() <= 0) {
+                    player1money+= wrench.get(i).getBaseHealth()/5;
                     wrench.remove(i); // Desaparece
                 }
                 // Si el enemigo llega a la base
@@ -1418,6 +1444,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (t.getPosX() < 1180) {// se planta una torreta en la grid
                 if(canput)
                 {
+                player1money -= t.getValue();
                 towerid = 0;
                 t.setSet(true);
                 grid[(t.getPosY() - 30) / 30][(t.getPosX() - 8) / 30] = t.getId();
@@ -1432,6 +1459,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (m.getPosX() < 1180) {// se planta una torreta en la grid
                 if(canput)
                 {
+                player1money -= 410;
                 bmine = false;
                 m.setSet(true);
                 }
@@ -1690,6 +1718,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             lose = false;
             tower.clear();
             mine.clear();
+            player1money = 400;
+            player2money = 400;
             wrench.clear();
             rotacion = Math.PI / 60;
             towerid = 0;
@@ -1784,6 +1814,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 tower.clear();
                 mine.clear();
                 wrench.clear();
+                player1money = 400;
+                player2money = 400;
                 rotacion = Math.PI / 60;
                 towerid = 0;
                 main = true;
@@ -1931,7 +1963,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setFont(new Font("Consolas", Font.PLAIN, 22));
             g.setColor(new Color(1346085));
             g.drawString("" + (int) score1, 1296, 62);
-            g.drawString("" + player1money, 1288 + 8, 54 + 30);
+            g.drawString("" + (int)player1money, 1288 + 8, 54 + 30);
             g.setColor(Color.red);
             //mostrar numero de la wave
             g.setFont(new Font("Consolas", Font.PLAIN, 30));
@@ -1968,7 +2000,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setFont(new Font("Consolas", Font.PLAIN, 22));
             g.setColor(new Color(1346085));
             g.drawString("" + (int) score1, 1296, 62);
-            g.drawString("" + player1money, 1288 + 8, 54 + 30);
+            g.drawString("" + (int)player1money, 1288 + 8, 54 + 30);
             //mostrar numero de la wave
             g.setFont(new Font("Consolas", Font.PLAIN, 30));
             g.setColor(new Color(1346085));

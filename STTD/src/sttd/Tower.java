@@ -135,6 +135,16 @@ public class Tower extends Base {
     boolean getSet() {
         return set;
     }
+    
+    //Metodo para modificar el valor
+    void setValue(int s) {
+        value = s;
+    }
+
+    //Metodo para ver si el valor
+    int getValue() {
+        return value;
+    }
 
     //Metodo para ver si esta bufiada
     boolean isBuffed() {
