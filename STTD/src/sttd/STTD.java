@@ -731,7 +731,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(20);
+                Thread.sleep(2);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
@@ -1900,7 +1900,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
                 //dibujar atributos de la torre seleccionada
-                if (towerselect == i && t.getExp() < t.getMAXExp()) {
+                if (towerselect == i && (t.getExp() < t.getMAXExp() || t.getId()>5)) {
                     g.setFont(new Font("Consolas", Font.BOLD, 12));
                     g.setColor(Color.black);
                     if (t.getId() == 10) {
