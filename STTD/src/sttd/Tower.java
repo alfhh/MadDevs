@@ -13,6 +13,7 @@ import java.awt.Image;
  * @author LuisJuan
  */
 public class Tower extends Base {
+
     double buffmultiplier = 1; //termina que tanto se va a multiplicar el daño y rof de la nave
     boolean set; // Boleano que representa se la torreta ya esta puesta
     double angle = 0; //angulo de la torre
@@ -84,7 +85,7 @@ public class Tower extends Base {
 
     //Metodo para obtener el daño de la torre
     int getRate() {
-        return (int)(rateoffire/ buffmultiplier);
+        return (int) (rateoffire / buffmultiplier);
     }
 
     //Metodo para asignar el daño de la torre
@@ -134,19 +135,15 @@ public class Tower extends Base {
     boolean getSet() {
         return set;
     }
-    
+
     //Metodo para ver si esta bufiada
     boolean isBuffed() {
-        if(buffmultiplier > 1)
-        {
-        return true;
-        }
-        else
-        {
-        return false;
+        if (buffmultiplier > 1) {
+            return true;
+        } else {
+            return false;
         }
     }
-
 
     //Metodo para obtener el tipo de la torre
     int getId() {
@@ -156,11 +153,17 @@ public class Tower extends Base {
     // Metodo que suma experiencia
     void Exp() {
         if (exp < this.getMAXExp()) {
-            if(isBuffed())
-            {
-               exp++; 
+            if (towerid > 3) {
+                if (isBuffed()) {
+                    exp += damage / 10;
+                }
+                exp += damage / 10;
+            } else {
+                if (isBuffed()) {
+                    exp++;
+                }
+                exp++;
             }
-            exp++;
         }
     }
 
@@ -173,7 +176,7 @@ public class Tower extends Base {
     void setExp(int e) {
         exp = e;
     }
-    
+
     // Metodo para obtener el multiplier
     double getMul() {
         return buffmultiplier;
@@ -189,7 +192,11 @@ public class Tower extends Base {
         if (towerid >= 6) {
             return -1;
         } else {
-            return (towerid / 4 * 300 + 100);
+            if (towerid > 3) {
+                return 5000;
+            } else {
+                return 100;
+            }
         }
     }
 
@@ -201,8 +208,9 @@ public class Tower extends Base {
             case 4:
                 speed = 20;
                 damage = 50;
-                rateoffire = 25;
+                rateoffire = 12;
                 range = 100;
+                value = 500;
                 exp = 0;
                 a = new Animacion();
                 a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png")), 100);
@@ -210,19 +218,21 @@ public class Tower extends Base {
                 break;
             case 6:
                 speed = 27;
-                damage = 100;
-                rateoffire = 12;
+                damage = 30;
+                rateoffire = 3;
                 range = 120;
+                value = 800;
                 exp = 0;
                 a = new Animacion();
                 a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png")), 100);
                 animacion = a;
                 break;
             case 7:
-                speed = 24;
-                damage = 400;
-                rateoffire = 50;
-                range = 120;
+                speed = 36;
+                damage = 100;
+                rateoffire = 12;
+                range = 160;
+                value = 900;
                 exp = 0;
                 a = new Animacion();
                 a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 100);
@@ -240,6 +250,7 @@ public class Tower extends Base {
                 speed = 30;
                 damage = 150;
                 rateoffire = 75;
+                value = 420;
                 range = 180;
                 exp = 0;
                 a = new Animacion();
@@ -247,20 +258,22 @@ public class Tower extends Base {
                 animacion = a;
                 break;
             case 7:
-                speed = 24;
-                damage = 400;
-                rateoffire = 50;
-                range = 120;
+                speed = 36;
+                damage = 100;
+                rateoffire = 12;
+                range = 160;
+                value = 900;
                 exp = 0;
                 a = new Animacion();
                 a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 100);
                 animacion = a;
                 break;
             case 8:
-                speed = 30;
+                speed = -1;
                 damage = 600;
                 rateoffire = 75;
                 range = 250;
+                value = 1050;
                 exp = 0;
                 a = new Animacion();
                 a.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png")), 100);
