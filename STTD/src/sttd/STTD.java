@@ -732,7 +732,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(2);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
@@ -2059,11 +2059,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 
                 if (!canput)
                     {
+                     if(towerid != 0)
+                     {
                      Tower t2 = (Tower) tower.getLast();
                      g2d.setColor(Color.red);
                      g2d.setStroke(new BasicStroke(3));
                      g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX()+t2.getAncho(), t2.getPosY()+t.getAlto()));
                      g2d.draw(new Line2D.Float(t2.getPosX()+t2.getAncho(), t2.getPosY(), t2.getPosX(),  t2.getPosY()+t.getAlto()));
+                     }
+                     else
+                     {
+                     Mine b2 = (Mine) mine.getLast();
+                     g2d.setColor(Color.red);
+                     g2d.setStroke(new BasicStroke(3));
+                     g2d.draw(new Line2D.Float(b2.getPosX(), b2.getPosY(), b2.getPosX()+b2.getAncho(), b2.getPosY()+b2.getAlto()));
+                     g2d.draw(new Line2D.Float(b2.getPosX()+b2.getAncho(), b2.getPosY(), b2.getPosX(),  b2.getPosY()+b2.getAlto()));
+                     }
                     }
 
             }
