@@ -736,7 +736,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(2);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
@@ -1976,6 +1976,19 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             for (int i = 0; i < mine.size(); i++) {
                 Mine m = (Mine) mine.get(i);
                 g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
+                if (!canput)
+                    {
+                     Mine t2 = (Mine) mine.getLast();
+                     if(!t2.getSet())
+                     {
+                     Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
+                     g2d.setColor(Color.red);
+                     g2d.setStroke(new BasicStroke(3));
+                     g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX()+t2.getAncho(), t2.getPosY()+t2.getAlto()));
+                     g2d.draw(new Line2D.Float(t2.getPosX()+t2.getAncho(), t2.getPosY(), t2.getPosX(),  t2.getPosY()+t2.getAlto()));
+                     g2d.setStroke(new BasicStroke(1));
+                     }
+                     }
             }
 
             for (int i = 0; i < tower.size(); i++) {
@@ -2113,11 +2126,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 if (!canput)
                     {
                      Tower t2 = (Tower) tower.getLast();
+                     if(!t2.getSet())
+                     {
                      g2d.setColor(Color.red);
                      g2d.setStroke(new BasicStroke(3));
-                     g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX()+t2.getAncho(), t2.getPosY()+t.getAlto()));
-                     g2d.draw(new Line2D.Float(t2.getPosX()+t2.getAncho(), t2.getPosY(), t2.getPosX(),  t2.getPosY()+t.getAlto()));
-                    }
+                     g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX()+t2.getAncho(), t2.getPosY()+t2.getAlto()));
+                     g2d.draw(new Line2D.Float(t2.getPosX()+t2.getAncho(), t2.getPosY(), t2.getPosX(),  t2.getPosY()+t2.getAlto()));
+                     }
+                     }
 
             }
             //dibujar vida de los enemigos y los enemigos
