@@ -398,7 +398,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Upgrade de las torres
                 if (towerselect >= 0 && e.getY() > 458 && e.getY() < 532) {
                     Tower t = (Tower) tower.get(towerselect);
-                    if (t.getExp() == t.getMAXExp()) {
+                    if (t.getExp() >= t.getMAXExp()) {
                         if (e.getX() > 1284) {
                             t.getUpgR();
                         } else {
@@ -1761,7 +1761,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Dibujar circulos del rango
                 g.drawOval(t.getPosX() + t.getAncho() / 2 - (int) t.getRange(), t.getPosY() + t.getAlto() / 2 - (int) t.getRange(), (int) t.getRange() * 2, (int) t.getRange() * 2);
                 //dibujar atributos de la torre seleccionada
-                if (towerselect == i && t.getExp() != t.getMAXExp()) {
+                if (towerselect == i && t.getExp() < t.getMAXExp()) {
                     g.setFont(new Font("Consolas", Font.BOLD, 12));
                     g.setColor(Color.black);
                     if (t.getId() == 10) {
@@ -1799,6 +1799,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
                     g2d.setColor(Color.green);
                     g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() * t.getAncho() / t.getMAXExp(), 1);
+                    if (t.getExp() >= t.getMAXExp()) {
+                        g2d.setStroke(new BasicStroke(3));
+                        g.setColor(new Color(1346085));
+                        g2d.drawOval(t.getPosX(), t.getPosY(), t.getAncho(), t.getAlto());
+                    }
                 }
                 if (towerselect == i) {
                     if (t.getExp() >= t.getMAXExp() && t.getId() < 6) {
@@ -1921,7 +1926,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     //...
                 }
             }
-            if (!wavego) {
+            if (!wavego && game) {
                 g.setColor(Color.black);
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
                 g.drawString("Wave starts in: ", 400, 400);
