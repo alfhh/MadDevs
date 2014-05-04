@@ -125,6 +125,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean music; // booleano que abilita la musica
     private boolean fx; // booleano que abilita los effectos especiales
     private boolean canput = false; // ver si se puede poner o no
+    private boolean saveStates; // booleano que muestra los savestates
+    private boolean loadStates; // booleano que muestra los loadstates
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -588,6 +590,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         gamesong1 = new SoundClip("sounds/march.wav");
         music = true;
         fx = true;
+        saveStates = false;
+        loadStates = false;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -1376,6 +1380,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             } else if (pause) {
                 game = true;
                 pause = false;
+                saveStates = false;
+                loadStates = false;
+            }
+        }
+        
+        if (e.getKeyCode() == KeyEvent.VK_C) {
+            if(saveStates) {
+                saveStates = false;
+            }
+            
+            if(loadStates) {
+                loadStates = false;
             }
         }
     }
@@ -1691,8 +1707,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             levelstart.clear();
             background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
         }
+        // Si esta en pausa
         if (pause) {
-            if (new Rectangle(600, 190, 52, 49).contains(e.getPoint())) {
+            if (new Rectangle(600, 190, 52, 49).contains(e.getPoint()) && !saveStates && !loadStates) {
                 music = !music;
                 if (music) {
                     if (gamesong.getClip().getFramePosition() > gamesong1.getClip().getFramePosition()) {
@@ -1705,21 +1722,57 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     gamesong1.stop();
                 }
             }
-            if (new Rectangle(600, 260, 52, 49).contains(e.getPoint())) {
+            if (new Rectangle(600, 260, 52, 49).contains(e.getPoint()) && !saveStates && !loadStates) {
                 fx = !fx;
             }
-            if (new Rectangle(478, 461, 180, 66).contains(e.getPoint())) {
+            if (new Rectangle(478, 461, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
                 //Save State
+                saveStates = true;
             }
-            if (new Rectangle(696, 461, 180, 66).contains(e.getPoint())) {
+            
+            // SAVESTATES ****** Interaciones de SaveStates
+             if(saveStates) {
+                 // Slot 1
+                 if (new Rectangle(468, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Saving Slot 1!");
+                 }
+                 // Slot 2
+                 if (new Rectangle(623, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Saving Slot 2!");
+                 }
+                 // Slot 3
+                 if (new Rectangle(779, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Saving Slot 3!");
+                 }
+             }
+            
+            if (new Rectangle(696, 461, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
                 //Load State
+                loadStates = true;
             }
-            if (new Rectangle(478, 560, 180, 66).contains(e.getPoint())) {
+            
+            // LOADSTATES ****** Interaciones de LoadStates
+             if(loadStates) {
+                 // Slot 1
+                 if (new Rectangle(468, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Loading Slot 1!");
+                 }
+                 // Slot 2
+                 if (new Rectangle(623, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Loading Slot 2!");
+                 }
+                 // Slot 3
+                 if (new Rectangle(779, 193, 123, 123).contains(e.getPoint())){
+                     JOptionPane.showMessageDialog(null," Loading Slot 3!");
+                 }
+             }
+            
+            if (new Rectangle(478, 560, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
                 // Quita la pausa
                 pause = false;
                 game = true;
             }
-            if (new Rectangle(696, 560, 180, 66).contains(e.getPoint())) {
+            if (new Rectangle(696, 560, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
                 // Sale del juego
                 gamesong.stop();
                 gamesong1.stop();
@@ -2135,6 +2188,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                 } else {
                     g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/uncheck.png")), 600, 260, this);
+                }
+                // Se pintan los SaveStates
+                if (saveStates || loadStates) {
+                    g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/SaveStates.png")), 400, 31, this);
                 }
             }
         }
