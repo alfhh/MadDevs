@@ -400,7 +400,7 @@ public class Instruccion {
                 animMine.sumaCuadro(nmine4, 200);
                 animMine.sumaCuadro(nmine5, 200);
                 animMine.sumaCuadro(nmine6, 200);
-                m.add(new Mine((int) p.getX(), (int) p.getY(), animMine, 1));
+                m.add(new Mine((int) p.getX(), (int) p.getY(), animMine, 1,1));
 
                 i++;
                 break;
