@@ -36,12 +36,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 
+
 public class STTD extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     private Graphics dbg; // Graphic Object
     private Graphics dbgtower; // Graphic Object
     private Image dbImage; // Image
     private Image background; // Background Image
+    private Image filter; //hipsters
+    private Image virusimage; //Imagen del virus pa la nave
+    private Image timerimage; //Imagen del timer pa la nave
     private Image imgmenu; // Menu Image
     private Image t; // Torreta Image
     private Font StarJedi; // Fuente de StarJedi
@@ -453,7 +457,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             tower.add(new Tower(e.getX(), e.getY(), animBuff, towerid, 1, 36, 0, 75, 1600, 150, true));
                         }
                     }
-                    if (towerid == 0) {
+                    if (towerid == 0 && !bmine) {
                         if (new Rectangle(1268, 361, 30, 30).contains(e.getPoint())) {
                             //Mina
                             bmine = true;
@@ -474,7 +478,66 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             animMine.sumaCuadro(nmine4, 200);
                             animMine.sumaCuadro(nmine5, 200);
                             animMine.sumaCuadro(nmine6, 200);
-                            mine.add(new Mine(e.getX(), e.getY(), animMine, 1));
+                            mine.add(new Mine(e.getX(), e.getY(), animMine, 1,1));
+                        }
+                        
+                        if (new Rectangle(1328, 361, 30, 30).contains(e.getPoint())) {
+                            //Mina
+                            bmine = true;
+                            Animacion animMine; // Animacion de la mina 
+                            //Imagen de la mina animada
+                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine1.png"));
+                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine2.png"));
+                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine3.png"));
+                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine4.png"));
+                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine5.png"));
+ 
+                            //Se crea la animación
+                            animMine = new Animacion();
+                            animMine.sumaCuadro(nmine1, 100);
+                            animMine.sumaCuadro(nmine2, 100);
+                            animMine.sumaCuadro(nmine3, 100);
+                            animMine.sumaCuadro(nmine4, 100);
+                            animMine.sumaCuadro(nmine5, 100);
+                            animMine.sumaCuadro(nmine4, 100);
+                            animMine.sumaCuadro(nmine3, 100);
+                            animMine.sumaCuadro(nmine2, 100);
+                            mine.add(new Mine(e.getX(), e.getY(), animMine, 1,3));
+                        }
+                        
+                        if (new Rectangle(1208, 361, 30, 30).contains(e.getPoint())) {
+                            //Mina
+                            bmine = true;
+                            Animacion animMine; // Animacion de la mina 
+                            //Imagen de la mina animada
+                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine1.png"));
+                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine2.png"));
+                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine3.png"));
+                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine4.png"));
+                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine5.png"));
+                            Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine6.png"));
+                            Image nmine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine7.png"));
+                            Image nmine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine8.png"));
+                            Image nmine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine9.png"));
+                            Image nmine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine10.png"));
+                            Image nmine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine11.png"));
+                            Image nmine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine12.png"));
+                            
+                            //Se crea la animación
+                            animMine = new Animacion();
+                            animMine.sumaCuadro(nmine1, 200);
+                            animMine.sumaCuadro(nmine2, 200);
+                            animMine.sumaCuadro(nmine3, 200);
+                            animMine.sumaCuadro(nmine4, 200);
+                            animMine.sumaCuadro(nmine5, 200);
+                            animMine.sumaCuadro(nmine6, 200);
+                            animMine.sumaCuadro(nmine7, 200);
+                            animMine.sumaCuadro(nmine8, 200);
+                            animMine.sumaCuadro(nmine9, 200);
+                            animMine.sumaCuadro(nmine10, 200);
+                            animMine.sumaCuadro(nmine11, 200);
+                            animMine.sumaCuadro(nmine12, 200);
+                            mine.add(new Mine(e.getX(), e.getY(), animMine, 1,2));
                         }
                     }
                 }
@@ -511,7 +574,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         wavego = false;
         wavecount = 0;
         wave = 0;
-        wavebegin = 750;
+        wavebegin = 50;
         bmine = false;
         lifeini = 20;
         life = lifeini;
@@ -578,6 +641,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         animIntro.sumaCuadro(in22, 100);
 
         background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/intro.gif"));
+        virusimage = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Status/virus.png"));
+        timerimage = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Status/timer.png"));
+        filter = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/filtro.png"));
         t = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretanormal.png"));
         animNormal = new Animacion();
         animNormal.sumaCuadro(t, 100);
@@ -682,12 +748,33 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     public void checaColision() {
         for (int i = 0; i < wrench.size(); i++) {
             Enemy e = (Enemy) wrench.get(i);
+            for (int j = 0; j < wrench.size(); j++) {
+            Enemy f = (Enemy) wrench.get(j);
+            if (e.getPerimetro().intersects(f.getPerimetro()))
+                    {
+                        if(e.getVirus() && !f.getVirus())
+                        {
+                            f.setVirus();
+                        }
+                    }
+            }
+            e.slowTimer();
+            e.virusTimer();
             for (int j = 0; j < mine.size(); j++) {
                 Mine m = (Mine) mine.get(j);
                 if (m.getSet() && e.getPerimetro().intersects(m.getPerimetro())) {
-                    e.setHealth(e.getHealth() - m.getDam());
-                    m.setExp(117);
                     m.setSet(false);
+                    if(m.getType() == 1)
+                    {
+                        m.setExp(117);
+                    if(e.getType() < 3)
+                    {
+                      wrench.remove(i);
+                    }
+                    else
+                    {
+                        e.setHealth(e.getHealth() -e.getBaseHealth()/(3+(int)(wave/10)));
+                    }
                     Image i1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp1.png"));
                     Image i2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp2.png"));
                     Image i3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp3.png"));
@@ -702,13 +789,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     Image i12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp12.png"));
 
                     Animacion a = new Animacion();
-                    a.sumaCuadro(i1, 100);
-                    a.sumaCuadro(i2, 100);
-                    a.sumaCuadro(i3, 100);
-                    a.sumaCuadro(i4, 100);
-                    a.sumaCuadro(i5, 100);
-                    a.sumaCuadro(i6, 100);
-                    a.sumaCuadro(i7, 100);
+                    a.sumaCuadro(i1, 75);
+                    a.sumaCuadro(i2, 75);
+                    a.sumaCuadro(i3, 75);
+                    a.sumaCuadro(i4, 75);
+                    a.sumaCuadro(i5, 150);
+                    a.sumaCuadro(i6, 150);
+                    a.sumaCuadro(i7, 150);
                     a.sumaCuadro(i8, 100);
                     a.sumaCuadro(i9, 100);
                     a.sumaCuadro(i10, 100);
@@ -716,6 +803,58 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     a.sumaCuadro(i12, 100);
 
                     m.setAnimacion(a);
+                    }
+                    
+                    if(m.getType() == 2)
+                    {
+                    m.setExp(71);
+                    e.setSlow();
+                    e.setHealth(e.getHealth() - m.getDam());
+                    Image i1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp1.png"));
+                    Image i2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp2.png"));
+                    Image i3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp3.png"));
+                    Image i4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp4.png"));
+                    Image i5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp5.png"));
+                    Image i6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/mineexp6.png"));
+
+                    Animacion a = new Animacion();
+                    a.sumaCuadro(i1, 100);
+                    a.sumaCuadro(i2, 100);
+                    a.sumaCuadro(i3, 400);
+                    a.sumaCuadro(i4, 100);
+                    a.sumaCuadro(i5, 100);
+                    a.sumaCuadro(i6, 100);
+
+                    m.setAnimacion(a);
+                    }
+                    
+                    if(m.getType() == 3)
+                    {
+                        m.setExp(117);
+                    e.setVirus();
+                    Image i4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp4.png"));
+                    Image i5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp5.png"));
+                    Image i6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp6.png"));
+                    Image i7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp7.png"));
+                    Image i8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp8.png"));
+                    Image i9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp9.png"));
+                    Image i10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp10.png"));
+                    Image i11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp11.png"));
+                    Image i12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mineexp12.png"));
+
+                    Animacion a = new Animacion();
+                    a.sumaCuadro(i4, 75);
+                    a.sumaCuadro(i5, 150);
+                    a.sumaCuadro(i6, 150);
+                    a.sumaCuadro(i7, 150);
+                    a.sumaCuadro(i8, 100);
+                    a.sumaCuadro(i9, 100);
+                    a.sumaCuadro(i10, 100);
+                    a.sumaCuadro(i11, 100);
+                    a.sumaCuadro(i12, 100);
+
+                    m.setAnimacion(a);
+                    }
 
                 }
             }
@@ -1740,7 +1879,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setColor(Color.green);
             g.fillRect(basex, basey - 3, life * 90 / lifeini, 3);
         }
-
+      g.drawImage(filter, 8, 31, this);
     }
 
     /**
@@ -1770,7 +1909,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             g2d.setFont(new Font("Consolas", Font.BOLD, 12));
                             g2d.setColor(Color.black);
                             if (k == 1) {
-                                g2d.drawString("Power", 1231 + k * 76, 520);
+                                g2d.drawString("Range", 1231 + k * 76, 520);
                             } else {
                                 g2d.drawString("Speed", 1231 + k * 76, 520);
                             }
@@ -1871,6 +2010,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g2d.transform(z.createInverse());
                 } catch (NoninvertibleTransformException e) {
                     //...
+                }
+            }
+            for (int i = 0; i < wrench.size(); i++) {
+                Enemy t = (Enemy) wrench.get(i);
+                if(t.getSlow())
+                {
+                    g.drawImage(timerimage,t.getPosX(),t.getPosY(),this);
+                }
+                if(t.getVirus())
+                {
+                    g.drawImage(virusimage,t.getPosX(),t.getPosY(),this);
                 }
             }
             for (int i = 0; i < bullet.size(); i++) {
