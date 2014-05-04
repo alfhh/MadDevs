@@ -26,7 +26,8 @@ public class Enemy extends Base {
     int health = 100; //Vida
     int basehealth; //Vida inicial
     int lifetime = 0; //tiempo de vida
-    int slow = 1; //mutliplier para alentarlo
+    int slowtimer = 0; //timer del tiempo que se alentara
+    int infectiontimer = 0; //timer del virus
     
 
     public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
@@ -41,54 +42,68 @@ public class Enemy extends Base {
     }
     
     //Metodo para obtener el tipo del enemigo
-    double getType() {
+    int getType() {
         return type;
     }
 
 
-    //Metodo para obtener el angulo de la enemigo
+    //Metodo para obtener el angulo del enemigo
     double getAngle() {
         return angle;
     }
 
-    //Metodo para asignar el angulo de la enemigo
+    //Metodo para asignar el angulo del enemigo
     void setAngle(double a) {
         angle = a;
     }
 
-    //Metodo para obtener el angulo de la enemigo
+    //Metodo para obtener la velocidad del enemigo
     int getSpeed() {
-        return speed * slow;
+        if (slowtimer > 0)
+        {
+         if (slowtimer % 2 == 0)
+        {
+        return speed;
+        }
+        else
+        {
+        return 0;   
+        }
+        }
+        else
+        {
+        return speed;
+        }
     }
 
-    //Metodo para asignar el angulo de la enemigo
+    //Metodo para asignar la velocidad del enemigo
     void setSpeed(int s) {
         speed = s;
     }
     
-    //Metodo para obtener el angulo de la enemigo
+    //Metodo para obtener la vida base del enemigo
     int getBaseHealth() {
         return basehealth;
     }
 
-    //Metodo para asignar el angulo de la enemigo
+    //Metodo para asignar la vida base del enemigo
     void setBaseHealth(int h) {
         basehealth = h;
     }
     
-    //Metodo para obtener el angulo de la enemigo
+    //Metodo para obtener la vida del enemigo
     int getHealth() {
         return health;
     }
 
-    //Metodo para asignar el angulo de la enemigo
+    //Metodo para asignar la vida del enemigo
     void setHealth(int h) {
         health = h;
     }
     
-    //Saber si esta debilitado
+    //Saber si lo alentaron
     boolean getSlow() {
-        if (slow < 1)
+        if (slowtimer > 0)
         {
         return true;
         }
@@ -98,9 +113,55 @@ public class Enemy extends Base {
         }
     }
 
-    //Metodo para asignar el angulo de la enemigo
-    void setSlow(int h) {
-        health = h;
+    //Metodo para asignar el timer de alentarse
+    void setSlow() {
+        slowtimer = 255;
+    }
+    
+        //Metodo para asignar el timer de alentarse
+    void slowTimer() {
+        if(slowtimer > 0)
+        {
+        slowtimer--;
+        }
+    }
+    
+    //Saber si tiene virus
+    boolean getVirus() {
+        if (infectiontimer > 0)
+        {
+        return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    
+    //Metodo para asignar el timer del virus
+    void setVirus() {
+        infectiontimer = 250;
+    }
+    
+        //Metodo para asignar el timer del virus
+    void virusTimer() {
+        if(infectiontimer > 0)
+        {
+        infectiontimer--;
+        if(infectiontimer % 50 == 0)
+        {
+            if((int)health*0.05> 1)
+            {
+             health -= health*0.05;   
+            }
+            else
+            {
+             health--;
+            }
+           
+        }
+        }
     }
     
 

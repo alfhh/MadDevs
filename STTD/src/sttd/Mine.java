@@ -15,11 +15,13 @@ public class Mine extends Base {
     int damage = 25; //Daño de la torre
     int playerid; //Dueño de la torre
     int explosion = 0;
+    int type;
 
-    public Mine(int posX, int posY, Animacion animacion, int pi) {
+    public Mine(int posX, int posY, Animacion animacion, int pi, int t) {
         super(posX, posY, animacion);
         set = false;
         playerid = pi;
+        type = t;
     }
 
     //Metodo para modificar si esta puesta
@@ -35,6 +37,11 @@ public class Mine extends Base {
     //Metodo para ver el daño
     int getDam() {
         return damage;
+    }
+    
+    //Metodo para ver el tipo
+    int getType() {
+        return type;
     }
 
     //Metodo de acceso a explosion
