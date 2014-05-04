@@ -124,6 +124,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean pause; // booleano que pausa el juego
     private boolean music; // booleano que abilita la musica
     private boolean fx; // booleano que abilita los effectos especiales
+    private boolean canput = false; // ver si se puede poner o no
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -946,11 +947,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 1) {
+                        canput = true;
                         //Lo acomoda en la matriz
                         t.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                         t.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
                     }
+                    else
+                    {
+                        canput = false;
+                        // se pone en medio del cursor
+                    t.setPosX((int) b.getX() - t.getAncho() / 2);
+                    t.setPosY((int) b.getY() - t.getAlto() / 2);                       
+                    }
                 } else {
+                    canput = false;
                     // se pone en medio del cursor
                     t.setPosX((int) b.getX() - t.getAncho() / 2);
                     t.setPosY((int) b.getY() - t.getAlto() / 2);
@@ -978,11 +988,27 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             }
                         }
                         if (!over) {
+                            canput = true;
                             m.setPosX(((int) b.getX()) - ((int) b.getX() - 8) % 30);
                             m.setPosY(((int) b.getY()) - ((int) b.getY()) % 30);
                         }
+                        else
+                        {
+                            canput = false;
+                      // se pone en medio del cursor
+                    m.setPosX((int) b.getX() - m.getAncho() / 2);
+                    m.setPosY((int) b.getY() - m.getAlto() / 2);   
+                        }
+                    }
+                    else
+                    {
+                        canput = false;
+                      // se pone en medio del cursor
+                    m.setPosX((int) b.getX() - m.getAncho() / 2);
+                    m.setPosY((int) b.getY() - m.getAlto() / 2);  
                     }
                 } else {
+                    canput = false;
                     // se pone en medio del cursor
                     m.setPosX((int) b.getX() - m.getAncho() / 2);
                     m.setPosY((int) b.getY() - m.getAlto() / 2);
@@ -1374,9 +1400,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (towerid > 0) {
             Tower t = (Tower) tower.getLast();
             if (t.getPosX() < 1180) {// se planta una torreta en la grid
+                if(canput)
+                {
                 towerid = 0;
                 t.setSet(true);
                 grid[(t.getPosY() - 30) / 30][(t.getPosX() - 8) / 30] = t.getId();
+                }
             } else {                // Se remueve la torreta
                 tower.removeLast();
                 towerid = 0;
@@ -1385,8 +1414,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         if (bmine) {
             Mine m = (Mine) mine.getLast();
             if (m.getPosX() < 1180) {// se planta una torreta en la grid
+                if(canput)
+                {
                 bmine = false;
                 m.setSet(true);
+                }
             } else {                // Se remueve la torreta
                 mine.removeLast();
                 bmine = false;
@@ -1945,7 +1977,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     }
                 }
                 if (towerselect == i) {
-                    if (t.getExp() >= t.getMAXExp() && t.getId() < 6) {
+                        if (t.getExp() >= t.getMAXExp() && t.getId() < 6) {
                         g2d.setFont(new Font("Consolas", Font.BOLD, 16));
                         g2d.setColor(Color.black);
                         g2d.drawString("UPGRADE!!!", 1240, 470);
@@ -2024,6 +2056,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 } catch (NoninvertibleTransformException e) {
                     //...
                 }
+                
+                if (!canput)
+                    {
+                     Tower t2 = (Tower) tower.getLast();
+                     g2d.setColor(Color.red);
+                     g2d.setStroke(new BasicStroke(3));
+                     g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX()+t2.getAncho(), t2.getPosY()+t.getAlto()));
+                     g2d.draw(new Line2D.Float(t2.getPosX()+t2.getAncho(), t2.getPosY(), t2.getPosX(),  t2.getPosY()+t.getAlto()));
+                    }
 
             }
             //dibujar vida de los enemigos y los enemigos
