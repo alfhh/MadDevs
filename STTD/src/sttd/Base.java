@@ -68,12 +68,20 @@ public class Base {
         return posY;
     }
 
-    // Metodo que ajusta la imagen del objeto
+    /**
+     * Metodo que modifica la animacion del objeto
+     * 
+     * @param anim es la <code>animacion</code> del objeto.
+     */
     public void setAnimacion (Animacion anim) {
         this.animacion = anim;
     }
 
-    // Metodo que regresa la imagen
+    /**
+     * Metodo que regresa la animacion del objeto
+     * 
+     * @return <code>animacion</code> que es la animacion del objeto
+     */
     public Animacion getAnimacion () {
         return this.animacion;
     }

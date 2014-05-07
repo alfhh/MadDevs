@@ -43,62 +43,111 @@ public class Tower extends Base {
         exp = 0;
     }
 
-    //Metodo para obtener el angulo de la torre
+    /**
+     * Regresa el angulo de la bala
+     *
+     * @return <code>angle</code> que es el angulo de la torre
+     */
     double getAngle() {
         return angle;
     }
 
-    //Metodo para asignar el angulo de la torre
+    /**
+     * Modifica el angulo de la bala
+     *
+     * @param a de tipo <code>int</code> que es el angulo de la torre
+     */
     void setAngle(double a) {
         angle = a;
     }
 
-    //Metodo para obtener el angulo de la torre
+    /**
+     * Metodo que accesa la velocidad de la bala
+     *
+     * @return <code>speed</code> que es la velocidad de la torre
+     */
     int getSpeed() {
         return speed;
     }
 
-    //Metodo para asignar el angulo de la torre
+    /**
+     * Metodo que modifica la velocidad de la bala
+     *
+     * @param s de tipo <code>int</code> que es la velocidad de la bala
+     */
     void setSpeed(int s) {
         speed = s;
     }
 
-    //Metodo para obtener el rango de la torre
+    /**
+     * Metodo que regresa el rengo de la torre
+     *
+     * @return range que es de tipo <code>double</code>
+     */
     double getRange() {
         return range;
     }
 
-    //Metodo para asignar el rango de la torre
+    /**
+     * Metodo que modifica el rengo de la torre
+     *
+     * @param r que es de tipo <code>double</code>
+     */
     void setRange(int r) {
         range = r;
     }
 
-    //Metodo para obtener el daño de la torre
+    /**
+     * Metodo que accesa el daño de la bala (
+     *
+     * @return damage de tipo <code>int</code> que es el daño de la torre
+     */
     int getDamage() {
         return (int) (damage * buffmultiplier);
     }
 
-    //Metodo para asignar el daño de la torre
+    /**
+     * Metodo que modifica el daño de la bala
+     *
+     * @param d de tipo <code>int</code> que es el daño de la torre
+     */
     void setDamage(int d) {
         damage = d;
     }
 
-    //Metodo para obtener el daño de la torre
+    /**
+     * Metodo que sirve para obtener los disparos por minuto
+     *
+     * @return los disparos por minuto en <code>int</code>
+     */
     int getRate() {
         return (int) (rateoffire / buffmultiplier);
     }
 
-    //Metodo para asignar el daño de la torre
+    /**
+     * Metodo que sirve para modificar los disparos por minuto
+     *
+     * @param ra los disparos por minuto en <code>int</code>
+     */
     void setRate(int ra) {
         rateoffire = ra;
     }
 
-    //Metodo para obtener el numero del jugador de la torre
+    /**
+     * Regrela el jugador dueño de la bala
+     *
+     * @return playerid que es de tipo <code>int</code> que es el jugador de la
+     * torre
+     */
     int getPlayer() {
         return playerid;
     }
 
-    //Metodo para ver si puede disparar
+    /**
+     * Metodo que te dice si puede disparar
+     *
+     * @return true si puede disparar
+     */
     boolean canShoot() {
         if (set) {
             if (canshoot == 0) {
@@ -111,47 +160,82 @@ public class Tower extends Base {
             return false;
         }
     }
-//Dispara!
 
+    /**
+     * Metodo que dispara
+     */
     void shoot() {
         canshoot = rateoffire;
     }
 
+    /**
+     * Metodo que regresa si es puede disparar
+     *
+     * @return canshoot que es de tipo <code>int</code>
+     */
     int getAble() {
         return canshoot;
     }
 
-    //Metodo para ver si es una mina o no
+    /**
+     * Metodo que regresa si puede girar
+     *
+     * @return girar que es de tipo <code>boolean</code>
+     */
     boolean isMine() {
         return girar;
     }
 
-    //Metodo para modificar si esta puesta
+    /**
+     * Metodo modifica si esta puesta
+     *
+     * @param s que es de tipo <code>int</code>
+     */
     void setSet(boolean s) {
         set = s;
     }
-    
-    //Metodo para modificar si esta girando
+
+    /**
+     * Metodo que modifica si puede girar
+     *
+     * @param m que es de tipo <code>int</code>
+     */
     void setGira(boolean m) {
-       girar = m;
+        girar = m;
     }
 
-    //Metodo para ver si esta puesta
+    /**
+     * Metodo que regresa si esta puesta
+     *
+     * @return set que es de tipo <code>int</code>
+     */
     boolean getSet() {
         return set;
     }
-    
-    //Metodo para modificar el valor
+
+    /**
+     * Metodo que modifica el valor de la torre
+     *
+     * @param s que es de tipo <code>int</code>
+     */
     void setValue(int s) {
         value = s;
     }
 
-    //Metodo para ver si el valor
+    /**
+     * Metodo que regresa el valor de la torre
+     *
+     * @return value que es de tipo <code>int</code>
+     */
     int getValue() {
         return value;
     }
 
-    //Metodo para ver si esta bufiada
+    /**
+     * Metodo que regresa si la torre esta biffeada
+     *
+     * @return true si esta buffeada
+     */
     boolean isBuffed() {
         if (buffmultiplier > 1) {
             return true;
@@ -160,12 +244,18 @@ public class Tower extends Base {
         }
     }
 
-    //Metodo para obtener el tipo de la torre
+    /**
+     * Metodo que regresa el Id de la torre
+     *
+     * @return towerid que es de tipo <code>int</code>
+     */
     int getId() {
         return towerid;
     }
 
-    // Metodo que suma experiencia
+    /**
+     * Metodo que actualiza la experiencia de la torre
+     */
     void Exp() {
         if (exp < this.getMAXExp()) {
             if (towerid > 3) {
@@ -182,27 +272,47 @@ public class Tower extends Base {
         }
     }
 
-    // Metodo que access la experiencia
+    /**
+     * Metodo que regresa la experiencia de la torre
+     *
+     * @return exp que es de tipo <code>int</code>
+     */
     int getExp() {
         return exp;
     }
 
-    // Metodo que modifica la experiencia
+    /**
+     * Metodo que modifica la experiencia de la torre
+     *
+     * @param e que es de tipo <code>int</code>
+     */
     void setExp(int e) {
         exp = e;
     }
 
-    // Metodo para obtener el multiplier
+    /**
+     * Metodo que regresa el buff
+     *
+     * @return buffmultiplier que es de tipo <code>double</code>
+     */
     double getMul() {
         return buffmultiplier;
     }
 
-    // Metodo que modificar el multiplier
+    /**
+     * Metodo que modifica el buff
+     *
+     * @param e que es de tipo <code>double</code>
+     */
     void setMul(double e) {
         buffmultiplier = e;
     }
 
-    // Metodo que access la experiencia Maxima
+    /**
+     * Metodo que regresa la experiencia maxima
+     *
+     * @return un valor entero de la experiencia maxima
+     */
     int getMAXExp() {
         if (towerid >= 6) {
             return -1;
@@ -215,7 +325,9 @@ public class Tower extends Base {
         }
     }
 
-    // Metodo que regresa la towerid de el ugrade izquierdo
+    /**
+     * Metodo que sube de nivel de la torre en rpm
+     */
     void getUpgL() {
         towerid += towerid / 2;
         Animacion a;
@@ -256,7 +368,9 @@ public class Tower extends Base {
         }
     }
 
-    // Metodo que regresa la towerid de el ugrade izquierdo
+    /**
+     * Metodo que sube de nivel a la torre en poder
+     */
     void getUpgR() {
         towerid += towerid / 2 + 1;
         Animacion a;

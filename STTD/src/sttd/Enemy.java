@@ -18,7 +18,7 @@ public class Enemy extends Base {
     Point end;
     char movment = '0';
     double angle = ((double) (Math.random() * (16))); //angulo de la enemigo
-    int speed = ((int) (Math.random() * (5-2)))+ 2; // Velocidad del enemigo
+    int speed = ((int) (Math.random() * (5 - 2))) + 2; // Velocidad del enemigo
     int range = 30; //Rango circular de la enemigo. 
     int damage = 5; //Daño de la enemigo
     int value; //Valor de venta de la enemigo
@@ -28,7 +28,6 @@ public class Enemy extends Base {
     int lifetime = 0; //tiempo de vida
     int slowtimer = 0; //timer del tiempo que se alentara
     int infectiontimer = 0; //timer del virus
-    
 
     public Enemy(int posX, int posY, Animacion animacion, int t, int sp, int hp) {
         super(posX, posY, animacion);
@@ -38,172 +37,231 @@ public class Enemy extends Base {
         speed = sp;
         health = hp;
         basehealth = hp;
-        
+
     }
-    
-    //Metodo para obtener el tipo del enemigo
+
+    /**
+     * Metodo que regresa el tipo de enemigo que es
+     *
+     * @return type que es de tipo <code>int</code>
+     */
     int getType() {
         return type;
     }
 
-
-    //Metodo para obtener el angulo del enemigo
+    /**
+     * Regresa el angulo de la bala
+     *
+     * @return <code>angle</code> que es el angulo del enemigo
+     */
     double getAngle() {
         return angle;
     }
 
-    //Metodo para asignar el angulo del enemigo
+    /**
+     * Modifica el angulo de la bala
+     *
+     * @param a de tipo <code>int</code> que es el angulo del enemigo
+     */
     void setAngle(double a) {
         angle = a;
     }
 
-    //Metodo para obtener la velocidad del enemigo
+    /**
+     * Metodo que accesa la velocidad de la bala
+     *
+     * @return <code>speed</code> que es la velocidad del enemigo
+     */
     int getSpeed() {
-        if (slowtimer > 0)
-        {
-         if (slowtimer % 2 == 0)
-        {
-        return speed;
-        }
-        else
-        {
-        return 0;   
-        }
-        }
-        else
-        {
-        return speed;
+        if (slowtimer > 0) {
+            if (slowtimer % 2 == 0) {
+                return speed;
+            } else {
+                return 0;
+            }
+        } else {
+            return speed;
         }
     }
 
-    //Metodo para asignar la velocidad del enemigo
+    /**
+     * Metodo que modifica la velocidad de la bala
+     *
+     * @param s de tipo <code>int</code> que es la velocidad del enemigo
+     */
     void setSpeed(int s) {
         speed = s;
     }
-    
-    //Metodo para obtener la vida base del enemigo
+
+    /**
+     * Metodo que regresa la vida base del enemigo
+     *
+     * @return basehealth de tipo <code>int</code> que es la vida del enemigo
+     */
     int getBaseHealth() {
         return basehealth;
     }
 
-    //Metodo para asignar la vida base del enemigo
+    /**
+     * Metodo que modifica la vida base del enemigo
+     *
+     * @param h de tipo <code>int</code> que es la vida del enemigo
+     */
     void setBaseHealth(int h) {
         basehealth = h;
     }
-    
-    //Metodo para obtener la vida del enemigo
+
+    /**
+     * Metodo que regresa la vida base del enemigo
+     *
+     * @return health de tipo <code>int</code> que es la vida del enemigo
+     */
     int getHealth() {
         return health;
     }
 
-    //Metodo para asignar la vida del enemigo
+    /**
+     * Metodo que modifica la vida base del enemigo
+     *
+     * @param h de tipo <code>int</code> que es la vida del enemigo
+     */
     void setHealth(int h) {
         health = h;
     }
-    
-    //Saber si lo alentaron
+
+    /**
+     * Metodo que sirve para saber si el enemigo fue alentado
+     *
+     * @return true si fue alentado
+     */
     boolean getSlow() {
-        if (slowtimer > 0)
-        {
-        return true;
-        }
-        else
-        {
+        if (slowtimer > 0) {
+            return true;
+        } else {
             return false;
         }
     }
 
-    //Metodo para asignar el timer de alentarse
+    /**
+     * Metodo que define el tiempo de alentamiento
+     */
     void setSlow() {
         slowtimer = 255;
     }
-    
-        //Metodo para asignar el timer de alentarse
+
+    /**
+     * Metodo que actualiza el tiempo de alentamiento
+     */
     void slowTimer() {
-        if(slowtimer > 0)
-        {
-        slowtimer--;
+        if (slowtimer > 0) {
+            slowtimer--;
         }
     }
-    
-    //Saber si tiene virus
+
+    /**
+     * Metodo que sirve para saber si el enemigo fue infectadi
+     *
+     * @return true si fue infectado
+     */
     boolean getVirus() {
-        if (infectiontimer > 0)
-        {
-        return true;
-        }
-        else
-        {
+        if (infectiontimer > 0) {
+            return true;
+        } else {
             return false;
         }
     }
 
-    
-    //Metodo para asignar el timer del virus
+    /**
+     * Metodo que define el tiempo de infeccion
+     */
     void setVirus() {
         infectiontimer = 250;
     }
-    
-        //Metodo para asignar el timer del virus
+
+    /**
+     * Metodo que actualiza el tiempo de infeccion
+     */
     void virusTimer() {
-        if(infectiontimer > 0)
-        {
-        infectiontimer--;
-        if(infectiontimer % 50 == 0)
-        {
-            if((int)health*0.05> 1)
-            {
-             health -= health*0.05;   
+        if (infectiontimer > 0) {
+            infectiontimer--;
+            if (infectiontimer % 50 == 0) {
+                if ((int) health * 0.05 > 1) {
+                    health -= health * 0.05;
+                } else {
+                    health--;
+                }
+
             }
-            else
-            {
-             health--;
-            }
-           
-        }
         }
     }
-    
 
-    //Metodo para asignar el movimiento
+    /**
+     * Metodo que modifica el movimiento del enemigo
+     *
+     * @param m que es de tipo <code>char</code>
+     */
     void setMov(char m) {
         movment = m;
     }
-    
-    
 
-    //Metodo para obtener el movimiento
+    /**
+     * Metodo que regresa el tipo de movimiento
+     *
+     * @return movment que es de tipo <code>char</code>
+     */
     char getMov() {
         return movment;
     }
 
-    //Metodo para asignar el bloque anterior
+    /**
+     * Metodo que modifica el punto de comienzo del enemigo
+     *
+     * @param p que es de tipo <code>Point</code>
+     */
     void setStart(Point p) {
         start.setLocation(p.getLocation());
     }
 
-    //Metodo para obtener el bloque anterior
+    /**
+     * Metodo que accesa el punto de comienzo del enemigo
+     *
+     * @return start que es de tipo <code>Point</code>
+     */
     Point getStart() {
         return start;
     }
 
-    //Metodo para asignar el bloque siguiente
+    /**
+     * Metodo que modifica el punto de fin del enemigo
+     *
+     * @param p que es de tipo <code>Point</code>
+     */
     void setEnd(Point p) {
         end.setLocation(p.getLocation());
     }
 
-    //Metodo para obtener el bloque siguiente
+    /**
+     * Metodo que accesa el punto de fin del enemigo
+     *
+     * @return end que es de tipo <code>Point</code>
+     */
     Point getEnd() {
         return end;
     }
-    
-    //Metodo que actualize su tiempo de vida
+
+    /**
+     * Metodo que actualiza el tiempo de vida del enemigo
+     */
     void addLifeTime() {
-         lifetime += speed;
+        lifetime += speed;
     }
-    
-    //Metodo que regresa su tiempo de vida
+
+    /**
+     * Metodo que regresa el tiempo de vida del enemigo
+     *
+     * @return lifetime que es de tipo <code>int</code>
+     */
     int getLifeTime() {
-         return lifetime;
+        return lifetime;
     }
 }

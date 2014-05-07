@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sttd;
 
 /**
@@ -11,6 +10,7 @@ package sttd;
  * @author LuisJuan
  */
 public class Bullet extends Base {
+
     int damage = 5; //Daño de la bala
     double angle; //angulo de la bala
     int speed = 3; // Velocidad de las bala. -1 convoca lazer instantaneo
@@ -19,97 +19,135 @@ public class Bullet extends Base {
     int towernum; // numero de indice de la torreta
     boolean watower; //balas penetradoras
 
-    
-    public Bullet (int posX, int posY, Animacion animacion, int dmg, int sp, double ang, int range, int pl, int t) {
+    public Bullet(int posX, int posY, Animacion animacion, int dmg, int sp, double ang, int range, int pl, int t) {
         super(posX, posY, animacion);
         damage = dmg;
         speed = sp;
         angle = ang;
-        distance = range ;
+        distance = range;
         playerid = pl;
         towernum = t;
     }
-    //Metodo para obtener el angulo de la torre
-    double getAngle()
-    {
+
+    /**
+     * Regresa el angulo de la bala
+     *
+     * @return <code>angle</code> que es el angulo de la bala
+     */
+    double getAngle() {
         return angle;
     }
-    
-    //Metodo para asignar el angulo de la torre
-    void setAngle(int a)
-    {
+
+    /**
+     * Modifica el angulo de la bala
+     *
+     * @param a de tipo <code>int</code> que es el angulo de la bala
+     */
+    void setAngle(int a) {
         angle = a;
     }
-    
-    //Metodo para obtener el angulo de la torre
-    int getSpeed()
-    {
+
+    /**
+     * Metodo que accesa la velocidad de la bala
+     *
+     * @return <code>speed</code> que es la velocidad de la bala
+     */
+    int getSpeed() {
         return speed;
     }
-    
-    //Metodo para asignar el angulo de la torre
-    void setSpeed(int s)
-    {
+
+    /**
+     * Metodo que modifica la velocidad de la bala
+     *
+     * @param s de tipo <code>int</code> que es la velocidad de la bala
+     */
+    void setSpeed(int s) {
         speed = s;
     }
-    
-    //Metodo para obtener el daño de la torre
+
+    /**
+     * Metodo que accesa el daño de la bala (
+     *
+     * @return damage de tipo <code>int</code> que es el daño de la bala
+     */
     int getDamage() {
         return damage;
     }
 
-    //Metodo para asignar el daño de la torre
+    /**
+     * Metodo que modifica el daño de la bala
+     *
+     * @param d de tipo <code>int</code> que es el daño de la bala
+     */
     void setDamage(int d) {
         damage = d;
     }
-    
-    //Metodo para obtener el angulo de la torre
-    int getDistance()
-    {
+
+    /**
+     * Metodo que accesa la distancia que recorre la bala
+     *
+     * @return speed de tipo <code>int</code> que es la velocidad de la bala
+     */
+    int getDistance() {
         return speed;
     }
-    
-    //Metodo para asignar el angulo de la torre
-    void destroy()
-    {
+
+    /**
+     * Destruye indirectamente la bala
+     */
+    void destroy() {
         distance = 0;
     }
-    
-    //Metodo que mide el tiempo de vida de la bala y si es true en el main, borra el objeto
-    boolean distanceTime()
-    {
+
+    /**
+     * Metodo que regresa si la bala se debe seguir moviendo
+     *
+     * @return true si se debe mover
+     */
+    boolean distanceTime() {
         distance -= speed;
-        if (distance <= 0)
-        {
+        if (distance <= 0) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
-    //Metodo que regresa la torreta que la disparo
-    int getTower(){
+
+    /**
+     * Metodo que regresa el numero de indice de su torre
+     *
+     * @return towernum que es de tipo <code>int</code> que es la torre de la
+     * bala
+     */
+    int getTower() {
         return towernum;
     }
-    
-    //Metodo para confirmar que una bala es de watulio
-    void setWatower()
-    {
+
+    /**
+     * Metodo que dice si la bala es de la torre Watulio
+     */
+    void setWatower() {
         watower = true;
     }
-    
-    //Metodo para saber si una bala es de watulio
-    boolean getWatower()
-    {
+
+    /**
+     * Regresa la torre Watulio de la bala
+     *
+     * @return watower que es de tipo <code>int</code> que es la torre Watulio
+     * de la balla
+     */
+    boolean getWatower() {
         return watower;
     }
-    
-    //Metodo para obtener el numero del jugador de la mina
+
+    /**
+     * Regrela el jugador dueño de la bala
+     *
+     * @return playerid que es de tipo <code>int</code> que es el jugador de la
+     * bala
+     */
     int getPlayer() {
         return playerid;
     }
-    
-    
+
 }

@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sttd;
 
 /**
  *
  * @author LuisJuan
  */
-public class Laser{
+public class Laser {
+
     int PosX; //Posición X del origen
     int PosY; //Posición Y del origen
     int endX; //Posición X del enemigo
@@ -20,8 +20,7 @@ public class Laser{
     int towernum; // numero de indice de la torreta
     int life = 36; //tiempo de vida
 
-    
-    public Laser (int posX, int posY,int othX, int othY, int dmg, int pl, int t) {
+    public Laser(int posX, int posY, int othX, int othY, int dmg, int pl, int t) {
         PosX = posX;
         PosY = posY;
         endX = othX;
@@ -30,60 +29,92 @@ public class Laser{
         playerid = pl;
         towernum = t;
     }
-    
-    
-    //Metodo para obtener la posicion x
+
+    /**
+     * Metodo de acceso que regresa la posicion en x del objeto
+     *
+     * @return posX es la <code>posicion en x</code> del objeto.
+     */
     int getPosX() {
         return PosX;
     }
-    
-    //Metodo para obtener la posicion y
+
+    /**
+     * Metodo de acceso que regresa la posicion en y del objeto
+     *
+     * @return posY es la <code>posicion en y</code> del objeto.
+     */
     int getPosY() {
         return PosY;
     }
-    
-    //Metodo para obtener la otra posicion x
+
+    /**
+     * Metodo de acceso que regresa la posicion en x del final
+     *
+     * @return endX es la <code>posicion en x</code> del final.
+     */
     int getEndX() {
         return endX;
     }
-    
-    //Metodo para obtener la otra posicion y
+
+    /**
+     * Metodo de acceso que regresa la posicion en y del fianl
+     *
+     * @return endY es la <code>posicion en y</code> del final.
+     */
     int getEndY() {
         return endY;
     }
 
-    
-    //Metodo para obtener el daño de la torre
+    /**
+     * Metodo que accesa el daño de la bala (
+     *
+     * @return damage de tipo <code>int</code> que es el daño de la bala
+     */
     int getDamage() {
         return damage;
     }
 
-    //Metodo para asignar el daño de la torre
+    /**
+     * Metodo que modifica el daño de la bala
+     *
+     * @param d de tipo <code>int</code> que es el daño de la bala
+     */
     void setDamage(int d) {
         damage = d;
     }
-    
-    //Metodo que mide el tiempo de vida del laser y si es false en el main, borra el objeto
-    boolean deathTime()
-    {
-        if (life == 0)
-        {
+
+    /**
+     * Metodo que regresa el tiempo de vida que le queda al laser
+     *
+     * @return true si sigue vivo
+     */
+    boolean deathTime() {
+        if (life == 0) {
             return false;
-        }
-        else
-        {
+        } else {
             life--;
             return true;
         }
     }
-    
-    //Metodo que regresa el tiempodevida
-    int getTime(){
+
+    /**
+     * Metodo que regresa el tiempo de vida
+     * 
+     * @return life que es de tipo <code>int</code> que es la vida de la
+     * bala
+     */
+    int getTime() {
         return life;
     }
-    
-    //Metodo que regresa la torreta que la disparo
-    int getTower(){
+
+    /**
+     * Metodo que regresa el numero de indice de su torre
+     *
+     * @return towernum que es de tipo <code>int</code> que es la torre de la
+     * bala
+     */
+    int getTower() {
         return towernum;
     }
 }

@@ -24,42 +24,72 @@ public class Mine extends Base {
         type = t;
     }
 
-    //Metodo para modificar si esta puesta
+    /**
+     * Metodo que modifica si esta puesta
+     *
+     * @param s que es de tipo <code>boolean</code>
+     */
     void setSet(boolean s) {
         set = s;
     }
 
-    //Metodo para ver si esta puesta
+    /**
+     * Metodo que accesa si esta puesta
+     *
+     * @return set que es de tipo <code>boolean</code>
+     */
     boolean getSet() {
         return set;
     }
 
-    //Metodo para ver el daño
+    /**
+     * Metodo que accesa el daño
+     *
+     * @return damage que es de tipo <code>int</code>
+     */
     int getDam() {
         return damage;
     }
 
-    //Metodo para ver el tipo
+    /**
+     * Metodo que regresa que tipo es
+     *
+     * @return type que es de tipo <code>int</code>
+     */
     int getType() {
         return type;
     }
 
-    //Metodo de acceso a explosion
+    /**
+     * Metodo que accesa la explosion
+     *
+     * @return explosion que es de tipo <code>int</code>
+     */
     int getExp() {
         return explosion;
     }
 
-    //Metodo de modificacion de explosion
+    /**
+     * Metodo que modifica la explosion
+     *
+     * @param e que es de tipo <code>int</code>
+     */
     void setExp(int e) {
         explosion = e;
     }
 
-    //Metodo de actualizar la explosion
+    /**
+     * Metodo que actualiza la explosion
+     */
     void Exp() {
         explosion -= 2;
     }
 
-    //Metodo para obtener el numero del jugador de la mina
+    /**
+     * Metodo que regresa el jugador dueño de la mina
+     *
+     * @return playerid que es de tipo <code>int</code>
+     */
     int getPlayer() {
         return playerid;
     }

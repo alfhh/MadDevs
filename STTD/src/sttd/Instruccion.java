@@ -31,11 +31,32 @@ public class Instruccion {
     Instruccion() {
     }
 
-    //Checar si un punto esta dentro de un circulo
+    /**
+     * Metodo que checa si los enemigos estan dentro de un radio
+     *
+     * @param circleX de tipo <code>int</code> que es la x del centro del
+     * circulo
+     * @param circleY de tipo <code>int</code> que es la y del centro del
+     * circulo
+     * @param clickX de tipo <code>int</code> que es la x de testada
+     * @param clickY de tipo <code>int</code> que es la y de testada
+     * @param radius de tipo <code>int</code> que es el radio que se utilizara
+     * @return true si esta dentro del radio
+     */
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
         return java.lang.Math.pow((circleX - clickX), 2) + java.lang.Math.pow((circleY - clickY), 2) < java.lang.Math.pow(radius, 2);
     }
 
+    /**
+     * Metodo que sigue el tutorial si se da click
+     *
+     * @param i que es de tipo <code>int</code> y es el paso de las
+     * instrucciones
+     * @param x que es de tipo <code>int</code> y es la x del mouse
+     * @param y que es de tipo <code>int</code> y es la y del mouse
+     * @return i que es de tipo <code>int</code> y es el paso de las
+     * instrucciones
+     */
     int Click(int i, int x, int y) {
         switch (i) {
             case 0:
@@ -81,6 +102,19 @@ public class Instruccion {
         return i;
     }
 
+    /**
+     * Metodo que actualiza los objetos en las instrucciones
+     *
+     * @param i que es de tipo <code>int</code> y es el paso de las
+     * instrucciones
+     * @param t que es una <code>LinkedList</code> de las torres
+     * @param e que es una <code>LinkedList</code> de las enemigos
+     * @param m que es una <code>LinkedList</code> de las minas
+     * @param b que es una <code>LinkedList</code> de las balas
+     * @param grid que es de tipo <code>int</code>
+     * @return i que es de tipo <code>int</code> y es el paso de las
+     * instrucciones
+     */
     int UpdateMouse(int i, LinkedList<Tower> t, LinkedList<Enemy> e, LinkedList<Mine> m, LinkedList<Bullet> b, int grid[][]) {
         PointerInfo pi = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
         Point p = pi.getLocation();
@@ -400,7 +434,7 @@ public class Instruccion {
                 animMine.sumaCuadro(nmine4, 200);
                 animMine.sumaCuadro(nmine5, 200);
                 animMine.sumaCuadro(nmine6, 200);
-                m.add(new Mine((int) p.getX(), (int) p.getY(), animMine, 1,1));
+                m.add(new Mine((int) p.getX(), (int) p.getY(), animMine, 1, 1));
 
                 i++;
                 break;
@@ -613,8 +647,14 @@ public class Instruccion {
 
     }
 
-    void PaintMouse(Graphics g, int i
-    ) {
+    /**
+     * Metodo que pinta los objetos y textos en las instrucciones
+     *
+     * @param g que es de tipo <code>Graohics</code>
+     * @param i que es de tipo <code>int</code> y es el paso de las
+     * instrucciones
+     */
+    void PaintMouse(Graphics g, int i) {
         switch (i) {
             case 0:
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));

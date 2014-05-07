@@ -153,11 +153,30 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private String dataSave; // Data a guardar en el SaveState
     private String[] dataArr; // Arreglo de data file
 
-    //Checar si un punto esta dentro de un circulo
+    /**
+     * Metodo que checa si los enemigos estan dentro de un radio
+     *
+     * @param circleX de tipo <code>int</code> que es la x del centro del
+     * circulo
+     * @param circleY de tipo <code>int</code> que es la y del centro del
+     * circulo
+     * @param clickX de tipo <code>int</code> que es la x de testada
+     * @param clickY de tipo <code>int</code> que es la y de testada
+     * @param radius de tipo <code>int</code> que es el radio que se utilizara
+     * @return true si esta dentro del radio
+     */
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
         return java.lang.Math.pow((circleX - clickX), 2) + java.lang.Math.pow((circleY - clickY), 2) < java.lang.Math.pow(radius, 2);
     }
 
+    /**
+     * Este metodo crea la torre de Watulio del jugador 1
+     *
+     * @param ex de tipo <code>int</code> que significa la posicion de x en
+     * donde se desea poner la torre
+     * @param ey de tipo <code>int</code> que significa la posicion de y en
+     * donde se desea poner la torre
+     */
     public void watulioCreation(int ex, int ey) {
         //Torre wat
         //Animación de watmine, que enverdad es una torre pero parece mina
@@ -424,6 +443,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 4200, 60, true));
     }
 
+    /**
+     * Este metodo crea la torre de Watulio del jugador 2
+     *
+     * @param ex de tipo <code>int</code> que significa la posicion de x en
+     * donde se desea poner la torre
+     * @param ey de tipo <code>int</code> que significa la posicion de y en
+     * donde se desea poner la torre
+     */
     public void watulioCreation2(int ex, int ey) {
         //Torre wat
         //Animación de watmine, que enverdad es una torre pero parece mina
@@ -690,6 +717,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 4200, 60, true));
     }
 
+    /**
+     * Metodo que crea las torretas del jugador 1
+     *
+     * @param e que es de tipo <code>MouseEvent</code> que nos dice
+     * caracteristicas del Mouse
+     * @param click de tipo <code>boolean</code> que nos dice la torre fue
+     * clickeada
+     */
     public void towerCreate(MouseEvent e, boolean click) {
         if (game) {
             if (e.getX() > 1200) { // si el mouse esta en el HUD
@@ -865,6 +900,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Metodo que crea las torretas del jugador 2
+     *
+     * @param e que es de tipo <code>KeyEvent</code> que nos dice
+     * caracteristicas del Teclado
+     */
     public void towerCreate2(KeyEvent e) {
         if (game) {
             //Upgrade de las torres
@@ -1026,12 +1067,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Iniciacion de la clase
+     */
     public STTD() {
         // Setup
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1368, 730);
         setTitle("Star Wars: Tower Defense");
-        
+
         rotacion = Math.PI / 60;
         player1money = 40000;
         player2money = 40000;
@@ -1205,9 +1249,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         tiempoActual = System.currentTimeMillis();
         intro.play();
         while (true) {
-//            if (intro.getClip().getLongFramePosition() == intro.getClip().getFrameLength() - 1) {
-//
-//            }
             if (introtimer > 0) {
                 introtimer--;
             } else if (introtimer == 0) {
@@ -1825,9 +1866,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
 
         if (wavego) {
-            if(!suspense)
-            {
-              gamesong1.play();
+            if (!suspense) {
+                gamesong1.play();
             }
             suspense = true;
             countx--;
@@ -2104,16 +2144,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 8: //laser
 
-                            if (fx) {        
+                            if (fx) {
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
 
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority);
                             Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage()*2, t.getPlayer(), i);
+                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage() * 2, t.getPlayer(), i);
                             lasers.add(l1);
-                            g.setHealth(g.getHealth() - t.getDamage()*2);
+                            g.setHealth(g.getHealth() - t.getDamage() * 2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
                                 score1 += t.getDamage() / 100.0;
@@ -2264,16 +2304,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 8: //laser
 
-                            if (fx) {        
+                            if (fx) {
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
 
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority2);
                             Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage()*2, t.getPlayer(), i);
+                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage() * 2, t.getPlayer(), i);
                             lasers.add(l1);
-                            g.setHealth(g.getHealth() - t.getDamage()*2);
+                            g.setHealth(g.getHealth() - t.getDamage() * 2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
                                 score1 += t.getDamage() / 100.0;
@@ -2344,10 +2384,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Reacciona cuando una tecla es typeada
+     *
+     * @param e de tipo <code>KeyEvent</code> que nos dice caracteristicas del
+     * teclado
+     */
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /**
+     * Metodo que reacciona cuando una tecla es presionada
+     *
+     * @param e de tipo <code>KeyEvent</code> que nos dice caracteristicas del
+     * teclado
+     */
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_P) {
             if (game) {
@@ -2433,6 +2485,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Reacciona cuando una tecla es soltada
+     *
+     * @param e de tipo <code>KeyEvent</code> que nos dice caracteristicas del
+     * teclado
+     */
     public void keyReleased(KeyEvent e) {
 
     }
@@ -2442,7 +2500,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      *
      * sirve para que se detecten los clicks en los lugares deseados
      *
-     * @param e
+     * @param e de tipo <code>MouseEvent</code> que nos dice caracteristicas del
+     * mouse
      */
     public void mouseClicked(MouseEvent e) {
         if (introtimer > 0) {
@@ -2563,22 +2622,21 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (rect.contains(e.getPoint())) {
                 intro.stop();
                 if (music) {
-                    int randommusic = (int)((Math.random()*(3.9)));
-                    switch(randommusic)
-                            {
-                                case 0: 
-                                    gamesong1 = battle1;
-                                break;
-                                    case 1: 
-                                    gamesong1 = battle2;
-                                break;
-                                        case 2: 
-                                    gamesong1 = battle3;
-                                break;
-                                            case 3: 
-                                    gamesong1 = battle4;
-                                break;
-                            }
+                    int randommusic = (int) ((Math.random() * (3.9)));
+                    switch (randommusic) {
+                        case 0:
+                            gamesong1 = battle1;
+                            break;
+                        case 1:
+                            gamesong1 = battle2;
+                            break;
+                        case 2:
+                            gamesong1 = battle3;
+                            break;
+                        case 3:
+                            gamesong1 = battle4;
+                            break;
+                    }
                     gamesong1.play();
                 }
                 //nivel 1
@@ -2906,18 +2964,42 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Metodo que reacciona cuando el mouse es presionado
+     *
+     * @param e de tipo <code>MouseEvent</code> que nos dice caracteristicas del
+     * mouse
+     */
     public void mousePressed(MouseEvent e) {
 
     }
 
+    /**
+     * Metodo que reacciona cuando el mouse es soltado
+     *
+     * @param e de tipo <code>MouseEvent</code> que nos dice caracteristicas del
+     * mouse
+     */
     public void mouseReleased(MouseEvent e) {
 
     }
 
+    /**
+     * Metodo que reacciona cuando el mouse es presionado
+     *
+     * @param e de tipo <code>MouseEvent</code> que nos dice caracteristicas del
+     * mouse
+     */
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    /**
+     * Metodo que reacciona cuando el mouse es soltado
+     *
+     * @param e de tipo <code>MouseEvent</code> que nos dice caracteristicas del
+     * mouse
+     */
     public void mouseExited(MouseEvent e) {
 
     }
@@ -2981,7 +3063,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     /**
      * Method used to paint images in the game
      *
-     * @param g
+     * @param g es la <code>imagen</code> del objeto.
      */
     public void paint1(Graphics g) {
 
@@ -3171,8 +3253,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     /**
      * Metodo para dibujar las torres que giran
      *
-     * @param g
-     * @param t
+     * @param g es la <code>imagen</code> del objeto.
      */
     public void towerpaint1(Graphics g) {
         Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
@@ -3441,26 +3522,25 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
             }
             if (!wavego && game) {
-                if(suspense)
-                {  gamesong1.stop();
-                   int randommusic = (int)((Math.random()*(3.9)));
-                    switch(randommusic)
-                            {
-                                case 0: 
-                                    gamesong1 = battle1;
-                                break;
-                                    case 1: 
-                                    gamesong1 = battle2;
-                                break;
-                                        case 2: 
-                                    gamesong1 = battle3;
-                                break;
-                                            case 3: 
-                                    gamesong1 = battle4;
-                                break;
-                            }
+                if (suspense) {
+                    gamesong1.stop();
+                    int randommusic = (int) ((Math.random() * (3.9)));
+                    switch (randommusic) {
+                        case 0:
+                            gamesong1 = battle1;
+                            break;
+                        case 1:
+                            gamesong1 = battle2;
+                            break;
+                        case 2:
+                            gamesong1 = battle3;
+                            break;
+                        case 3:
+                            gamesong1 = battle4;
+                            break;
+                    }
                     between.play();
-                    
+
                     suspense = false;
                 }
                 g.setColor(Color.black);
