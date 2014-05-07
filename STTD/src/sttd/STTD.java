@@ -143,8 +143,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean fx; // booleano que abilita los effectos especiales
     private boolean canput = false; // ver si se puede poner o no
     private boolean canput2 = false; // ver si se puede poner o no
-    private boolean saveStates; // booleano que muestra los savestates
-    private boolean loadStates; // booleano que muestra los loadstates
+    private boolean bHigh; // booleano para mostrar los highscores
     private boolean coop; //boolean para coop
 
     private BufferedReader fileIn; // Reader de archivo
@@ -152,6 +151,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private String fileName;
     private String dataSave; // Data a guardar en el SaveState
     private String[] dataArr; // Arreglo de data file
+    private int hLevel; // Entero que indica que nivel se esta jugando
+    private String lec1; //Lectura de jugador
+    private double lec2; //Lectura de score1
+    private int lec3; //Lectura de dinero
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -1073,8 +1076,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         place = new SoundClip("sounds/towerplace.wav");
         music = true;
         fx = true;
-        saveStates = false;
-        loadStates = false;
+        bHigh = false;
         fileName = "";
 
         // Images
@@ -1234,7 +1236,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
             repaint();
             try {
-                Thread.sleep(20);
+                Thread.sleep(2);
             } catch (InterruptedException ex) {
                 System.out.println("Error en " + ex.toString());
             }
@@ -1974,6 +1976,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 // Si la base no tiene vida
                 if (life == 0) {
+                    // Se guarda el highscore
+                    fileName = "SaveState" +  hLevel;
+                    try {
+                        writeFile();
+                        JOptionPane.showMessageDialog(null, "Highscore saved!");
+                    } catch (IOException err) {
+                    }
                     game = false;
                     lose = true;
                     gamesong.stop();
@@ -2356,8 +2365,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             } else if (pause) {
                 game = true;
                 pause = false;
-                saveStates = false;
-                loadStates = false;
+                bHigh = false;
             }
         }
 
@@ -2423,12 +2431,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_C) {
-            if (saveStates) {
-                saveStates = false;
-            }
-
-            if (loadStates) {
-                loadStates = false;
+            if (bHigh) {
+                bHigh = false;
             }
         }
     }
@@ -2585,6 +2589,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                 hLevel = 1;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2625,6 +2630,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2.png"));
+                 hLevel = 2;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2667,6 +2673,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3.png"));
+                 hLevel = 3;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
@@ -2708,6 +2715,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 game = true;
                 menu = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4.png"));
+                 hLevel = 4;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
@@ -2775,7 +2783,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
         // Si esta en pausa
         if (pause) {
-            if (new Rectangle(600, 190, 52, 49).contains(e.getPoint()) && !saveStates && !loadStates) {
+            if (new Rectangle(600, 190, 52, 49).contains(e.getPoint()) && !bHigh) {
                 music = !music;
                 if (music) {
                     if (gamesong.getClip().getFramePosition() > gamesong1.getClip().getFramePosition()) {
@@ -2788,88 +2796,31 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     gamesong1.stop();
                 }
             }
-            if (new Rectangle(600, 260, 52, 49).contains(e.getPoint()) && !saveStates && !loadStates) {
+            if (new Rectangle(600, 260, 52, 49).contains(e.getPoint()) && !bHigh) {
                 fx = !fx;
             }
-            if (new Rectangle(478, 461, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
-                //Save State
-                saveStates = true;
+            if (new Rectangle(482, 453, 400, 78).contains(e.getPoint()) && !bHigh) {
+                try {
+                    readFile();
+                } catch (IOException err) {
+
+                }
+//Highscores
+                bHigh = true;
+                
+                
             }
 
             // SAVESTATES ****** Interaciones de SaveStates
-            if (saveStates) {
-                // Slot 1
-                if (new Rectangle(468, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState1";
-                    try {
-                        writeFile();
-                        JOptionPane.showMessageDialog(null, "Slot 1 saved!");
-                    } catch (IOException err) {
-                    }
-                }
-                // Slot 2
-                if (new Rectangle(623, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState2";
-                    try {
-                        writeFile();
-                        JOptionPane.showMessageDialog(null, "Slot 2 saved!");
-                    } catch (IOException err) {
-                    }
-                }
-                // Slot 3
-                if (new Rectangle(779, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState3";
-                    try {
-                        writeFile();
-                        JOptionPane.showMessageDialog(null, "Slot 3 saved!");
-                    } catch (IOException err) {
-                    }
-                }
-            }
+            
 
-            if (new Rectangle(696, 461, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
-                //Load State
-                loadStates = true;
-            }
 
-            // LOADSTATES ****** Interaciones de LoadStates
-            if (loadStates) {
-                // Slot 1
-                if (new Rectangle(468, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState1";
-                    try {
-                        readFile();
-                        JOptionPane.showMessageDialog(null, "Slot 1 loaded!");
-                    } catch (IOException err) {
-                    }
-
-                }
-                // Slot 2
-                if (new Rectangle(623, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState2";
-                    try {
-                        readFile();
-                        JOptionPane.showMessageDialog(null, "Slot 2 loaded!");
-                    } catch (IOException err) {
-                    }
-                }
-                // Slot 3
-                if (new Rectangle(779, 193, 123, 123).contains(e.getPoint())) {
-                    fileName = "SaveState3";
-                    try {
-                        readFile();
-                        JOptionPane.showMessageDialog(null, "Slot 3 loaded!");
-                    } catch (IOException err) {
-                    }
-                }
-            }
-
-            if (new Rectangle(478, 560, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
+            if (new Rectangle(478, 560, 180, 66).contains(e.getPoint()) && !bHigh) {
                 // Quita la pausa
                 pause = false;
                 game = true;
             }
-            if (new Rectangle(696, 560, 180, 66).contains(e.getPoint()) && !saveStates && !loadStates) {
+            if (new Rectangle(696, 560, 180, 66).contains(e.getPoint()) && !bHigh) {
                 // Sale del juego
                 gamesong.stop();
                 gamesong1.stop();
@@ -3047,6 +2998,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.drawString("YOU LOST", 400, 400);
             g.setFont(new Font("Consolas", Font.PLAIN, 50));
             g.drawString("Click anywhere to return to the main menu", 100, 450);
+
+            
         }
         if (game || pause) {
             for (int i = 0; i < lasers.size(); i++) {
@@ -3482,8 +3435,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/uncheck.png")), 600, 260, this);
                 }
                 // Se pintan los SaveStates
-                if (saveStates || loadStates) {
+                if (bHigh) {
                     g.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/SaveStates.png")), 400, 31, this);
+                    g.setColor(Color.white);
+                    g.setFont(new Font("Consolas", Font.PLAIN, 50));
+                    g.drawString("" + lec1, 600, 300);
+                    g.drawString("Score: " + (int) lec2, 550, 400);
+                    g.drawString("Money: " + lec3, 550, 500);
                 }
             }
             if (game) {
@@ -3607,14 +3565,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         File archivo = new File(fileName + ".mad");
         archivo.delete();
         fileOut = new PrintWriter(new FileWriter(fileName + ".mad", true));
-        dataSave = "1" + "_" + "" + player1money + "_" + "" + score1 + "_" + "" + wave + "_" + "" + wavecount + "_" + "" + tower.size(); // FALTA BOOLEAN DE COOP
-        for (int i = 0; i < tower.size(); i++) {
-            Tower temp = (Tower) tower.get(i);
-            int x = temp.getPosX();
-            int y = temp.getPosY();
-            int id = temp.getId();
-            dataSave += "_" + "" + x + "_" + "" + y + "_" + "" + id;
-        }
+        String jugador = JOptionPane.showInputDialog("Enter your name: ");
+        dataSave = "" + jugador + "_" + "" + score1 + "_" + "" + player1money;
         fileOut.println(dataSave);
         fileOut.close();
 
@@ -3628,315 +3580,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
      */
     public void readFile() throws IOException {
         try {
-            fileIn = new BufferedReader(new FileReader(fileName + ".mad"));
+            fileIn = new BufferedReader(new FileReader("SaveState" + hLevel + ".mad"));
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + e);
         }
 
         dataSave = fileIn.readLine(); // Se leen los valores
         dataArr = dataSave.split("_"); // Los valores se separan en un arreglo
-        //coop = Boolean.valueOf(dataArr[0]);
-        int cont = 0;
-        player1money = (Integer.parseInt(dataArr[++cont])); // 1
-        score1 = (Double.parseDouble(dataArr[++cont])); //2
-        wave = (Integer.parseInt(dataArr[++cont])); //3
-        wavecount = (Integer.parseInt(dataArr[++cont])); // 4
-        int tn = (Integer.parseInt(dataArr[++cont])); // 5
-        tower.clear();
-        for (int i = 0; i < tn; i++) {
-            Animacion animT = null;
-            int aux = (Integer.parseInt(dataArr[cont])) + 2;
-            if (aux == 3) {
-                animT = animNormal;
-            }
-            if (aux == 4) {
-                animT = animDual;
-            }
-            if (aux == 5) {
-                animT = animSniper;
-            }
-            if (aux == 6) {
-                animT = animQuad;
-            }
-            if (aux == 7) {
-                animT = animFuerte;
-            }
-            if (aux == 8) {
-                animT = animLaser;
-            }
-            if (aux == 9) {
-                //-----------------------------
-                Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
-                Image mine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine2.png"));
-                Image mine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine3.png"));
-                Image mine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine4.png"));
-                Image mine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine5.png"));
-                Image mine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine6.png"));
-                Image mine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine7.png"));
-                Image mine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine8.png"));
-                Image mine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine9.png"));
-                Image mine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine10.png"));
-                Image mine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine11.png"));
-                Image mine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine12.png"));
-                Image mine13 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine13.png"));
-                Image mine14 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine14.png"));
-                Image mine15 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine15.png"));
-                Image mine16 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine16.png"));
-                Image mine17 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine17.png"));
-                Image mine18 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine18.png"));
-                Image mine19 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine19.png"));
-                Image mine20 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine20.png"));
-                Image mine21 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine21.png"));
-                Image mine22 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine22.png"));
-                Image mine23 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine23.png"));
-                Image mine24 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine24.png"));
-                Image mine25 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine25.png"));
-                Image mine26 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine26.png"));
-                Image mine27 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine27.png"));
-                Image mine28 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine28.png"));
-                Image mine29 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine29.png"));
-                Image mine101 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine101.png"));
-                Image mine102 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine102.png"));
-                Image mine103 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine103.png"));
-                Image mine104 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine104.png"));
-                Image mine105 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine105.png"));
-                Image mine106 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine106.png"));
-                Image mine107 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine107.png"));
-                Image mine108 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine108.png"));
-                Image mine109 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine109.png"));
-                Image mine110 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine110.png"));
-                Image mine111 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine111.png"));
-                Image mine112 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine112.png"));
-                Image mine113 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine113.png"));
-                Image mine114 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine114.png"));
-                Image mine115 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine115.png"));
-                Image mine116 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine116.png"));
-                Image mine117 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine117.png"));
-                Image mine118 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine118.png"));
-                Image mine119 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine119.png"));
-                Image mine120 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine120.png"));
-                Image mine121 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine121.png"));
-                Image mine201 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine201.png"));
-                Image mine202 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine202.png"));
-                Image mine203 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine203.png"));
-                Image mine204 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine204.png"));
-                Image mine205 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine205.png"));
-                Image mine206 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine206.png"));
-                Image mine207 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine207.png"));
-                Image mine208 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine208.png"));
-                Image mine209 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine209.png"));
-                Image mine210 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine210.png"));
-                Image mine211 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine211.png"));
-                Image mine212 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine212.png"));
-                Image mine213 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine213.png"));
-                Image mine214 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine214.png"));
-                Image mine215 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine215.png"));
-                Image mine216 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine216.png"));
-                Image mine217 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine217.png"));
-                Image mine218 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine218.png"));
-                Image mine219 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine219.png"));
-                Image mine220 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine220.png"));
-                Image mine221 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine221.png"));
-                Image mine222 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine222.png"));
-                Image mine223 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine223.png"));
-                Image mine224 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine224.png"));
-                Image mine225 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine225.png"));
-                Image mine226 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine226.png"));
-                Image mine227 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine227.png"));
-                Image mine228 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine228.png"));
-                Image mine229 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine229.png"));
-                Image mine230 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine230.png"));
-                Image mine231 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine231.png"));
-                Image mine232 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine232.png"));
-                Image mine233 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine233.png"));
-                Image mine234 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine234.png"));
-                Image mine235 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine235.png"));
-
-                //Se crea la animación
-                Animacion animWat = new Animacion();
-                animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                animWat.sumaCuadro(mine2, 100);
-                animrand = (int) (Math.random() * (5));
-                if (animrand < 2) {
-                    //animacion 1: aburrimiento
-                    animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                    animWat.sumaCuadro(mine2, 100);
-                    animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                    animWat.sumaCuadro(mine2, 100);
-                    animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                    animWat.sumaCuadro(mine3, 200);
-                    animWat.sumaCuadro(mine4, 50);
-                    animWat.sumaCuadro(mine5, 100);
-                    animWat.sumaCuadro(mine6, 100);
-                    animWat.sumaCuadro(mine7, 400);
-                    animWat.sumaCuadro(mine8, 100);
-                    animWat.sumaCuadro(mine9, 300);
-                    animWat.sumaCuadro(mine10, 2000);
-                    animWat.sumaCuadro(mine11, 400);
-                    animWat.sumaCuadro(mine12, 300);
-                    animWat.sumaCuadro(mine13, 1000);
-                    animWat.sumaCuadro(mine14, 200);
-                    animWat.sumaCuadro(mine13, 400);
-                    animWat.sumaCuadro(mine15, 1000);
-                    animWat.sumaCuadro(mine16, 400);
-                    animWat.sumaCuadro(mine17, 100);
-                    animWat.sumaCuadro(mine18, 100);
-                    animWat.sumaCuadro(mine19, 100);
-                    animWat.sumaCuadro(mine20, 100);
-                    animWat.sumaCuadro(mine21, 100);
-                    animWat.sumaCuadro(mine22, 400);
-                    animWat.sumaCuadro(mine22, 30);
-                    animWat.sumaCuadro(mine23, 50);
-                    animWat.sumaCuadro(mine24, 50);
-                    animWat.sumaCuadro(mine25, 50);
-                    animWat.sumaCuadro(mine26, 50);
-                    animWat.sumaCuadro(mine27, 50);
-                    animWat.sumaCuadro(mine28, 50);
-                    animWat.sumaCuadro(mine29, 100);
-                } else {
-                    if (animrand < 4) {
-                        //animacion 2: refresco
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine101, 600);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine102, 75);
-                        animWat.sumaCuadro(mine103, 75);
-                        animWat.sumaCuadro(mine104, 100);
-                        animWat.sumaCuadro(mine105, 100);
-                        animWat.sumaCuadro(mine106, 100);
-                        animWat.sumaCuadro(mine107, 100);
-                        animWat.sumaCuadro(mine108, 300);
-                        animWat.sumaCuadro(mine109, 100);
-                        animWat.sumaCuadro(mine110, 100);
-                        animWat.sumaCuadro(mine111, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine112, 100);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine114, 200);
-                        animWat.sumaCuadro(mine113, 100);
-                        animWat.sumaCuadro(mine115, 100);
-                        animWat.sumaCuadro(mine116, 100);
-                        animWat.sumaCuadro(mine117, 100);
-                        animWat.sumaCuadro(mine118, 200);
-                        animWat.sumaCuadro(mine119, 1000);
-                        animWat.sumaCuadro(mine120, 100);
-                        animWat.sumaCuadro(mine121, 90);
-                    } else {
-                        //animacion 3: Killerpollo distrae al watulion
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine2, 100);
-                        animWat.sumaCuadro(mine1, ((int) (Math.random() * (16000))) + 2000);
-                        animWat.sumaCuadro(mine201, 500);
-                        animWat.sumaCuadro(mine202, 100);
-                        animWat.sumaCuadro(mine203, 400);
-                        animWat.sumaCuadro(mine204, 100);
-                        animWat.sumaCuadro(mine205, 75);
-                        animWat.sumaCuadro(mine206, 75);
-                        animWat.sumaCuadro(mine205, 75);
-                        animWat.sumaCuadro(mine206, 75);
-                        animWat.sumaCuadro(mine205, 75);
-                        animWat.sumaCuadro(mine206, 75);
-                        animWat.sumaCuadro(mine205, 75);
-                        animWat.sumaCuadro(mine206, 75);
-                        animWat.sumaCuadro(mine207, 100);
-                        animWat.sumaCuadro(mine208, 100);
-                        animWat.sumaCuadro(mine207, 100);
-                        animWat.sumaCuadro(mine208, 100);
-                        animWat.sumaCuadro(mine207, 100);
-                        animWat.sumaCuadro(mine208, 100);
-                        animWat.sumaCuadro(mine207, 100);
-                        animWat.sumaCuadro(mine208, 700);
-                        animWat.sumaCuadro(mine209, 100);
-                        animWat.sumaCuadro(mine210, 100);
-                        animWat.sumaCuadro(mine211, 2000);
-                        animWat.sumaCuadro(mine213, 125);
-                        animWat.sumaCuadro(mine214, 125);
-                        animWat.sumaCuadro(mine213, 125);
-                        animWat.sumaCuadro(mine214, 125);
-                        animWat.sumaCuadro(mine213, 125);
-                        animWat.sumaCuadro(mine214, 125);
-                        animWat.sumaCuadro(mine215, 125);
-                        animWat.sumaCuadro(mine216, 125);
-                        animWat.sumaCuadro(mine215, 125);
-                        animWat.sumaCuadro(mine216, 125);
-                        animWat.sumaCuadro(mine215, 125);
-                        animWat.sumaCuadro(mine216, 125);
-                        animWat.sumaCuadro(mine217, 100);
-                        animWat.sumaCuadro(mine218, 200);
-                        animWat.sumaCuadro(mine219, 200);
-                        animWat.sumaCuadro(mine220, 100);
-                        animWat.sumaCuadro(mine221, 100);
-                        animWat.sumaCuadro(mine220, 100);
-                        animWat.sumaCuadro(mine221, 100);
-                        animWat.sumaCuadro(mine220, 100);
-                        animWat.sumaCuadro(mine221, 100);
-                        animWat.sumaCuadro(mine220, 100);
-                        animWat.sumaCuadro(mine221, 100);
-                        animWat.sumaCuadro(mine222, 200);
-                        animWat.sumaCuadro(mine223, 1000);
-                        animWat.sumaCuadro(mine224, 200);
-                        animWat.sumaCuadro(mine225, 200);
-                        animWat.sumaCuadro(mine226, 2000);
-                        animWat.sumaCuadro(mine227, 200);
-                        animWat.sumaCuadro(mine228, 50);
-                        animWat.sumaCuadro(mine227, 50);
-                        animWat.sumaCuadro(mine228, 50);
-                        animWat.sumaCuadro(mine227, 50);
-                        animWat.sumaCuadro(mine228, 50);
-                        animWat.sumaCuadro(mine227, 50);
-                        animWat.sumaCuadro(mine228, 50);
-                        animWat.sumaCuadro(mine227, 100);
-                        animWat.sumaCuadro(mine228, 2000);
-                        animWat.sumaCuadro(mine229, 100);
-                        animWat.sumaCuadro(mine230, 100);
-                        animWat.sumaCuadro(mine231, 200);
-                        animWat.sumaCuadro(mine232, 2000);
-                        animWat.sumaCuadro(mine233, 50);
-                        animWat.sumaCuadro(mine232, 3000);
-                        animWat.sumaCuadro(mine234, 100);
-                        animWat.sumaCuadro(mine235, 1000);
-                        animWat.sumaCuadro(mine23, 50);
-                        animWat.sumaCuadro(mine24, 50);
-                        animWat.sumaCuadro(mine23, 50);
-                        animWat.sumaCuadro(mine24, 50);
-                        animWat.sumaCuadro(mine23, 50);
-                        animWat.sumaCuadro(mine24, 50);
-                        animWat.sumaCuadro(mine23, 50);
-                        animWat.sumaCuadro(mine24, 50);
-                        animWat.sumaCuadro(mine29, 200);
-                    }
-                }
-
-                animT = animWat;
-
-                //---------------------------------
-            }
-            if (aux == 10) {
-                animT = animBuff;
-            }
-
-            tower.add(new Tower((Integer.parseInt(dataArr[++cont])), (Integer.parseInt(dataArr[++cont])), animT, (Integer.parseInt(dataArr[++cont])), 1, 10, 600, 75, 4200, 60, true));
-            tower.getLast().setSet(true);
-        }
+        lec1 = (dataArr[0]);
+        lec2 = Double.parseDouble(dataArr[1]);
+        lec3 = Integer.parseInt(dataArr[2]);
 
         fileIn.close();
     }
