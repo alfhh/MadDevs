@@ -80,14 +80,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private double testingangle = 0; //solo de prueba
     private int mousex; //Posición en X del mouse
     private int mousey; //Posición en Y del mouse
-    private int keyx; // Posicion de X del keyboard
-    private int keyy; // Posicion de Y del keyboard
     private int countx; // Contador del tiempo de enemigos
     private int basex; // marca la localizacion en x de la base
     private int basey; // marca la localizacion en y de la base
     private double animrand; //diferentes animaciones
     private double score1;
-    private double score2;
 
     private int wavecount; // numero de malos por oleada
     //numero de malos por tipo
@@ -101,15 +98,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int wavebegin; // tiempo antes que empieze la oleada
     private int towerselect; // ID que marca el indice de la torreta seleccionada
     private int instrMouse; // Marca los pasos de las instrucciones
-    private int instrKey; // Marca los pasos de las instrucciones
     private long tiempoActual;
     private long tiempoInicial;
     private int player1money = 400;
     private int player2money = 400;
     private int introtimer = 330; // variable que marca el intro del juego
     private int mouseover = 0; // variable que se usara para desplegar los datos de la torre
-    private int keyid; // variable que marca que torre fue elejuda por el jugador 2
-    private int keyselect; // variable que marca que torre fue elejuda por el jugador 2
 
     private SoundClip intro; // cancion del juego
     private SoundClip lost; // cancion de perder
@@ -136,14 +130,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean canput = false; // ver si se puede poner o no
     private boolean saveStates; // booleano que muestra los savestates
     private boolean loadStates; // booleano que muestra los loadstates
-    private boolean coop; // booleano que marca si el juego es cooperativo
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
         return java.lang.Math.pow((circleX - clickX), 2) + java.lang.Math.pow((circleY - clickY), 2) < java.lang.Math.pow(radius, 2);
     }
 
-    public void watulioCreation(int ex, int ey, int pl) {
+    public void watulioCreation(int ex, int ey) {
         //Torre wat
         //Animación de watmine, que enverdad es una torre pero parece mina
         Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
@@ -405,14 +398,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 animWat.sumaCuadro(mine29, 200);
             }
         }
-        if(pl == 1)
-        {
         towerid = 9;
-        }
-        else
-        {
-            keyselect = 9;
-        }
         tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 4200, 60, true));
     }
 
@@ -478,7 +464,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         if (new Rectangle(1238, 301, 30, 30).contains(e.getPoint())) {
                             //torre de watulion
                             if (player1money >= 2000) {
-                                watulioCreation(e.getX(), e.getY(),1);
+                                watulioCreation(e.getX(), e.getY());
                             }
                         }
                         if (new Rectangle(1298, 301, 30, 30).contains(e.getPoint())) {
@@ -590,167 +576,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         }
     }
-    
-    public void towerCreateKeyboard(KeyEvent e) {
-        if (game) {
-                // creacion de torretas
-                if (keyid == 0) {
-                    if (!bmine) {
-                        if (e.getKeyCode() == KeyEvent.VK_1) {
-                            //Torre normal
-                            if (player2money >= 100) {
-                                keyid = 3;
-                                tower.add(new Tower(keyx, keyy, animNormal, towerid, 2, 15, 25, 50, 100, 90, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_2) {
-                            //Torre dual
-                            if (player2money >= 500) {
-                                keyid = 4;
-                                tower.add(new Tower(keyx, keyy, animDual, towerid, 2, 20, 50, 12, 500, 100, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_3) {
-                            //Torre sniper
-                            if (player2money >= 420) {
-                                keyid = 5;
-                                tower.add(new Tower(keyx, keyy, animSniper, towerid, 2, 30, 150, 75, 420, 180, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_4) {
-                            //Torre quad
-                            if (player2money >= 800) {
-                                keyid = 6;
-                                tower.add(new Tower(keyx, keyy, animQuad, towerid, 2, 27, 30, 3, 800, 120, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_5) {
-                            //Torre dual fuerte
-                            if (player2money >= 900) {
-                                keyid = 7;
-                                tower.add(new Tower(keyx, keyy, animFuerte, towerid, 2, 36, 100, 12, 900, 160, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_6) {
-                            //Torre laser
-                            if (player2money >= 1050) {
-                                keyid = 8;
-                                tower.add(new Tower(keyx, keyy, animLaser, towerid, 2, 36, 600, 75, 1050, 250, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_7) {
-                            //torre de watulion
-                            if (player2money >= 2000) {
-                                watulioCreation(keyx, keyy,2);
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_8) {
-                            //torre de buff
-                            if (player2money >= 2000) {
-                                keyid = 10;
-                                tower.add(new Tower(keyx, keyy, animBuff, towerid, 2, 36, 0, 75, 1600, 150, true));
-                            }
-                        }
-                    }
-                    if (towerid == 0 && !bmine && player2money >= 410) {
-                        if (e.getKeyCode() == KeyEvent.VK_Q) {
-                            //Mina
-                            bmine = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine5.png"));
-                            Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine6.png"));
-
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 200);
-                            animMine.sumaCuadro(nmine2, 200);
-                            animMine.sumaCuadro(nmine3, 200);
-                            animMine.sumaCuadro(nmine4, 200);
-                            animMine.sumaCuadro(nmine5, 200);
-                            animMine.sumaCuadro(nmine6, 200);
-                            mine.add(new Mine(keyx, keyy, animMine, 2, 1));
-                        }
-
-                        if (e.getKeyCode() == KeyEvent.VK_W) {
-                            //Mina
-                            bmine = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine5.png"));
-
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 100);
-                            animMine.sumaCuadro(nmine2, 100);
-                            animMine.sumaCuadro(nmine3, 100);
-                            animMine.sumaCuadro(nmine4, 100);
-                            animMine.sumaCuadro(nmine5, 100);
-                            animMine.sumaCuadro(nmine4, 100);
-                            animMine.sumaCuadro(nmine3, 100);
-                            animMine.sumaCuadro(nmine2, 100);
-                            mine.add(new Mine(keyx, keyy, animMine, 2, 3));
-                        }
-
-                        if (e.getKeyCode() == KeyEvent.VK_3) {
-                            //Mina
-                            bmine = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine5.png"));
-                            Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine6.png"));
-                            Image nmine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine7.png"));
-                            Image nmine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine8.png"));
-                            Image nmine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine9.png"));
-                            Image nmine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine10.png"));
-                            Image nmine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine11.png"));
-                            Image nmine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine12.png"));
-
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 200);
-                            animMine.sumaCuadro(nmine2, 200);
-                            animMine.sumaCuadro(nmine3, 200);
-                            animMine.sumaCuadro(nmine4, 200);
-                            animMine.sumaCuadro(nmine5, 200);
-                            animMine.sumaCuadro(nmine6, 200);
-                            animMine.sumaCuadro(nmine7, 200);
-                            animMine.sumaCuadro(nmine8, 200);
-                            animMine.sumaCuadro(nmine9, 200);
-                            animMine.sumaCuadro(nmine10, 200);
-                            animMine.sumaCuadro(nmine11, 200);
-                            animMine.sumaCuadro(nmine12, 200);
-                            mine.add(new Mine(keyx, keyy, animMine, 2, 2));
-                        }
-                    }
-                }            
-                    Tower t;
-                    for (int i = 0; i < tower.size(); i++) {
-                        t = (Tower) tower.get(i);
-                        if (t.getPerimetro().contains(new Point(keyx+1,keyy+1))) {
-                            keyselect = i;
-                            break;
-                        } else {
-                            keyselect = -1;
-                        }
-                    }
-                
-            
-
-        }
-    }
 
     public STTD() {
         // Setup
@@ -789,8 +614,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         fx = true;
         saveStates = false;
         loadStates = false;
-        coop = false;
-        keyselect = -1;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -981,14 +804,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             minesound.play();
                         }
                         if (e.getType() < 3) {
-                            if(m.getPlayer()== 1)
-                            {
                             player1money += 20;
-                            }
-                            else
-                            {
-                            player2money += 20; 
-                            }
                             wrench.remove(i);
                         } else {
                             e.setHealth(e.getHealth() - e.getBaseHealth() / (3 + (int) (wave / 10)));
@@ -1160,12 +976,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         mouseover = 0;
         if (towerid > 0) {// Si se esta cargando una torre
             try { // Intenta tomar la ultima torre del arreglo
-                Tower t = tower.getFirst();
-                for (Tower tower1 : tower) {
-                    if (tower1.getPlayer() == 1) {
-                        t = tower1;
-                    }
-                }
+                Tower t = (Tower) tower.getLast();
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 1) {
@@ -1190,12 +1001,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         } else if (bmine) {
             try { // Intenta tomar la ultima torre del arreglo
-                Mine m = (Mine) mine.getFirst();
-                for (Mine mine1 : mine) {
-                    if (mine1.getPlayer() == 1) {
-                        m = mine1;
-                    }
-                }
+                Mine m = (Mine) mine.getLast();
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 0) {
@@ -1234,7 +1040,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             } catch (NoSuchElementException n) {
                 bmine = false;
             }
-        } else if (!coop) {
+        } else {
             if (new Rectangle(1268, 121, 30, 30).contains(b.getLocation())) {
                 //Torre normal
                 mouseover = 3;
@@ -1280,35 +1086,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 mouseover = 13;
             }
         }
-        if (keyid > 0) {
-            try {
-                if (keyid < 12) {
-                    Tower t = tower.getFirst();
-                    for (Tower tower1 : tower) {
-                        if (tower1.getPlayer() == 2) {
-                            t = tower1;
-                        }
-                        t.setPosX(keyx);
-                        t.setPosY(keyy);
-                    }
-                } else {
-                    for (Mine mine1 : mine) {
-                        Mine m = (Mine) mine.getFirst();
-                        if (mine1.getPlayer() == 2) {
-                            m = mine1;
-                        }
-                        m.setPosX(keyx);
-                        m.setPosY(keyy);
-                    }
-                }
-            } catch (NoSuchElementException n) {
-                keyid = 0;
-            }
-        }
+
         //bufeadora
-        for (int i = 0;
-                i < tower.size();
-                i++) {
+        for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
             if (t.getSet()) {
                 if (t.getId() == 10) {
@@ -1540,7 +1320,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 5: //sniper
                             if (fx) {
-                                SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
+                    SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
                                 snipersound.play();
                             }
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -1600,7 +1380,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
-                            if (fx) {
+                            if (fx) {        
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
                                 lasersound.play();
                             }
@@ -1666,17 +1446,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
             }
         }
-        for (int i = 0;
-                i < tower.size();
-                i++) {
+        for (int i = 0; i < tower.size(); i++) {
             Tower t = (Tower) tower.get(i);
 
         }
 
         //Movimiento de las balas
-        for (int i = 0;
-                i < bullet.size();
-                i++) {
+        for (int i = 0; i < bullet.size(); i++) {
             Bullet t = (Bullet) bullet.get(i);
             if (!t.distanceTime()) {
                 t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
@@ -1703,31 +1479,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 loadStates = false;
             }
         }
-        if (game && coop) {
-            towerCreateKeyboard(e);
-            if (e.getKeyCode() == KeyEvent.VK_UP) {
-                if (keyy - 30 > 30) {
-                    keyy -= 30;
-                }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                if (keyy + 30 < 700) {
-                    keyy += 30;
-                }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                if (keyx - 30 > 7) {
-                    keyx -= 30;
-                }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                if (keyx + 30 < 1200) {
-                    keyx += 30;
-                }
-            }
-        }
-        if (e.getKeyCode()
-                == KeyEvent.VK_C) {
+
+        if (e.getKeyCode() == KeyEvent.VK_C) {
             if (saveStates) {
                 saveStates = false;
             }
@@ -1845,9 +1598,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             rect.setLocation(476, 488);
             if (rect.contains(e.getPoint())) {
                 menu = true;
-                coop = true;
-                keyx = 608;
-                keyy = 391;
                 main = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
@@ -2333,11 +2083,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
                 if (!canput) {
                     Mine t2 = (Mine) mine.getLast();
-                    for (Mine mine1 : mine) {
-                        if (mine1.getPlayer() == 1) {
-                            t2 = mine1;
-                        }
-                    }
                     if (!t2.getSet()) {
                         Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
                         g2d.setColor(Color.red);
@@ -2481,13 +2226,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 } catch (NoninvertibleTransformException e) {
                     //...
                 }
+
                 if (!canput) {
                     Tower t2 = (Tower) tower.getLast();
-                    for (Tower tower1 : tower) {
-                        if (tower1.getPlayer() == 1) {
-                            t2 = tower1;
-                        }
-                    }
                     if (!t2.getSet()) {
                         g2d.setColor(Color.red);
                         g2d.setStroke(new BasicStroke(3));
@@ -2495,8 +2236,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
                     }
                 }
-            }
 
+            }
             //dibujar vida de los enemigos y los enemigos
             for (int i = 0; i < wrench.size(); i++) {
                 Enemy t = (Enemy) wrench.get(i);
@@ -2677,11 +2418,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         break;
                 }
             }
-        }
-        if (coop && game) {
-            g2d.setStroke(new BasicStroke(8));
-            g2d.setColor(Color.red);
-            g2d.drawRect(keyx, keyy, 30, 30);
         }
     }
 
