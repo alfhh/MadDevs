@@ -2404,6 +2404,7 @@ int priority2; //-1 = no apuntar a nada
                         place.play();
                     }
                     t.setSet(true);
+                    grid[(t.getPosY() - 30) / 30][(t.getPosX() - 8) / 30] = t.getId();
                 }
             } else {                // Se remueve la torreta
                 tower2.removeLast();
@@ -2740,6 +2741,8 @@ int priority2; //-1 = no apuntar a nada
             lose = false;
             tower.clear();
             mine.clear();
+            mine2.clear();
+            tower2.clear();
             player1money = 400;
             player2money = 400;
             wrench.clear();
@@ -2837,6 +2840,8 @@ int priority2; //-1 = no apuntar a nada
                 tower.clear();
                 mine.clear();
                 wrench.clear();
+                mine2.clear();
+                      tower2.clear();
                 player1money = 400;
                 player2money = 400;
                 rotacion = Math.PI / 60;
@@ -3266,12 +3271,12 @@ if(coop)
                             g2d.setFont(new Font("Consolas", Font.BOLD, 12));
                             g2d.setColor(Color.black);
                             if (k == 1) {
-                                g2d.drawString("Range", 1231 + k * 76, 520+75);
+                                g2d.drawString("Range(X)", 1226 + k * 76, 520+75);
                             } else {
-                                g2d.drawString("Speed", 1231 + k * 76, 520+75);
+                                g2d.drawString("Speed(Z)", 1226 + k * 76, 520+75);
                             }
                             AffineTransform z = new AffineTransform();
-                            z.translate(1231 + k * 76, 580);
+                            z.translate(1231 + k * 76, 480+75);
                             z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
                             g2d.transform(z);
                             switch (t.getId()) {
