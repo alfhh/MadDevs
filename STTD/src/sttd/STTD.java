@@ -80,11 +80,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private double testingangle = 0; //solo de prueba
     private int mousex; //Posición en X del mouse
     private int mousey; //Posición en Y del mouse
+    private int keyx; // Posicion de X del keyboard
+    private int keyy; // Posicion de Y del keyboard
     private int countx; // Contador del tiempo de enemigos
     private int basex; // marca la localizacion en x de la base
     private int basey; // marca la localizacion en y de la base
     private double animrand; //diferentes animaciones
     private double score1;
+    private double score2;
 
     private int wavecount; // numero de malos por oleada
     //numero de malos por tipo
@@ -98,6 +101,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int wavebegin; // tiempo antes que empieze la oleada
     private int towerselect; // ID que marca el indice de la torreta seleccionada
     private int instrMouse; // Marca los pasos de las instrucciones
+    private int instrKey; // Marca los pasos de las instrucciones
     private long tiempoActual;
     private long tiempoInicial;
     private int player1money = 400;
@@ -130,6 +134,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean canput = false; // ver si se puede poner o no
     private boolean saveStates; // booleano que muestra los savestates
     private boolean loadStates; // booleano que muestra los loadstates
+    private boolean coop; // booleano que marca si el juego es cooperativo
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -614,6 +619,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         fx = true;
         saveStates = false;
         loadStates = false;
+        coop = false;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -976,7 +982,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         mouseover = 0;
         if (towerid > 0) {// Si se esta cargando una torre
             try { // Intenta tomar la ultima torre del arreglo
-                Tower t = (Tower) tower.getLast();
+                Tower t = tower.getFirst();
+                for (Tower tower1 : tower) {
+                    if (tower1.getPlayer() == 1) {
+                        t = tower1;
+                    }
+                }
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 1) {
@@ -1001,7 +1012,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         } else if (bmine) {
             try { // Intenta tomar la ultima torre del arreglo
-                Mine m = (Mine) mine.getLast();
+                Mine m = (Mine) mine.getFirst();
+                for (Mine mine1 : mine) {
+                    if (mine1.getPlayer() == 1) {
+                        m = mine1;
+                    }
+                }
                 // si la torreta esta dentro de la grid
                 if (b.getX() < 1208 && b.getY() > 30 && b.getY() < 716) {
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 0) {
@@ -1320,7 +1336,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 5: //sniper
                             if (fx) {
-                    SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
+                                SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
                                 snipersound.play();
                             }
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -1380,7 +1396,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
-                            if (fx) {        
+                            if (fx) {
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
                                 lasersound.play();
                             }
@@ -1479,8 +1495,75 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 loadStates = false;
             }
         }
+        if (game && coop) {
+            if (e.getKeyCode() == KeyEvent.VK_1) {
 
-        if (e.getKeyCode() == KeyEvent.VK_C) {
+            }
+            if (e.getKeyCode() == KeyEvent.VK_2) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_3) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_4) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_5) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_6) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_7) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_8) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_E) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_Z) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_X) {
+
+            }
+            if (e.getKeyCode() == KeyEvent.VK_UP) {
+                if (keyy - 30 > 30) {
+                    keyy -= 30;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if (keyy + 30 < 700) {
+                    keyy += 30;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                if (keyx - 30 > 7) {
+                    keyx -= 30;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                if (keyx + 30 < 1200) {
+                    keyx += 30;
+                }
+            }
+        }
+        if (e.getKeyCode()
+                == KeyEvent.VK_C) {
             if (saveStates) {
                 saveStates = false;
             }
@@ -1598,6 +1681,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             rect.setLocation(476, 488);
             if (rect.contains(e.getPoint())) {
                 menu = true;
+                coop = true;
+                keyx = 608;
+                keyy = 391;
                 main = false;
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Menu.png"));
             }
@@ -2418,6 +2504,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         break;
                 }
             }
+        }
+        if (coop && game){
+            g2d.setStroke(new BasicStroke(8));
+            g2d.setColor(Color.red);
+            g2d.drawRect(keyx, keyy, 30, 30);
         }
     }
 

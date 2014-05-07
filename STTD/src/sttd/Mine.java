@@ -38,7 +38,7 @@ public class Mine extends Base {
     int getDam() {
         return damage;
     }
-    
+
     //Metodo para ver el tipo
     int getType() {
         return type;
@@ -50,12 +50,17 @@ public class Mine extends Base {
     }
 
     //Metodo de modificacion de explosion
-    void setExp(int e){
+    void setExp(int e) {
         explosion = e;
     }
-    
+
     //Metodo de actualizar la explosion
     void Exp() {
         explosion -= 2;
+    }
+
+    //Metodo para obtener el numero del jugador de la mina
+    int getPlayer() {
+        return playerid;
     }
 }
