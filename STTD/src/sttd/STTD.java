@@ -423,8 +423,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         towerid = 9;
         tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 2000, 60, true));
     }
-    
-        public void watulioCreation2(int ex, int ey) {
+
+    public void watulioCreation2(int ex, int ey) {
         //Torre wat
         //Animación de watmine, que enverdad es una torre pero parece mina
         Image mine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/wat_mine/watmine1.png"));
@@ -689,8 +689,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         towerid2 = 9;
         tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 2000, 60, true));
     }
-    
-    
 
     public void towerCreate(MouseEvent e, boolean click) {
         if (game) {
@@ -866,168 +864,164 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         }
     }
-    
-        public void towerCreate2(KeyEvent e) {
+
+    public void towerCreate2(KeyEvent e) {
         if (game) {
-                 //Upgrade de las torres
-                if (towerselect2 >= 0) {
-                    Tower t = (Tower) tower2.get(towerselect2);
-                    if (t.getExp() >= t.getMAXExp()) {
-                        if (e.getKeyCode() == KeyEvent.VK_X) {
-                            t.getUpgR();
-                        } 
-                        if (e.getKeyCode() == KeyEvent.VK_Z) {
-                            t.getUpgL();
+            //Upgrade de las torres
+            if (towerselect2 >= 0) {
+                Tower t = (Tower) tower2.get(towerselect2);
+                if (t.getExp() >= t.getMAXExp()) {
+                    if (e.getKeyCode() == KeyEvent.VK_X) {
+                        t.getUpgR();
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_Z) {
+                        t.getUpgL();
+                    }
+                }
+            }
+            // creacion de torretas
+            if (towerid2 == 0) {
+                if (!bmine2) {
+                    if (e.getKeyCode() == KeyEvent.VK_1) {
+                        //Torre normal
+                        if (player2money >= 100) {
+                            towerid2 = 3;
+                            tower2.add(new Tower(keyx, keyy, animNormal, towerid2, 2, 15, 25, 50, 100, 90, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_2) {
+                        //Torre dual
+                        if (player2money >= 500) {
+                            towerid2 = 4;
+                            tower2.add(new Tower(keyx, keyy, animDual, towerid2, 2, 20, 50, 12, 500, 100, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_3) {
+                        //Torre sniper
+                        if (player1money >= 420) {
+                            towerid2 = 5;
+                            tower2.add(new Tower(keyx, keyy, animSniper, towerid2, 2, 30, 150, 75, 420, 180, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_4) {
+                        //Torre quad
+                        if (player2money >= 800) {
+                            towerid2 = 6;
+                            tower2.add(new Tower(keyx, keyy, animQuad, towerid2, 2, 27, 30, 3, 800, 120, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_5) {
+                        //Torre dual fuerte
+                        if (player2money >= 900) {
+                            towerid2 = 7;
+                            tower2.add(new Tower(keyx, keyy, animFuerte, towerid2, 2, 36, 100, 12, 900, 160, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_6) {
+                        //Torre laser
+                        if (player1money >= 1050) {
+                            towerid2 = 8;
+                            tower2.add(new Tower(keyx, keyy, animLaser, towerid2, 2, 36, 600, 75, 1050, 250, false));
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_7) {
+                        //torre de watulion
+                        if (player2money >= 2000) {
+                            watulioCreation2(keyx, keyy);
+                        }
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_8) {
+                        //torre de buff
+                        if (player2money >= 2000) {
+                            towerid2 = 10;
+                            tower2.add(new Tower(keyx, keyy, animBuff, towerid2, 2, 36, 0, 75, 1600, 150, true));
                         }
                     }
                 }
-                // creacion de torretas
-                if (towerid2 == 0) {
-                    if (!bmine2) {
-                        if (e.getKeyCode() == KeyEvent.VK_1) {
-                            //Torre normal
-                            if (player2money >= 100) {
-                                towerid2 = 3;
-                                tower2.add(new Tower(keyx, keyy, animNormal, towerid2, 2, 15, 25, 50, 100, 90, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_2) {
-                            //Torre dual
-                            if (player2money >= 500) {
-                                towerid2 = 4;
-                                tower2.add(new Tower(keyx, keyy, animDual, towerid2, 2, 20, 50, 12, 500, 100, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_3) {
-                            //Torre sniper
-                            if (player1money >= 420) {
-                                towerid2 = 5;
-                                tower2.add(new Tower(keyx, keyy, animSniper, towerid2, 2, 30, 150, 75, 420, 180, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_4) {
-                            //Torre quad
-                            if (player2money >= 800) {
-                                towerid2 = 6;
-                                tower2.add(new Tower(keyx, keyy, animQuad, towerid2, 2, 27, 30, 3, 800, 120, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_5) {
-                            //Torre dual fuerte
-                            if (player2money >= 900) {
-                                towerid2 = 7;
-                                tower2.add(new Tower(keyx, keyy, animFuerte, towerid2, 2, 36, 100, 12, 900, 160, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_6) {
-                            //Torre laser
-                            if (player1money >= 1050) {
-                                towerid2 = 8;
-                                tower2.add(new Tower(keyx, keyy, animLaser, towerid2, 2, 36, 600, 75, 1050, 250, false));
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_7) {
-                            //torre de watulion
-                            if (player2money >= 2000) {
-                                watulioCreation2(keyx, keyy);
-                            }
-                        }
-                        if (e.getKeyCode() == KeyEvent.VK_8) {
-                            //torre de buff
-                            if (player2money >= 2000) {
-                                towerid2 = 10;
-                                tower2.add(new Tower(keyx, keyy, animBuff, towerid2, 2, 36, 0, 75, 1600, 150, true));
-                            }
-                        }
+                if (towerid2 == 0 && !bmine2 && player2money >= 410) {
+                    if (e.getKeyCode() == KeyEvent.VK_Q) {
+                        //Mina
+                        bmine2 = true;
+                        Animacion animMine; // Animacion de la mina 
+                        //Imagen de la mina animada
+                        Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine1.png"));
+                        Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine2.png"));
+                        Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine3.png"));
+                        Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine4.png"));
+                        Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine5.png"));
+                        Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine6.png"));
+
+                        //Se crea la animación
+                        animMine = new Animacion();
+                        animMine.sumaCuadro(nmine1, 200);
+                        animMine.sumaCuadro(nmine2, 200);
+                        animMine.sumaCuadro(nmine3, 200);
+                        animMine.sumaCuadro(nmine4, 200);
+                        animMine.sumaCuadro(nmine5, 200);
+                        animMine.sumaCuadro(nmine6, 200);
+                        mine2.add(new Mine(keyx, keyy, animMine, 2, 1));
                     }
-                    if (towerid2 == 0 && !bmine2 && player2money >= 410) {
-                        if (e.getKeyCode() == KeyEvent.VK_Q) {
-                            //Mina
-                            bmine2 = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine5.png"));
-                            Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Mine_animation/mine6.png"));
 
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 200);
-                            animMine.sumaCuadro(nmine2, 200);
-                            animMine.sumaCuadro(nmine3, 200);
-                            animMine.sumaCuadro(nmine4, 200);
-                            animMine.sumaCuadro(nmine5, 200);
-                            animMine.sumaCuadro(nmine6, 200);
-                            mine2.add(new Mine(keyx, keyy, animMine, 2, 1));
-                        }
+                    if (e.getKeyCode() == KeyEvent.VK_W) {
+                        //Mina
+                        bmine2 = true;
+                        Animacion animMine; // Animacion de la mina 
+                        //Imagen de la mina animada
+                        Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine1.png"));
+                        Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine2.png"));
+                        Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine3.png"));
+                        Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine4.png"));
+                        Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine5.png"));
 
-                        if (e.getKeyCode() == KeyEvent.VK_W) {
-                            //Mina
-                            bmine2 = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Poisonmine_animation/mine5.png"));
+                        //Se crea la animación
+                        animMine = new Animacion();
+                        animMine.sumaCuadro(nmine1, 100);
+                        animMine.sumaCuadro(nmine2, 100);
+                        animMine.sumaCuadro(nmine3, 100);
+                        animMine.sumaCuadro(nmine4, 100);
+                        animMine.sumaCuadro(nmine5, 100);
+                        animMine.sumaCuadro(nmine4, 100);
+                        animMine.sumaCuadro(nmine3, 100);
+                        animMine.sumaCuadro(nmine2, 100);
+                        mine2.add(new Mine(keyx, keyy, animMine, 2, 3));
+                    }
 
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 100);
-                            animMine.sumaCuadro(nmine2, 100);
-                            animMine.sumaCuadro(nmine3, 100);
-                            animMine.sumaCuadro(nmine4, 100);
-                            animMine.sumaCuadro(nmine5, 100);
-                            animMine.sumaCuadro(nmine4, 100);
-                            animMine.sumaCuadro(nmine3, 100);
-                            animMine.sumaCuadro(nmine2, 100);
-                            mine2.add(new Mine(keyx, keyy, animMine, 2, 3));
-                        }
+                    if (e.getKeyCode() == KeyEvent.VK_E) {
+                        //Mina
+                        bmine2 = true;
+                        Animacion animMine; // Animacion de la mina 
+                        //Imagen de la mina animada
+                        Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine1.png"));
+                        Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine2.png"));
+                        Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine3.png"));
+                        Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine4.png"));
+                        Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine5.png"));
+                        Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine6.png"));
+                        Image nmine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine7.png"));
+                        Image nmine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine8.png"));
+                        Image nmine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine9.png"));
+                        Image nmine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine10.png"));
+                        Image nmine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine11.png"));
+                        Image nmine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine12.png"));
 
-                        if (e.getKeyCode() == KeyEvent.VK_E) {
-                            //Mina
-                            bmine2 = true;
-                            Animacion animMine; // Animacion de la mina 
-                            //Imagen de la mina animada
-                            Image nmine1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine1.png"));
-                            Image nmine2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine2.png"));
-                            Image nmine3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine3.png"));
-                            Image nmine4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine4.png"));
-                            Image nmine5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine5.png"));
-                            Image nmine6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine6.png"));
-                            Image nmine7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine7.png"));
-                            Image nmine8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine8.png"));
-                            Image nmine9 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine9.png"));
-                            Image nmine10 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine10.png"));
-                            Image nmine11 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine11.png"));
-                            Image nmine12 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Timemine_animation/tmine12.png"));
-
-                            //Se crea la animación
-                            animMine = new Animacion();
-                            animMine.sumaCuadro(nmine1, 200);
-                            animMine.sumaCuadro(nmine2, 200);
-                            animMine.sumaCuadro(nmine3, 200);
-                            animMine.sumaCuadro(nmine4, 200);
-                            animMine.sumaCuadro(nmine5, 200);
-                            animMine.sumaCuadro(nmine6, 200);
-                            animMine.sumaCuadro(nmine7, 200);
-                            animMine.sumaCuadro(nmine8, 200);
-                            animMine.sumaCuadro(nmine9, 200);
-                            animMine.sumaCuadro(nmine10, 200);
-                            animMine.sumaCuadro(nmine11, 200);
-                            animMine.sumaCuadro(nmine12, 200);
-                            mine2.add(new Mine(keyx, keyy, animMine, 2, 2));
-                        }
+                        //Se crea la animación
+                        animMine = new Animacion();
+                        animMine.sumaCuadro(nmine1, 200);
+                        animMine.sumaCuadro(nmine2, 200);
+                        animMine.sumaCuadro(nmine3, 200);
+                        animMine.sumaCuadro(nmine4, 200);
+                        animMine.sumaCuadro(nmine5, 200);
+                        animMine.sumaCuadro(nmine6, 200);
+                        animMine.sumaCuadro(nmine7, 200);
+                        animMine.sumaCuadro(nmine8, 200);
+                        animMine.sumaCuadro(nmine9, 200);
+                        animMine.sumaCuadro(nmine10, 200);
+                        animMine.sumaCuadro(nmine11, 200);
+                        animMine.sumaCuadro(nmine12, 200);
+                        mine2.add(new Mine(keyx, keyy, animMine, 2, 2));
                     }
                 }
-             
-       
-                    
-            
+            }
 
         }
     }
@@ -1367,31 +1361,30 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     e.setHealth(e.getHealth() - bl.getDamage());
 
                     Tower t;
-                    if(bl.getPlayer() == 1)
-                    {
-                     t = (Tower) tower.get(bl.getTower());   
+                    if (bl.getPlayer() == 1) {
+                        t = (Tower) tower.get(bl.getTower());
+                    } else {
+                        t = (Tower) tower2.get(bl.getTower());
                     }
-                    else
-                    {
-                    t = (Tower) tower2.get(bl.getTower());   
-                    }
-                    
+
                     t.Exp();
                     if (t.getPlayer() == 1) {
                         score1 += (double) bl.getDamage() / 100.0;
+
                        player1money += (int) (bl.getDamage() / 100.0)+1;
                     }
                     else
                     {
                       score2 += (double) (bl.getDamage() / 100.0);
                       player2money += (int) (bl.getDamage() / 100.0)+1;
+
                     }
                     bl.destroy();
                 }
 
             }
         }
-        
+
         //repeticion para minas del p2
         for (int i = 0; i < wrench.size(); i++) {
             Enemy e = (Enemy) wrench.get(i);
@@ -1495,23 +1488,20 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Bullet bl = (Bullet) bullet.get(j);
                 if (e.getPerimetro().intersects(bl.getPerimetro())) {
                     e.setHealth(e.getHealth() - bl.getDamage());
-                    if(bl.getPlayer()== 1)
-                    {
-                    Tower t = (Tower) tower.get(bl.getTower());
-                    t.Exp();
-                    score1 += (double) bl.getDamage() / 100.0;
-                    }
-                    else
-                    {
-                    Tower t = (Tower) tower2.get(bl.getTower());
-                    t.Exp();
-                    score2+= (double) bl.getDamage() / 100.0;
+                    if (bl.getPlayer() == 1) {
+                        Tower t = (Tower) tower.get(bl.getTower());
+                        t.Exp();
+                        score1 += (double) bl.getDamage() / 100.0;
+                    } else {
+                        Tower t = (Tower) tower2.get(bl.getTower());
+                        t.Exp();
+                        score2 += (double) bl.getDamage() / 100.0;
                     }
                     bl.destroy();
                 }
 
             }
-            
+
         }
     }
 
@@ -1541,20 +1531,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 lasers.remove(l);
             }
         }
-        
+
         //checar si esta el towerselect2
         Tower k;
-                    for (int i = 0; i < tower2.size(); i++) {
-                        k = (Tower) tower2.get(i);
-                        if (k.getPosX() == keyx && k.getPosY() == keyy) {
-                            towerselect2 = i;
-                            break;
-                        } else {
-                            towerselect2 = -1;
-                        }
-                    }
-                
-        
+        for (int i = 0; i < tower2.size(); i++) {
+            k = (Tower) tower2.get(i);
+            if (k.getPosX() == keyx && k.getPosY() == keyy) {
+                towerselect2 = i;
+                break;
+            } else {
+                towerselect2 = -1;
+            }
+        }
 
         //para animar
         //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
@@ -1573,8 +1561,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 t.getAnimacion().actualiza(tiempoTranscurrido);
             }
         }
-        
-                //Actualiza la animación en base al tiempo transcurrido de Torre2 Watulio
+
+        //Actualiza la animación en base al tiempo transcurrido de Torre2 Watulio
         for (int i = 0; i < tower2.size() - 1; i++) {
             Tower t = (Tower) tower2.get(i);
             if (t.getPosX() > 1200) {
@@ -1602,8 +1590,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 m.Exp();
             }
         }
-        
-               //Actualizacion de las minas del p2
+
+        //Actualizacion de las minas del p2
         for (int i = 0; i < mine2.size(); i++) {
             Mine m = (Mine) mine2.get(i);
             if ((Mine) mine2.getLast() != m && m.getPosX() > 1200 || m.getExp() == -1) {
@@ -1615,7 +1603,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 m.Exp();
             }
         }
-        
+
         //Actualiza la animación del intro
         animIntro.actualiza(tiempoTranscurrido);
         PointerInfo a = MouseInfo.getPointerInfo(); // Obtencion del mouse para seguirlo
@@ -1625,63 +1613,66 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             try { // Intenta tomar la ultima torre del arreglo
                 Tower t = (Tower) tower2.getLast();
                 // si la torreta esta dentro de la grid
-                    if (grid[((int) keyy - 30) / 30][((int) keyx - 8) / 30] == 1) {
-                        canput2 = true;
-                        //Lo acomoda en la matriz
-                        t.setPosX(keyx);
-                        t.setPosY(keyy);
-                    } else {
-                        canput2 = false;
-                        t.setPosX(keyx);
-                        t.setPosY(keyy);
-                    }
-                
+                if (grid[((int) keyy - 30) / 30][((int) keyx - 8) / 30] == 1) {
+                    canput2 = true;
+                    //Lo acomoda en la matriz
+                    t.setPosX(keyx);
+                    t.setPosY(keyy);
+                } else {
+                    canput2 = false;
+                    t.setPosX(keyx);
+                    t.setPosY(keyy);
+                }
+
             } catch (NoSuchElementException n) {
                 towerid2 = 0;
             }
-        } else if(bmine2){
+        } else if (bmine2) {
             try { // Intenta tomar la ultima torre del arreglo
                 Mine m = (Mine) mine2.getLast();
                 // si la torreta esta dentro de la grid 
-                    if (grid[((int) keyy - 30) / 30][((int) keyx - 8) / 30] == 0) {
-                        //Checa que no haya otra mina
-                        boolean over = false;
-                        for (int i = 0; i < mine2.size()+mine.size(); i++) {
-                           Mine n;
-                            if(i < mine2.size())
-                            {
+                if (grid[((int) keyy - 30) / 30][((int) keyx - 8) / 30] == 0) {
+                    //Checa que no haya otra mina
+                    boolean over = false;
+                    for (int i = 0; i < mine2.size() + mine.size(); i++) {
+                        Mine n;
+                        if (i < mine2.size()) {
                             n = (Mine) mine2.get(i);
-                            }
-                            else
-                            {
-                            n = (Mine) mine.get(i-mine2.size());   
-                            }
-                            //Lo acomoda en la matriz
-                            if (n != m && n.getPosX() == (((int) keyx) - ((int) keyx - 8) % 30)
-                                    && n.getPosY() == (((int) keyy) - ((int) keyx) % 30)) {
-                                over = true;
-                            }
-                        }
-                        if (!over) {
-                            canput2 = true;
-                            m.setPosX(keyx);
-                        m.setPosY(keyy);
                         } else {
+
                             canput2 = false;
                             m.setPosX(keyx);
                            m.setPosY(keyy);
+
+                            n = (Mine) mine.get(i - mine2.size());
+
                         }
+                        //Lo acomoda en la matriz
+                        if (n != m && n.getPosX() == (((int) keyx) - ((int) keyx - 8) % 30)
+                                && n.getPosY() == (((int) keyy) - ((int) keyx) % 30)) {
+                            over = true;
+                        }
+                    }
+                    if (!over) {
+                        canput2 = true;
+                        m.setPosX(keyx);
+                        m.setPosY(keyy);
                     } else {
                         canput2 = false;
                         m.setPosX(keyx);
                         m.setPosY(keyy);
                     }
-                 
+                } else {
+                    canput2 = false;
+                    m.setPosX(keyx);
+                    m.setPosY(keyy);
+                }
+
             } catch (NoSuchElementException n) {
                 bmine2 = false;
             }
         }
-        
+
         if (towerid > 0) {// Si se esta cargando una torre
             try { // Intenta tomar la ultima torre del arreglo
                 Tower t = (Tower) tower.getLast();
@@ -1698,12 +1689,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         t.setPosX((int) b.getX() - t.getAncho() / 2);
                         t.setPosY((int) b.getY() - t.getAlto() / 2);
                     }
-                } 
-                else{
-                canput = false;
-                        // se pone en medio del cursor
-                        t.setPosX((int) b.getX() - t.getAncho() / 2);
-                        t.setPosY((int) b.getY() - t.getAlto() / 2);}
+                } else {
+                    canput = false;
+                    // se pone en medio del cursor
+                    t.setPosX((int) b.getX() - t.getAncho() / 2);
+                    t.setPosY((int) b.getY() - t.getAlto() / 2);
+                }
             } catch (NoSuchElementException n) {
                 towerid = 0;
             }
@@ -1715,17 +1706,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     if (grid[((int) b.getY() - 30) / 30][((int) b.getX() - 8) / 30] == 0) {
                         //Checa que no haya otra mina
                         boolean over = false;
-                        for (int i = 0; i < mine.size()+mine2.size(); i++) {
+                        for (int i = 0; i < mine.size() + mine2.size(); i++) {
                             Mine n;
-                            if(i <mine.size())
-                            {
-                             n = (Mine) mine.get(i);   
+                            if (i < mine.size()) {
+                                n = (Mine) mine.get(i);
+                            } else {
+                                n = (Mine) mine2.get(i - mine.size());
                             }
-                            else
-                            {
-                             n = (Mine) mine2.get(i-mine.size());     
-                            }
-                            
+
                             //Lo acomoda en la matriz
                             if (n != m && n.getPosX() == (((int) b.getX()) - ((int) b.getX() - 8) % 30)
                                     && n.getPosY() == (((int) b.getY()) - ((int) b.getY()) % 30)) {
@@ -1809,15 +1797,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             Tower t = (Tower) tower.get(i);
             if (t.getSet()) {
                 if (t.getId() == 10) {
-                    for (int m = 0; m < tower.size()+tower2.size(); m++) {
+                    for (int m = 0; m < tower.size() + tower2.size(); m++) {
                         Tower t2;
-                        if(m < tower.size())
-                        {
-                         t2 = (Tower) tower.get(m);
-                        }
-                        else
-                        {
-                         t2 = (Tower) tower2.get(m-tower.size());   
+                        if (m < tower.size()) {
+                            t2 = (Tower) tower.get(m);
+                        } else {
+                            t2 = (Tower) tower2.get(m - tower.size());
                         }
                         if (t2.getId() != 10 && t2.getSet()) {
                             if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, t2.getPosX() + t2.getAncho() / 2, t2.getPosY() + t2.getAlto() / 2, (int) t.getRange())) {
@@ -1829,21 +1814,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
             }
         }
-        
+
         //bufeadora
         for (int i = 0; i < tower2.size(); i++) {
             Tower t = (Tower) tower2.get(i);
             if (t.getSet()) {
                 if (t.getId() == 10) {
-                    for (int m = 0; m < tower2.size()+tower.size(); m++) {
+                    for (int m = 0; m < tower2.size() + tower.size(); m++) {
                         Tower t2;
-                        if(m < tower.size())
-                        {
-                         t2 = (Tower) tower.get(m);
-                        }
-                        else
-                        {
-                         t2 = (Tower) tower2.get(m-tower.size());  
+                        if (m < tower.size()) {
+                            t2 = (Tower) tower.get(m);
+                        } else {
+                            t2 = (Tower) tower2.get(m - tower.size());
                         }
                         if (t2.getId() != 10 && t2.getSet()) {
                             if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, t2.getPosX() + t2.getAncho() / 2, t2.getPosY() + t2.getAlto() / 2, (int) t.getRange())) {
@@ -1874,44 +1856,44 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         switch (randome) {
                             case 0:
                                 if (wavecounta > 0) {
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2 * (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     wavecounta--;
                                 } else {
                                     if (wavecountx > 0) {
                                         wavecountx--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2 * (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounty--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2 * (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
                                     }
                                 }
                                 break;
                             case 1:
                                 if (wavecounty > 0) {
                                     wavecounty--;
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2 * (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
 
                                 } else {
                                     if (wavecountx > 0) {
                                         wavecountx--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2 * (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounta--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2 * (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     }
                                 }
                                 break;
                             default:
                                 if (wavecountx > 0) {
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2 * (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     wavecountx--;
                                 } else {
                                     if (wavecounta > 0) {
                                         wavecounta--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2 * (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounty--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2 * (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
                                     }
                                 }
                                 break;
@@ -2014,7 +1996,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     }
                 }
             }
-            
+
             //Disparar bala a la dirección deseada
             int priority; //-1 = no apuntar a nada
             int lifetimep; //ver quien es el que va más avanzado en el area
@@ -2074,7 +2056,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 5: //sniper
                             if (fx) {
-                    SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
+                                SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
                                 snipersound.play();
                             }
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -2134,8 +2116,10 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
+
                             if (fx) {        
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
+
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority);
@@ -2180,7 +2164,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
 
             //Disparar bala a la dirección deseada con torres de mouse
-int priority2; //-1 = no apuntar a nada
+            int priority2; //-1 = no apuntar a nada
             int lifetimep2; //ver quien es el que va más avanzado en el area
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
@@ -2238,7 +2222,7 @@ int priority2; //-1 = no apuntar a nada
 
                         case 5: //sniper
                             if (fx) {
-                    SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
+                                SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
                                 snipersound.play();
                             }
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -2298,8 +2282,10 @@ int priority2; //-1 = no apuntar a nada
                             break;
 
                         case 8: //laser
+
                             if (fx) {        
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
+
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority2);
@@ -2373,7 +2359,6 @@ int priority2; //-1 = no apuntar a nada
             }
         }
 
-
         //Movimiento de las balas
         for (int i = 0; i < bullet.size(); i++) {
             Bullet t = (Bullet) bullet.get(i);
@@ -2402,36 +2387,33 @@ int priority2; //-1 = no apuntar a nada
                 loadStates = false;
             }
         }
-        
+
         towerCreate2(e);
-        
+
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if(keyy > 31)
-            {
-                keyy+=-30;
+            if (keyy > 31) {
+                keyy += -30;
             }
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if(keyy < 691)
-            {
-                keyy+=30;
+            if (keyy < 691) {
+                keyy += 30;
             }
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if(keyx > 9)
-            {
-                keyx-=30;
+            if (keyx > 9) {
+                keyx -= 30;
             }
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if(keyx < 1170)
-            {
-                keyx+=30;
+            if (keyx < 1170) {
+                keyx += 30;
             }
         }
+
 
         if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
         {
@@ -2451,38 +2433,38 @@ int priority2; //-1 = no apuntar a nada
         if(e.getKeyCode() == KeyEvent.VK_SPACE)
         {
             if (towerid2 > 0) {
-            Tower t = (Tower) tower2.getLast();
-            if (t.getPosX() < 1180) {// se planta una torreta en la grid
-                if (canput2) {
-                    player2money -= t.getValue();
+                Tower t = (Tower) tower2.getLast();
+                if (t.getPosX() < 1180) {// se planta una torreta en la grid
+                    if (canput2) {
+                        player2money -= t.getValue();
+                        towerid2 = 0;
+                        if (fx) {
+                            place.play();
+                        }
+                        t.setSet(true);
+                        grid[(t.getPosY() - 30) / 30][(t.getPosX() - 8) / 30] = t.getId();
+                    }
+                } else {                // Se remueve la torreta
+                    tower2.removeLast();
                     towerid2 = 0;
-                    if (fx) {
-                        place.play();
-                    }
-                    t.setSet(true);
-                    grid[(t.getPosY() - 30) / 30][(t.getPosX() - 8) / 30] = t.getId();
                 }
-            } else {                // Se remueve la torreta
-                tower2.removeLast();
-                towerid2 = 0;
             }
-        }
-             if (bmine2) {
-            Mine m = (Mine) mine2.getLast();
-            if (m.getPosX() < 1180) {// se planta una torreta en la grid
-                if (canput2) {
-                    player2money -= 410;
+            if (bmine2) {
+                Mine m = (Mine) mine2.getLast();
+                if (m.getPosX() < 1180) {// se planta una torreta en la grid
+                    if (canput2) {
+                        player2money -= 410;
+                        bmine2 = false;
+                        if (fx) {
+                            place.play();
+                        }
+                        m.setSet(true);
+                    }
+                } else {                // Se remueve la torreta
+                    mine2.removeLast();
                     bmine2 = false;
-                    if (fx) {
-                        place.play();
-                    }
-                    m.setSet(true);
                 }
-            } else {                // Se remueve la torreta
-                mine2.removeLast();
-                bmine2 = false;
             }
-        }
         }
         if (e.getKeyCode() == KeyEvent.VK_C) {
             if (saveStates) {
@@ -2944,7 +2926,7 @@ int priority2; //-1 = no apuntar a nada
                 mine.clear();
                 wrench.clear();
                 mine2.clear();
-                      tower2.clear();
+                tower2.clear();
                 player1money = 400;
                 player2money = 400;
                 rotacion = Math.PI / 60;
@@ -3085,13 +3067,12 @@ int priority2; //-1 = no apuntar a nada
                     g.drawString("Range: " + (int) t.getRange(), 1259, 500);
                 }
             }
-           
+
             for (int i = 0; i < mine.size(); i++) {
                 Mine m = (Mine) mine.get(i);
                 g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
             }
-            
-           
+
         }
         if (lose) {
             //mostrar dinero y dinero
@@ -3155,33 +3136,31 @@ int priority2; //-1 = no apuntar a nada
                     }
                 }
             }
-if(coop)
-{
-    for (int i = 0; i < mine2.size(); i++) {
-                Mine m = (Mine) mine2.get(i);
-                g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
-                if (!canput2) {
-                    Mine t2 = (Mine) mine2.getLast();
-                    if (!t2.getSet()) {
-                        Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
-                        g2d.setColor(Color.red);
-                        g2d.setStroke(new BasicStroke(3));
-                        g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX() + t2.getAncho(), t2.getPosY() + t2.getAlto()));
-                        g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
-                        g2d.setStroke(new BasicStroke(1));
+            if (coop) {
+                for (int i = 0; i < mine2.size(); i++) {
+                    Mine m = (Mine) mine2.get(i);
+                    g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
+                    if (!canput2) {
+                        Mine t2 = (Mine) mine2.getLast();
+                        if (!t2.getSet()) {
+                            Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
+                            g2d.setColor(Color.red);
+                            g2d.setStroke(new BasicStroke(3));
+                            g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX() + t2.getAncho(), t2.getPosY() + t2.getAlto()));
+                            g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
+                            g2d.setStroke(new BasicStroke(1));
+                        }
                     }
                 }
+
+                Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
+                g2d.setColor(Color.red);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.draw(new Line2D.Float(keyx, keyy, keyx + 30, keyy));
+                g2d.draw(new Line2D.Float(keyx, keyy, keyx, keyy + 30));
+                g2d.draw(new Line2D.Float(keyx + 30, keyy, keyx + 30, keyy + 30));
+                g2d.draw(new Line2D.Float(keyx, keyy + 30, keyx + 30, keyy + 30));
             }
-    
-    
-                        Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
-                        g2d.setColor(Color.red);
-                        g2d.setStroke(new BasicStroke(2));
-                        g2d.draw(new Line2D.Float(keyx, keyy, keyx +30, keyy));
-                        g2d.draw(new Line2D.Float(keyx, keyy, keyx, keyy+30)); 
-                        g2d.draw(new Line2D.Float(keyx+30, keyy, keyx+30, keyy+30)); 
-                        g2d.draw(new Line2D.Float(keyx, keyy+30, keyx+30, keyy+30)); 
-}
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
                 if (towerselect == i || towerid > 0 && i == tower.size() - 1) {
@@ -3203,7 +3182,7 @@ if(coop)
                     g.drawString("Range: " + (int) t.getRange(), 1259, 500);
                 }
             }
-            
+
             for (int i = 0; i < tower2.size(); i++) {
                 Tower t = (Tower) tower2.get(i);
                 if (towerselect2 == i || towerid2 > 0 && i == tower2.size() - 1) {
@@ -3216,13 +3195,13 @@ if(coop)
                     g.setFont(new Font("Consolas", Font.BOLD, 12));
                     g.setColor(Color.black);
                     if (t.getId() == 10) {
-                        g.drawString("Damage: None", 1252, 485+75);
-                        g.drawString("Shots/m: None", 1245, 515+75);
+                        g.drawString("Damage: None", 1252, 485 + 75);
+                        g.drawString("Shots/m: None", 1245, 515 + 75);
                     } else {
-                        g.drawString("Damage: " + t.getDamage(), 1252, 485+75);
-                        g.drawString("Shots/m: " + (int) ((double) 60 / ((double) t.getRate() * 20 / 1000)), 1245, 515+75);
+                        g.drawString("Damage: " + t.getDamage(), 1252, 485 + 75);
+                        g.drawString("Shots/m: " + (int) ((double) 60 / ((double) t.getRate() * 20 / 1000)), 1245, 515 + 75);
                     }
-                    g.drawString("Range: " + (int) t.getRange(), 1259, 500+75);
+                    g.drawString("Range: " + (int) t.getRange(), 1259, 500 + 75);
                 }
             }
             g.setColor(Color.red);
@@ -3348,115 +3327,114 @@ if(coop)
                 }
 
             }
-            
-            if(coop)
-            {
+
+            if (coop) {
                 for (int i = 0; i < tower2.size(); i++) {
-                Tower t = (Tower) tower2.get(i);
-                //XP de la torre
-                if (t.getId() < 6) {
-                    g2d.setColor(Color.white);
-                    g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
-                    g2d.setColor(Color.green);
-                    g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() * t.getAncho() / t.getMAXExp(), 1);
-                    if (t.getExp() >= t.getMAXExp()) {
-                        g2d.setStroke(new BasicStroke(3));
-                        g.setColor(new Color(1346085));
-                        g2d.drawOval(t.getPosX(), t.getPosY(), t.getAncho(), t.getAlto());
+                    Tower t = (Tower) tower2.get(i);
+                    //XP de la torre
+                    if (t.getId() < 6) {
+                        g2d.setColor(Color.white);
+                        g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getAncho(), 1);
+                        g2d.setColor(Color.green);
+                        g2d.fillRect(t.getPosX(), t.getPosY() - 1, t.getExp() * t.getAncho() / t.getMAXExp(), 1);
+                        if (t.getExp() >= t.getMAXExp()) {
+                            g2d.setStroke(new BasicStroke(3));
+                            g.setColor(new Color(1346085));
+                            g2d.drawOval(t.getPosX(), t.getPosY(), t.getAncho(), t.getAlto());
+                        }
                     }
-                }
-                if (towerselect2 == i) {
-                    if (t.getExp() >= t.getMAXExp() && t.getId() < 6) {
-                        g2d.setFont(new Font("Consolas", Font.BOLD, 16));
-                        g2d.setColor(Color.black);
-                        g2d.drawString("UPGRADE!!!", 1240, 470+75);
-                        for (int k = 0; k < 2; k++) {
-                            g2d.setFont(new Font("Consolas", Font.BOLD, 12));
+                    if (towerselect2 == i) {
+                        if (t.getExp() >= t.getMAXExp() && t.getId() < 6) {
+                            g2d.setFont(new Font("Consolas", Font.BOLD, 16));
                             g2d.setColor(Color.black);
-                            if (k == 1) {
-                                g2d.drawString("Range(X)", 1226 + k * 76, 520+75);
-                            } else {
-                                g2d.drawString("Speed(Z)", 1226 + k * 76, 520+75);
+                            g2d.drawString("UPGRADE!!!", 1240, 470 + 75);
+                            for (int k = 0; k < 2; k++) {
+                                g2d.setFont(new Font("Consolas", Font.BOLD, 12));
+                                g2d.setColor(Color.black);
+                                if (k == 1) {
+                                    g2d.drawString("Range(X)", 1226 + k * 76, 520 + 75);
+                                } else {
+                                    g2d.drawString("Speed(Z)", 1226 + k * 76, 520 + 75);
+                                }
+                                AffineTransform z = new AffineTransform();
+                                z.translate(1231 + k * 76, 480 + 75);
+                                z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                                g2d.transform(z);
+                                switch (t.getId()) {
+                                    case 3:
+                                        if (k == 0) {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png")), 0, 0, this);
+                                        } else {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniper.png")), 0, 0, this);
+                                        }
+                                        break;
+                                    case 4:
+                                        if (k == 0) {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png")), 0, 0, this);
+                                        } else {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
+                                        }
+                                        break;
+                                    case 5:
+                                        if (k == 0) {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
+                                        } else {
+                                            g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png")), 0, 0, this);
+                                        }
+                                        break;
+                                }
+                                try {
+                                    g2d.transform(z.createInverse());
+                                } catch (NoninvertibleTransformException e) {
+                                    //...
+                                }
                             }
+                        } else {
                             AffineTransform z = new AffineTransform();
-                            z.translate(1231 + k * 76, 480+75);
+                            z.translate(1215, 480 + 60);
                             z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
                             g2d.transform(z);
-                            switch (t.getId()) {
-                                case 3:
-                                    if (k == 0) {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadual.png")), 0, 0, this);
-                                    } else {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniper.png")), 0, 0, this);
-                                    }
-                                    break;
-                                case 4:
-                                    if (k == 0) {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretaquadruple.png")), 0, 0, this);
-                                    } else {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
-                                    }
-                                    break;
-                                case 5:
-                                    if (k == 0) {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretadualfuerte.png")), 0, 0, this);
-                                    } else {
-                                        g2d.drawImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/torretasniperlaser.png")), 0, 0, this);
-                                    }
-                                    break;
-                            }
+                            g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
                             try {
                                 g2d.transform(z.createInverse());
                             } catch (NoninvertibleTransformException e) {
                                 //...
                             }
                         }
-                    } else {
-                        AffineTransform z = new AffineTransform();
-                        z.translate(1215, 480+60);
-                        z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
-                        g2d.transform(z);
-                        g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
-                        try {
-                            g2d.transform(z.createInverse());
-                        } catch (NoninvertibleTransformException e) {
-                            //...
+                    }
+                    //Rate of fire de la torre vertical
+                    if (t.getId() != 10) {
+                        g2d.setColor(Color.white);
+                        g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAlto());
+                        if (t.isBuffed()) {
+                            g2d.setColor(new Color(255, 0, 255));
+                        } else {
+                            g2d.setColor(Color.red);
+                        }
+                        g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAble() * t.getAlto() / t.getRate());
+                    }
+                    AffineTransform z = new AffineTransform();
+                    z.translate(t.getPosX(), t.getPosY());
+                    z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
+                    g2d.transform(z);
+                    g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
+                    try {
+                        g2d.transform(z.createInverse());
+                    } catch (NoninvertibleTransformException e) {
+                        //...
+                    }
+
+                    if (!canput2) {
+                        Tower t2 = (Tower) tower2.getLast();
+                        if (!t2.getSet()) {
+                            g2d.setColor(Color.red);
+                            g2d.setStroke(new BasicStroke(3));
+                            g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX() + t2.getAncho(), t2.getPosY() + t2.getAlto()));
+                            g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
                         }
                     }
-                }
-                //Rate of fire de la torre vertical
-                if (t.getId() != 10) {
-                    g2d.setColor(Color.white);
-                    g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAlto());
-                    if (t.isBuffed()) {
-                        g2d.setColor(new Color(255, 0, 255));
-                    } else {
-                        g2d.setColor(Color.red);
-                    }
-                    g2d.fillRect(t.getPosX() - 1, t.getPosY(), 1, t.getAble() * t.getAlto() / t.getRate());
-                }
-                AffineTransform z = new AffineTransform();
-                z.translate(t.getPosX(), t.getPosY());
-                z.rotate(Math.toRadians(t.getAngle()), t.getAncho() / 2, t.getAlto() / 2);
-                g2d.transform(z);
-                g2d.drawImage(t.getAnimacion().getImagen(), 0, 0, this);
-                try {
-                    g2d.transform(z.createInverse());
-                } catch (NoninvertibleTransformException e) {
-                    //...
-                }
 
-                if (!canput2) {
-                    Tower t2 = (Tower) tower2.getLast();
-                    if (!t2.getSet()) {
-                        g2d.setColor(Color.red);
-                        g2d.setStroke(new BasicStroke(3));
-                        g2d.draw(new Line2D.Float(t2.getPosX(), t2.getPosY(), t2.getPosX() + t2.getAncho(), t2.getPosY() + t2.getAlto()));
-                        g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
-                    }
                 }
-
-            }
             }
             //dibujar vida de los enemigos y los enemigos
             for (int i = 0; i < wrench.size(); i++) {
@@ -3991,9 +3969,9 @@ if(coop)
                         animWat.sumaCuadro(mine29, 200);
                     }
                 }
-                
+
                 animT = animWat;
-                
+
                 //---------------------------------
             }
             if (aux == 10) {

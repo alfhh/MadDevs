@@ -130,6 +130,11 @@ public class Tower extends Base {
     void setSet(boolean s) {
         set = s;
     }
+    
+    //Metodo para modificar si esta girando
+    void setGira(boolean m) {
+       girar = m;
+    }
 
     //Metodo para ver si esta puesta
     boolean getSet() {
