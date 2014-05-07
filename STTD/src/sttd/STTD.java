@@ -108,6 +108,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private int player2money = 400;
     private int introtimer = 330; // variable que marca el intro del juego
     private int mouseover = 0; // variable que se usara para desplegar los datos de la torre
+    private int keyselect; // variable que marca que torre fue elejuda por el jugador 2
 
     private SoundClip intro; // cancion del juego
     private SoundClip lost; // cancion de perder
@@ -620,6 +621,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         saveStates = false;
         loadStates = false;
         coop = false;
+        keyselect = -1;
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -1056,7 +1058,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             } catch (NoSuchElementException n) {
                 bmine = false;
             }
-        } else {
+        } else if (!coop) {
             if (new Rectangle(1268, 121, 30, 30).contains(b.getLocation())) {
                 //Torre normal
                 mouseover = 3;
@@ -1102,9 +1104,35 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 mouseover = 13;
             }
         }
-
+        if (keyselect > 0) {
+            try {
+                if (keyselect < 12) {
+                    Tower t = tower.getFirst();
+                    for (Tower tower1 : tower) {
+                        if (tower1.getPlayer() == 2) {
+                            t = tower1;
+                        }
+                        t.setPosX(keyx);
+                        t.setPosY(keyy);
+                    }
+                } else {
+                    for (Mine mine1 : mine) {
+                        Mine m = (Mine) mine.getFirst();
+                        if (mine1.getPlayer() == 2) {
+                            m = mine1;
+                        }
+                        m.setPosX(keyx);
+                        m.setPosY(keyy);
+                    }
+                }
+            } catch (NoSuchElementException n) {
+                keyselect = 0;
+            }
+        }
         //bufeadora
-        for (int i = 0; i < tower.size(); i++) {
+        for (int i = 0;
+                i < tower.size();
+                i++) {
             Tower t = (Tower) tower.get(i);
             if (t.getSet()) {
                 if (t.getId() == 10) {
@@ -1462,13 +1490,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
             }
         }
-        for (int i = 0; i < tower.size(); i++) {
+        for (int i = 0;
+                i < tower.size();
+                i++) {
             Tower t = (Tower) tower.get(i);
 
         }
 
         //Movimiento de las balas
-        for (int i = 0; i < bullet.size(); i++) {
+        for (int i = 0;
+                i < bullet.size();
+                i++) {
             Bullet t = (Bullet) bullet.get(i);
             if (!t.distanceTime()) {
                 t.setPosX(t.getPosX() + (int) (t.getSpeed() * Math.cos(Math.toRadians(t.getAngle()))));
@@ -2169,6 +2201,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 g.drawImage(m.getAnimacion().getImagen(), m.getPosX(), m.getPosY(), this);
                 if (!canput) {
                     Mine t2 = (Mine) mine.getLast();
+                    for (Mine mine1 : mine) {
+                        if (mine1.getPlayer() == 1) {
+                            t2 = mine1;
+                        }
+                    }
                     if (!t2.getSet()) {
                         Graphics2D g2d = (Graphics2D) g; // Create a Java2D version of g.
                         g2d.setColor(Color.red);
@@ -2312,9 +2349,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 } catch (NoninvertibleTransformException e) {
                     //...
                 }
-
                 if (!canput) {
                     Tower t2 = (Tower) tower.getLast();
+                    for (Tower tower1 : tower) {
+                        if (tower1.getPlayer() == 1) {
+                            t2 = tower1;
+                        }
+                    }
                     if (!t2.getSet()) {
                         g2d.setColor(Color.red);
                         g2d.setStroke(new BasicStroke(3));
@@ -2322,8 +2363,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         g2d.draw(new Line2D.Float(t2.getPosX() + t2.getAncho(), t2.getPosY(), t2.getPosX(), t2.getPosY() + t2.getAlto()));
                     }
                 }
-
             }
+
             //dibujar vida de los enemigos y los enemigos
             for (int i = 0; i < wrench.size(); i++) {
                 Enemy t = (Enemy) wrench.get(i);
@@ -2505,7 +2546,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
             }
         }
-        if (coop && game){
+        if (coop && game) {
             g2d.setStroke(new BasicStroke(8));
             g2d.setColor(Color.red);
             g2d.drawRect(keyx, keyy, 30, 30);
