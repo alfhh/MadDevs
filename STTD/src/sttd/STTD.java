@@ -424,7 +424,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         towerid = 9;
-        tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 4200, 60, true));
+        tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 2000, 60, true));
     }
 
     public void watulioCreation2(int ex, int ey) {
@@ -690,7 +690,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         towerid2 = 9;
-        tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 4200, 60, true));
+        tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 2000, 60, true));
     }
 
     public void towerCreate(MouseEvent e, boolean click) {
@@ -760,7 +760,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         }
                         if (new Rectangle(1298, 301, 30, 30).contains(e.getPoint())) {
                             //torre de buff
-                            if (player1money >= 2000) {
+                            if (player1money >= 1600) {
                                 towerid = 10;
                                 tower.add(new Tower(e.getX(), e.getY(), animBuff, towerid, 1, 36, 0, 75, 1600, 150, true));
                             }
@@ -1036,14 +1036,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         setTitle("Star Wars: Tower Defense");
         
         rotacion = Math.PI / 60;
-        player1money = 40000;
-        player2money = 40000;
+        player1money = 400;
+        player2money = 400;
         towerid = 0;
         towerid2 = 0;
         keyx = 8;
         keyy = 31;
         main = false;
         score1 = 0;
+        score2 = 0;
         instr = false;
         menu = false;
         countx = 50;
@@ -1360,6 +1361,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Bullet bl = (Bullet) bullet.get(j);
                 if (e.getPerimetro().intersects(bl.getPerimetro())) {
                     e.setHealth(e.getHealth() - bl.getDamage());
+
                     Tower t;
                     if (bl.getPlayer() == 1) {
                         t = (Tower) tower.get(bl.getTower());
@@ -1370,8 +1372,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     t.Exp();
                     if (t.getPlayer() == 1) {
                         score1 += (double) bl.getDamage() / 100.0;
-                    } else {
-                        score1 += (double) bl.getDamage() / 100.0;
+
+                       player1money += (int) (bl.getDamage() / 100.0)+1;
+                    }
+                    else
+                    {
+                      score2 += (double) (bl.getDamage() / 100.0);
+                      player2money += (int) (bl.getDamage() / 100.0)+1;
+
                     }
                     bl.destroy();
                 }
@@ -1633,7 +1641,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         if (i < mine2.size()) {
                             n = (Mine) mine2.get(i);
                         } else {
+
+                            canput2 = false;
+                            m.setPosX(keyx);
+                           m.setPosY(keyy);
+
                             n = (Mine) mine.get(i - mine2.size());
+
                         }
                         //Lo acomoda en la matriz
                         if (n != m && n.getPosX() == (((int) keyx) - ((int) keyx - 8) % 30)
@@ -1963,7 +1977,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 // Si el enemigo no tiene vida;
                 if (w.getHealth() <= 0) {
-                    player1money += wrench.get(i).getBaseHealth() / (40 + (Math.pow(wave - 1, 2)));
                     wrench.remove(i); // Desaparece
                 }
                 // Si el enemigo llega a la base
@@ -1977,12 +1990,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 // Si la base no tiene vida
                 if (life == 0) {
                     // Se guarda el highscore
+                    if(!coop){
                     fileName = "SaveState" +  hLevel;
                     try {
                         writeFile();
                         JOptionPane.showMessageDialog(null, "Highscore saved!");
                     } catch (IOException err) {
                     }
+                    }
+                    life--;
                     game = false;
                     lose = true;
                     gamesong.stop();
@@ -2125,7 +2141,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
-                                score1 += t.getDamage() / 100.0;
+                                score1 += t.getDamage()*2 / 100.0;
+                                player1money += (int) (t.getDamage() / 100.0)+1;
+                            }
+                            else
+                            {
+                                score2 += t.getDamage()*2 / 100.0;
+                                player2money += (int) (t.getDamage() / 100.0)+1;
                             }
                             break;
 
@@ -2285,7 +2307,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
-                                score1 += t.getDamage() / 100.0;
+                                
+                                score1 += t.getDamage()*2 / 100.0;
+                            }
+                            else
+                            {
+                                
+                                
+                                score2 += t.getDamage()*2 / 100.0;
+                            
                             }
                             break;
 
@@ -2395,7 +2425,24 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+
+        if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+        {
+            if(!tower2.getLast().getSet())
+            {
+                towerid2 = 0;
+                towerselect2 = -1;
+                tower2.removeLast(); 
+            } 
+            if(!mine2.getLast().getSet())
+            {
+                mine2.removeLast();
+                bmine2 = false;
+                
+            }
+        }
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+        {
             if (towerid2 > 0) {
                 Tower t = (Tower) tower2.getLast();
                 if (t.getPosX() < 1180) {// se planta una torreta en la grid
@@ -2497,7 +2544,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
             }
             if (new Rectangle(291, 422, 186, 52).contains(e.getPoint()) && instrMouse == -1) {
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                         }
                 intro.stop();
                 if (music) {
                     instrsong.setLooping(true);
@@ -2588,8 +2642,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //nivel 1
                 game = true;
                 menu = false;
-                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
                  hLevel = 1;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1Co.png"));
+                }
+                         else
+                 {
+                background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+
+                
+                         }
+
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2629,8 +2693,18 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Nivel 2
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2.png"));
-                 hLevel = 2;
+
+                 
+
+                         }
+                hLevel = 2;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2672,8 +2746,19 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Nivel 3
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3.png"));
+
+                
+
+                         }
                  hLevel = 3;
+
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
@@ -2714,8 +2799,17 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //nivel 4
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4.png"));
-                 hLevel = 4;
+
+                 
+                }
+                hLevel = 4;
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
@@ -2846,6 +2940,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 wavecount = 0;
                 wave = 0;
                 score1 = 0;
+                score2 = 0;
                 wavebegin = 750;
                 bmine = false;
                 bmine2 = false;
@@ -3026,6 +3121,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setColor(new Color(1346085));
             g.drawString("" + (int) score1, 1296, 62);
             g.drawString("$" + (int) player1money, 1288 + 8, 54 + 30);
+            if(coop)
+            {
+            g.drawString("" + (int) score2, 1296, 62+573);
+            g.drawString("$" + (int) player2money, 1288 + 8, 54 + 30+573);
+            }
+            
+            
             //mostrar numero de la wave
             g.setFont(new Font("Consolas", Font.PLAIN, 30));
             g.setColor(new Color(1346085));
@@ -3587,6 +3689,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
         dataSave = fileIn.readLine(); // Se leen los valores
         dataArr = dataSave.split("_"); // Los valores se separan en un arreglo
+
         lec1 = (dataArr[0]);
         lec2 = Double.parseDouble(dataArr[1]);
         lec3 = Integer.parseInt(dataArr[2]);
