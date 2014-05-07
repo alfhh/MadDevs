@@ -133,6 +133,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private boolean canput = false; // ver si se puede poner o no
     private boolean saveStates; // booleano que muestra los savestates
     private boolean loadStates; // booleano que muestra los loadstates
+    
+    private BufferedReader fileIn; // Reader de archivo
+    private PrintWriter fileOut;
+    private String fileName;
+    private String dataSave; // Data a guardar en el SaveState
+    private String[] dataArr; // Arreglo de data file
 
     //Checar si un punto esta dentro de un circulo
     public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -620,6 +626,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         fx = true;
         saveStates = false;
         loadStates = false;
+        fileName = "";
 
         // Images
         Image in1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Intro/1.png"));
@@ -1836,15 +1843,25 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             if (saveStates) {
                 // Slot 1
                 if (new Rectangle(468, 193, 123, 123).contains(e.getPoint())) {
-                    JOptionPane.showMessageDialog(null, " Saving Slot 1!");
+                    fileName = "SaveState1";
+                    try {
+                    writeFile();
+                    JOptionPane.showMessageDialog(null, "Slot 1 saved!");
+                    } catch (IOException err) {
+                    }
                 }
                 // Slot 2
                 if (new Rectangle(623, 193, 123, 123).contains(e.getPoint())) {
-                    JOptionPane.showMessageDialog(null, " Saving Slot 2!");
+                    fileName = "SaveState2";
+                    try {
+                    writeFile();
+                    JOptionPane.showMessageDialog(null, "Slot 2 saved!");
+                    } catch (IOException err) {
+                    }
                 }
                 // Slot 3
                 if (new Rectangle(779, 193, 123, 123).contains(e.getPoint())) {
-                    JOptionPane.showMessageDialog(null, " Saving Slot 3!");
+                    JOptionPane.showMessageDialog(null, "Slot 3 saved!");
                 }
             }
 
@@ -2420,6 +2437,22 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
     }
 
+    /**
+     * Crea el SaveState indicado con los valores actuales cel juego
+     * El nombre del archivo depende del numero del SaveSate
+     * @throws IOException
+     */
+    public void writeFile() throws IOException {
+        File archivo = new File(fileName + ".mad");
+        archivo.delete();
+        fileOut = new PrintWriter(new FileWriter(fileName + ".mad", true));
+        dataSave = "" + player1money;
+        fileOut.println(dataSave);
+        fileOut.close();
+
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
