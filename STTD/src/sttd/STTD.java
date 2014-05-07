@@ -120,10 +120,16 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private SoundClip hit; // sonido de golpe
     private SoundClip minesound; // sonido de mina
     private SoundClip place; // sonido de poner la torre
+    private SoundClip battle1; //musica
+    private SoundClip battle2; //musica
+    private SoundClip battle3; //musica
+    private SoundClip battle4; //musica
+    private SoundClip between; //sonido entre rondas
 
     private AffineTransform identidad; // Variable tipo AffineTransform
     private Instruccion instruccion; // Objeto usado para las instrucciones
 
+    private boolean suspense; // booleano que dice si ya se dio play a la cancion de suspsenso
     private boolean main; // booleano que muestra la pantalla principal
     private boolean menu; // booleano que muestra el menu de niveles
     private boolean instr; // booleano que muestra las instrucciones
@@ -1025,6 +1031,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1368, 730);
         setTitle("Star Wars: Tower Defense");
+        
         rotacion = Math.PI / 60;
         player1money = 40000;
         player2money = 40000;
@@ -1055,6 +1062,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         instrsong = new SoundClip("sounds/tutorial.wav");
         gamesong = new SoundClip("sounds/duel.wav");
         gamesong1 = new SoundClip("sounds/march.wav");
+        battle1 = new SoundClip("sounds/Battle.wav");
+        battle2 = new SoundClip("sounds/Battle2.wav");
+        battle3 = new SoundClip("sounds/Battle3.wav");
+        battle4 = new SoundClip("sounds/dueloffates.wav");
+        between = new SoundClip("sounds/betweenround.wav");
+        gamesong1.setLooping(true);
         hit = new SoundClip("sounds/hit.wav"); // sonido de golpe
         minesound = new SoundClip("sounds/mine.wav"); // sonido de mina
         place = new SoundClip("sounds/towerplace.wav");
@@ -1833,6 +1846,11 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         }
 
         if (wavego) {
+            if(!suspense)
+            {
+              gamesong1.play();
+            }
+            suspense = true;
             countx--;
             if (countx == 0 && wavecount > 0) { // Addicion de un enemigo nuevo
                 Point p = (Point) levelstart.get((int) (Math.random() * levelstart.size()));
@@ -2107,14 +2125,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 8: //laser
                             if (fx) {        
-                                SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
+                                SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority);
                             Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage(), t.getPlayer(), i);
+                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage()*2, t.getPlayer(), i);
                             lasers.add(l1);
-                            g.setHealth(g.getHealth() - t.getDamage());
+                            g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
                                 score1 += t.getDamage() / 100.0;
@@ -2265,14 +2283,14 @@ int priority2; //-1 = no apuntar a nada
 
                         case 8: //laser
                             if (fx) {        
-                                SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
+                                SoundClip lasersound = new SoundClip("sounds/laserv1.wav"); // sonido de laser
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority2);
                             Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
-                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage(), t.getPlayer(), i);
+                                    (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage()*2, t.getPlayer(), i);
                             lasers.add(l1);
-                            g.setHealth(g.getHealth() - t.getDamage());
+                            g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
                                 score1 += t.getDamage() / 100.0;
@@ -2569,6 +2587,22 @@ int priority2; //-1 = no apuntar a nada
             if (rect.contains(e.getPoint())) {
                 intro.stop();
                 if (music) {
+                    int randommusic = (int)((Math.random()*(3.9)));
+                    switch(randommusic)
+                            {
+                                case 0: 
+                                    gamesong1 = battle1;
+                                break;
+                                    case 1: 
+                                    gamesong1 = battle2;
+                                break;
+                                        case 2: 
+                                    gamesong1 = battle3;
+                                break;
+                                            case 3: 
+                                    gamesong1 = battle4;
+                                break;
+                            }
                     gamesong1.play();
                 }
                 //nivel 1
@@ -3404,6 +3438,28 @@ if(coop)
                 }
             }
             if (!wavego && game) {
+                if(suspense)
+                {  gamesong1.stop();
+                   int randommusic = (int)((Math.random()*(3.9)));
+                    switch(randommusic)
+                            {
+                                case 0: 
+                                    gamesong1 = battle1;
+                                break;
+                                    case 1: 
+                                    gamesong1 = battle2;
+                                break;
+                                        case 2: 
+                                    gamesong1 = battle3;
+                                break;
+                                            case 3: 
+                                    gamesong1 = battle4;
+                                break;
+                            }
+                    between.play();
+                    
+                    suspense = false;
+                }
                 g.setColor(Color.black);
                 g.setFont(new Font("Consolas", Font.PLAIN, 50));
                 g.drawString("Wave starts in: ", 400, 400);
