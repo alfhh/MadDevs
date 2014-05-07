@@ -111,9 +111,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
     private SoundClip gamesong; // cancion de Marcha imperial
     private SoundClip gamesong1; // cancion del Duel of Fates
     private SoundClip hit; // sonido de golpe
-    private SoundClip bulletsound; // sonido de disparo
-    private SoundClip snipersound; // sonido de sniper
-    private SoundClip lasersound; // sonido de laser
     private SoundClip minesound; // sonido de mina
     private SoundClip place; // sonido de poner la torre
 
@@ -611,9 +608,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         gamesong = new SoundClip("sounds/duel.wav");
         gamesong1 = new SoundClip("sounds/march.wav");
         hit = new SoundClip("sounds/hit.wav"); // sonido de golpe
-        bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
-        snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
-        lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
         minesound = new SoundClip("sounds/mine.wav"); // sonido de mina
         place = new SoundClip("sounds/towerplace.wav");
         music = true;
@@ -902,9 +896,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     e.setHealth(e.getHealth() - bl.getDamage());
                     Tower t = (Tower) tower.get(bl.getTower());
                     t.Exp();
-                    if (fx) {
-                        hit.play();
-                    }
                     if (t.getPlayer() == 1) {
                         score1 += (double) bl.getDamage() / 100.0;
                     }
@@ -1252,6 +1243,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 // Si el enemigo llega a la base
                 if (grid[((int) w.getPosY() - 31) / 30][((int) w.getPosX() - 8) / 30] == 2) {
+                    if (fx) {
+                        hit.play();
+                    }
                     wrench.remove(i); // Desaparece
                     life--;
                 }
@@ -1298,6 +1292,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     switch (t.getId()) {
                         case 3: //Torre normal
                             if (fx) {
+                                SoundClip bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
                                 bulletsound.play();
                             }
                             Bullet b1 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -1307,6 +1302,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
                         case 4: //Torre dual
                             if (fx) {
+                                SoundClip bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
                                 bulletsound.play();
                             }
                             randomizer = (int) (Math.random() * (2));
@@ -1324,6 +1320,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 5: //sniper
                             if (fx) {
+                    SoundClip snipersound = new SoundClip("sounds/lasersniper.wav"); // sonido de sniper
                                 snipersound.play();
                             }
                             Bullet b3 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
@@ -1334,6 +1331,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 6: //quad
                             if (fx) {
+                                SoundClip bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
                                 bulletsound.play();
                             }
                             randomizer = (int) (Math.random() * (5));
@@ -1365,6 +1363,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 7: //fuerte
                             if (fx) {
+                                SoundClip bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
                                 bulletsound.play();
                             }
                             randomizer = (int) (Math.random() * (2));
@@ -1381,7 +1380,8 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             break;
 
                         case 8: //laser
-                            if (fx) {
+                            if (fx) {        
+                                SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
                                 lasersound.play();
                             }
                             Enemy g = (Enemy) wrench.get(priority);
@@ -1397,6 +1397,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
 
                         case 9: //watulion
                             if (fx) {
+                                SoundClip bulletsound = new SoundClip("sounds/lasernormal.wav"); // sonido de disparo
                                 bulletsound.play();
                             }
                             Bullet b5 = new Bullet((int) (t.getPosX() + t.getAncho() / 2 + ((t.getAncho() / 2) * Math.cos(Math.toRadians(0)))),
