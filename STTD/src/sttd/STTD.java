@@ -2537,7 +2537,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/mainBackground.png"));
             }
             if (new Rectangle(291, 422, 186, 52).contains(e.getPoint()) && instrMouse == -1) {
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                         }
                 intro.stop();
                 if (music) {
                     instrsong.setLooping(true);
@@ -2628,7 +2635,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //nivel 1
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel1.png"));
+                         }
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2668,7 +2682,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Nivel 2
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel2.png"));
+                         }
                 int b[][] = {
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -2710,7 +2731,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //Nivel 3
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel3.png"));
+                         }
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
@@ -2751,7 +2779,14 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 //nivel 4
                 game = true;
                 menu = false;
+                if(coop)
+                {
+                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4Co.png"));
+                }
+                         else
+                 {
                 background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/Nivel4.png"));
+                         }
                 int b[][] = {
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
@@ -2939,6 +2974,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 wavecount = 0;
                 wave = 0;
                 score1 = 0;
+                score2 = 0;
                 wavebegin = 750;
                 bmine = false;
                 bmine2 = false;
@@ -3117,6 +3153,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             g.setColor(new Color(1346085));
             g.drawString("" + (int) score1, 1296, 62);
             g.drawString("$" + (int) player1money, 1288 + 8, 54 + 30);
+            if(coop)
+            {
+            g.drawString("" + (int) score2, 1296, 62+573);
+            g.drawString("$" + (int) player2money, 1288 + 8, 54 + 30+573);
+            }
+            
+            
             //mostrar numero de la wave
             g.setFont(new Font("Consolas", Font.PLAIN, 30));
             g.setColor(new Color(1346085));
