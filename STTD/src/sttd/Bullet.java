@@ -106,5 +106,10 @@ public class Bullet extends Base {
         return watower;
     }
     
+    //Metodo para obtener el numero del jugador de la mina
+    int getPlayer() {
+        return playerid;
+    }
+    
     
 }
