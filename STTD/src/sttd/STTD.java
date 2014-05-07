@@ -1043,6 +1043,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         wave = 0;
         wavebegin = 50;
         bmine = false;
+        bmine2 = false;
         lifeini = 20;
         life = lifeini;
         towerselect = -1;
@@ -1612,9 +1613,9 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     }
                 
             } catch (NoSuchElementException n) {
-                towerid = 0;
+                towerid2 = 0;
             }
-        } else {
+        } else if(bmine2){
             try { // Intenta tomar la ultima torre del arreglo
                 Mine m = (Mine) mine2.getLast();
                 // si la torreta esta dentro de la grid 
@@ -1844,44 +1845,44 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         switch (randome) {
                             case 0:
                                 if (wavecounta > 0) {
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     wavecounta--;
                                 } else {
                                     if (wavecountx > 0) {
                                         wavecountx--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounty--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
                                     }
                                 }
                                 break;
                             case 1:
                                 if (wavecounty > 0) {
                                     wavecounty--;
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
 
                                 } else {
                                     if (wavecountx > 0) {
                                         wavecountx--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounta--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     }
                                 }
                                 break;
                             default:
                                 if (wavecountx > 0) {
-                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, (50 + 3 * ((int) Math.pow(wave - 1, 2)))));
+                                    wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animXwing, 1, 3, 2*(50 + 3 * ((int) Math.pow(wave - 1, 2)))));
                                     wavecountx--;
                                 } else {
                                     if (wavecounta > 0) {
                                         wavecounta--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, (40 + 2 * ((int) Math.pow(wave - 1, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animAwing, 2, 6, 2*(40 + 2 * ((int) Math.pow(wave - 1, 2)))));
                                     } else {
                                         wavecounty--;
-                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, (200 + 4 * ((int) Math.pow(wave + 5, 2)))));
+                                        wrench.add(new Enemy((int) p.getX(), (int) p.getY(), animYwing, 3, 1, 2*(200 + 4 * ((int) Math.pow(wave + 5, 2)))));
                                     }
                                 }
                                 break;
@@ -2145,22 +2146,23 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
 
             //Disparar bala a la dirección deseada con torres de mouse
-
+int priority2; //-1 = no apuntar a nada
+            int lifetimep2; //ver quien es el que va más avanzado en el area
             for (int i = 0; i < tower.size(); i++) {
                 Tower t = (Tower) tower.get(i);
-                priority = -1;
-                lifetimep = 0;
+                priority2 = -1;
+                lifetimep2 = 0;
                 for (int j = wrench.size() - 1; j >= 0; j--) {
                     Enemy w = (Enemy) wrench.get(j);
                     if (inCircle(t.getPosX() + t.getAncho() / 2, t.getPosY() + t.getAlto() / 2, w.getPosX() + w.getAncho() / 2, w.getPosY() + w.getAlto() / 2, (int) t.getRange())) {
-                        if (w.getLifeTime() > lifetimep) {
-                            priority = j;
+                        if (w.getLifeTime() > lifetimep2) {
+                            priority2 = j;
                         }
                     }
-                    if (priority != -1) {
+                    if (priority2 != -1) {
                         if (!t.isMine()) //si es torre apuntar a ella 
                         {
-                            Enemy g = (Enemy) wrench.get(priority);
+                            Enemy g = (Enemy) wrench.get(priority2);
                             double bullet_angle = Math.atan2((t.getPosX() + t.getAncho() / 2) - (int) (g.getPosX() + g.getAncho() / 2 + ((g.getAncho() / 2) * Math.cos(Math.toRadians(g.getAngle())))),
                                     (t.getPosY() + t.getAlto() / 2) - (int) (g.getPosY() + g.getAlto() / 2 - 1 + ((g.getAlto() / 2 - 2) * Math.sin(Math.toRadians(g.getAngle()))))) - Math.PI / 2;
                             t.setAngle(Math.toDegrees(-bullet_angle - Math.PI));
@@ -2169,7 +2171,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     }
                 }
                 //Aqui va la acción de disparar
-                if (t.canShoot() && priority != -1) {
+                if (t.canShoot() && priority2 != -1) {
                     int randomizer = (int) (Math.random() * (2));
                     switch (t.getId()) {
                         case 3: //Torre normal
@@ -2266,7 +2268,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                                 SoundClip lasersound = new SoundClip("sounds/laserv1.WAV"); // sonido de laser
                                 lasersound.play();
                             }
-                            Enemy g = (Enemy) wrench.get(priority);
+                            Enemy g = (Enemy) wrench.get(priority2);
                             Laser l1 = new Laser((int) (t.getPosX() + t.getAncho() / 2 - 3 + ((t.getAncho() / 2 - 5) * Math.cos(Math.toRadians(t.getAngle())))),
                                     (int) (t.getPosY() + t.getAlto() / 2 + ((t.getAlto() / 2 - 2) * Math.sin(Math.toRadians(t.getAngle())))), g.getPosX() + g.getAncho() / 2, g.getPosY() + g.getAlto() / 2, t.getDamage(), t.getPlayer(), i);
                             lasers.add(l1);
@@ -2408,7 +2410,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 towerid2 = 0;
             }
         }
-        if (bmine2) {
+             if (bmine2) {
             Mine m = (Mine) mine2.getLast();
             if (m.getPosX() < 1180) {// se planta una torreta en la grid
                 if (canput2) {
