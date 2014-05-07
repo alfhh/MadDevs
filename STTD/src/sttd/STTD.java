@@ -421,7 +421,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         towerid = 9;
-        tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 4200, 60, true));
+        tower.add(new Tower(ex, ey, animWat, towerid, 1, 10, 600, 75, 2000, 60, true));
     }
     
         public void watulioCreation2(int ex, int ey) {
@@ -687,7 +687,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
             }
         }
         towerid2 = 9;
-        tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 4200, 60, true));
+        tower2.add(new Tower(ex, ey, animWat, towerid2, 2, 10, 600, 75, 2000, 60, true));
     }
     
     
@@ -759,7 +759,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         }
                         if (new Rectangle(1298, 301, 30, 30).contains(e.getPoint())) {
                             //torre de buff
-                            if (player1money >= 2000) {
+                            if (player1money >= 1600) {
                                 towerid = 10;
                                 tower.add(new Tower(e.getX(), e.getY(), animBuff, towerid, 1, 36, 0, 75, 1600, 150, true));
                             }
@@ -1039,14 +1039,15 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
         setTitle("Star Wars: Tower Defense");
         
         rotacion = Math.PI / 60;
-        player1money = 40000;
-        player2money = 40000;
+        player1money = 400;
+        player2money = 400;
         towerid = 0;
         towerid2 = 0;
         keyx = 8;
         keyy = 31;
         main = false;
         score1 = 0;
+        score2 = 0;
         instr = false;
         menu = false;
         countx = 50;
@@ -1364,6 +1365,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 Bullet bl = (Bullet) bullet.get(j);
                 if (e.getPerimetro().intersects(bl.getPerimetro())) {
                     e.setHealth(e.getHealth() - bl.getDamage());
+
                     Tower t;
                     if(bl.getPlayer() == 1)
                     {
@@ -1377,10 +1379,12 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                     t.Exp();
                     if (t.getPlayer() == 1) {
                         score1 += (double) bl.getDamage() / 100.0;
+                       player1money += (int) (bl.getDamage() / 100.0)+1;
                     }
                     else
                     {
-                      score1 += (double) bl.getDamage() / 100.0;  
+                      score2 += (double) (bl.getDamage() / 100.0);
+                      player2money += (int) (bl.getDamage() / 100.0)+1;
                     }
                     bl.destroy();
                 }
@@ -1665,7 +1669,7 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                         } else {
                             canput2 = false;
                             m.setPosX(keyx);
-                        m.setPosY(keyy);
+                           m.setPosY(keyy);
                         }
                     } else {
                         canput2 = false;
@@ -1989,7 +1993,6 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                 }
                 // Si el enemigo no tiene vida;
                 if (w.getHealth() <= 0) {
-                    player1money += wrench.get(i).getBaseHealth() / (40 + (Math.pow(wave - 1, 2)));
                     wrench.remove(i); // Desaparece
                 }
                 // Si el enemigo llega a la base
@@ -2142,7 +2145,13 @@ public class STTD extends JFrame implements Runnable, KeyListener, MouseListener
                             g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
-                                score1 += t.getDamage() / 100.0;
+                                score1 += t.getDamage()*2 / 100.0;
+                                player1money += (int) (t.getDamage() / 100.0)+1;
+                            }
+                            else
+                            {
+                                score2 += t.getDamage()*2 / 100.0;
+                                player2money += (int) (t.getDamage() / 100.0)+1;
                             }
                             break;
 
@@ -2300,7 +2309,15 @@ int priority2; //-1 = no apuntar a nada
                             g.setHealth(g.getHealth() - t.getDamage()*2);
                             t.shoot();
                             if (t.getPlayer() == 1) {
-                                score1 += t.getDamage() / 100.0;
+                                
+                                score1 += t.getDamage()*2 / 100.0;
+                            }
+                            else
+                            {
+                                
+                                
+                                score2 += t.getDamage()*2 / 100.0;
+                            
                             }
                             break;
 
@@ -2416,7 +2433,21 @@ int priority2; //-1 = no apuntar a nada
             }
         }
 
-
+        if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+        {
+            if(!tower2.getLast().getSet())
+            {
+                towerid2 = 0;
+                towerselect2 = -1;
+                tower2.removeLast(); 
+            } 
+            if(!mine2.getLast().getSet())
+            {
+                mine2.removeLast();
+                bmine2 = false;
+                
+            }
+        }
         if(e.getKeyCode() == KeyEvent.VK_SPACE)
         {
             if (towerid2 > 0) {
@@ -3969,7 +4000,7 @@ if(coop)
                 animT = animBuff;
             }
 
-            tower.add(new Tower((Integer.parseInt(dataArr[++cont])), (Integer.parseInt(dataArr[++cont])), animT, (Integer.parseInt(dataArr[++cont])), 1, 10, 600, 75, 4200, 60, true));
+            tower.add(new Tower((Integer.parseInt(dataArr[++cont])), (Integer.parseInt(dataArr[++cont])), animT, (Integer.parseInt(dataArr[++cont])), 1, 10, 600, 75, 2000, 60, true));
             tower.getLast().setSet(true);
         }
 
